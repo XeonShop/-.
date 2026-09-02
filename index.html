@@ -79,6 +79,10 @@ nav a:hover{
     border-radius:15px;
     color:white;
     text-decoration:none;
+    background:none;
+    font-size:15px;
+    cursor:pointer;
+    font-family:inherit;
 }
 
 .signup{
@@ -87,6 +91,10 @@ nav a:hover{
     background:linear-gradient(135deg,#9333ea,#c026ff);
     color:white;
     text-decoration:none;
+    border:none;
+    font-size:15px;
+    cursor:pointer;
+    font-family:inherit;
 }
 
 /* ================= HERO ================= */
@@ -516,6 +524,144 @@ footer{
 
 }
 
+/* ================= AUTH MODAL (เข้าสู่ระบบ / สมัครสมาชิก) ================= */
+
+.auth-overlay{
+    display:none;
+
+    position:fixed;
+    inset:0;
+
+    background:rgba(5,6,25,.75);
+
+    z-index:100;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+}
+
+.auth-overlay.active{
+    display:flex;
+}
+
+.auth-box{
+    width:100%;
+    max-width:400px;
+
+    background:linear-gradient(160deg,#171a62,#0c0e43);
+
+    border:1px solid rgba(133,95,255,.5);
+    border-radius:25px;
+
+    padding:35px 30px;
+
+    position:relative;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
+
+.auth-close{
+    position:absolute;
+    top:18px;
+    right:20px;
+
+    background:none;
+    border:none;
+
+    color:#aaaed0;
+    font-size:20px;
+    cursor:pointer;
+    line-height:1;
+}
+
+.auth-close:hover{
+    color:white;
+}
+
+.auth-box h2{
+    font-size:24px;
+    margin-bottom:6px;
+}
+
+.auth-box .auth-sub{
+    color:#aaaed0;
+    font-size:14px;
+    margin-bottom:25px;
+}
+
+.auth-field{
+    margin-bottom:16px;
+}
+
+.auth-field label{
+    display:block;
+    font-size:13px;
+    color:#c4c6e6;
+    margin-bottom:6px;
+}
+
+.auth-field input{
+    width:100%;
+
+    padding:12px 14px;
+
+    border-radius:12px;
+    border:1px solid #343785;
+
+    background:#0e1044;
+    color:white;
+
+    font-size:14px;
+    font-family:inherit;
+}
+
+.auth-field input:focus{
+    outline:none;
+    border-color:#8b5cf6;
+}
+
+.auth-submit{
+    width:100%;
+
+    padding:13px;
+    margin-top:6px;
+
+    border:none;
+    border-radius:12px;
+
+    background:linear-gradient(90deg,#22c9ff,#7c3aed);
+
+    color:white;
+    font-weight:bold;
+    font-size:15px;
+    font-family:inherit;
+
+    cursor:pointer;
+
+    box-shadow:0 10px 25px rgba(67,56,202,.4);
+}
+
+.auth-switch{
+    text-align:center;
+    margin-top:20px;
+    font-size:13px;
+    color:#aaaed0;
+}
+
+.auth-switch button{
+    background:none;
+    border:none;
+
+    color:#a855f7;
+    font-weight:bold;
+    font-family:inherit;
+    font-size:13px;
+
+    cursor:pointer;
+}
+
 </style>
 </head>
 
@@ -539,8 +685,8 @@ footer{
     </nav>
 
     <div class="header-buttons">
-        <a href="#" class="login">เข้าสู่ระบบ</a>
-        <a href="#" class="signup">สมัครสมาชิก</a>
+        <button type="button" class="login" onclick="openAuth('login')">เข้าสู่ระบบ</button>
+        <button type="button" class="signup" onclick="openAuth('signup')">สมัครสมาชิก</button>
     </div>
 
 </header>
@@ -609,7 +755,7 @@ footer{
                 </div>
 
                 <div class="bubble">
-                    <b>น้องนนท์</b><br>
+                    <b>น้องนาย</b><br>
                     สอบถามเรื่องการบ้านคณิตหน่อยครับ
                     ข้อนี้ต้องทำยังไงบ้างครับ?
                     <small>10:30</small>
@@ -625,8 +771,8 @@ footer{
                 </div>
 
                 <div class="bubble">
-                    <b>น้องฟ้าใส</b><br>
-                    ลองใช้สูตรนี้ดูนะครับ
+                    <b>ครูยุ้ย</b><br>
+                    ลองใช้สูตรนี้ดูนะคะ
                     น่าจะช่วยได้
                     <small>10:32</small>
                 </div>
@@ -642,7 +788,7 @@ footer{
 
                 <div class="bubble code">
 
-                    <b>ครูพี่ออม ⭐</b><br><br>
+                    <b>ครูออม ⭐</b><br><br>
 
                     for (let i = 0; i < 5; i++) {<br>
                     &nbsp;&nbsp;console.log(i);<br>
@@ -817,6 +963,111 @@ text-align:center;
 
 </footer>
 
+
+<!-- ================= AUTH MODAL (เข้าสู่ระบบ / สมัครสมาชิก) ================= -->
+
+<div class="auth-overlay" id="authOverlay">
+
+    <!-- ฟอร์มเข้าสู่ระบบ -->
+    <div class="auth-box" id="loginBox">
+
+        <button type="button" class="auth-close" onclick="closeAuth()">✕</button>
+
+        <h2>เข้าสู่ระบบ</h2>
+        <p class="auth-sub">ยินดีต้อนรับกลับมาที่ Student Chat</p>
+
+        <form onsubmit="return false;">
+
+            <div class="auth-field">
+                <label for="loginEmail">อีเมล หรือ ชื่อผู้ใช้</label>
+                <input type="text" id="loginEmail" placeholder="กรอกอีเมลหรือชื่อผู้ใช้" required>
+            </div>
+
+            <div class="auth-field">
+                <label for="loginPassword">รหัสผ่าน</label>
+                <input type="password" id="loginPassword" placeholder="กรอกรหัสผ่าน" required>
+            </div>
+
+            <button type="submit" class="auth-submit">เข้าสู่ระบบ</button>
+
+        </form>
+
+        <div class="auth-switch">
+            ยังไม่มีบัญชี? <button type="button" onclick="switchAuth('signup')">สมัครสมาชิก</button>
+        </div>
+
+    </div>
+
+    <!-- ฟอร์มสมัครสมาชิก -->
+    <div class="auth-box" id="signupBox" style="display:none;">
+
+        <button type="button" class="auth-close" onclick="closeAuth()">✕</button>
+
+        <h2>สมัครสมาชิก</h2>
+        <p class="auth-sub">เข้าร่วมชุมชน Student Chat วันนี้</p>
+
+        <form onsubmit="return false;">
+
+            <div class="auth-field">
+                <label for="signupName">ชื่อผู้ใช้</label>
+                <input type="text" id="signupName" placeholder="ตั้งชื่อผู้ใช้ของคุณ" required>
+            </div>
+
+            <div class="auth-field">
+                <label for="signupEmail">อีเมล</label>
+                <input type="email" id="signupEmail" placeholder="กรอกอีเมลของคุณ" required>
+            </div>
+
+            <div class="auth-field">
+                <label for="signupPassword">รหัสผ่าน</label>
+                <input type="password" id="signupPassword" placeholder="ตั้งรหัสผ่าน" required>
+            </div>
+
+            <button type="submit" class="auth-submit">สมัครสมาชิก</button>
+
+        </form>
+
+        <div class="auth-switch">
+            มีบัญชีอยู่แล้ว? <button type="button" onclick="switchAuth('login')">เข้าสู่ระบบ</button>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function openAuth(type){
+    document.getElementById('authOverlay').classList.add('active');
+    switchAuth(type);
+}
+
+function closeAuth(){
+    document.getElementById('authOverlay').classList.remove('active');
+}
+
+function switchAuth(type){
+    const loginBox = document.getElementById('loginBox');
+    const signupBox = document.getElementById('signupBox');
+
+    if(type === 'signup'){
+        loginBox.style.display = 'none';
+        signupBox.style.display = 'block';
+    } else {
+        signupBox.style.display = 'none';
+        loginBox.style.display = 'block';
+    }
+}
+
+// ปิด modal เมื่อคลิกพื้นหลังด้านนอกกล่อง
+document.getElementById('authOverlay').addEventListener('click', function(e){
+    if(e.target === this){
+        closeAuth();
+    }
+});
+
+</script>
 
 </body>
 </html>
