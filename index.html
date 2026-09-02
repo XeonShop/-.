@@ -34,7 +34,7 @@
         <span id="headerTitle">Student Chat</span>
     </div>
     
-    <!-- หน้าลงชื่อเข้าใช้/สมัครใช้งาน -->
+    <!-- หน้าลงชื่อเข้าใช้ -->
     <div id="loginSection" class="chat-body" style="justify-content: center; align-items: center;">
         <h3 style="margin-bottom: 10px; color: #374151;">สมัคร / เข้าสู่ระบบ</h3>
         <input type="text" id="usernameInput" placeholder="พิมพ์ชื่อของคุณที่นี่..." style="width: 80%; flex: none;">
@@ -65,10 +65,11 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, push, onChildAdded, set, off } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
+    // อัปเดต databaseURL ให้ตรงกับรูปภาพของคุณเรียบร้อยแล้ว
     const firebaseConfig = {
         apiKey: "AIzaSyDaN-eSOQve7qn8MPHcOj4IeYWrt-7SwHk",
         authDomain: "xdhi13.firebaseapp.com",
-        databaseURL: "https://xdhi13-default-rtdb.firebaseio.com",
+        databaseURL: "https://mnht-84ae0-default-rtdb.firebaseio.com",
         projectId: "xdhi13",
         storageBucket: "xdhi13.firebasestorage.app",
         messagingSenderId: "1094865586143",
