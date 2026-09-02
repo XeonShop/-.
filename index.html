@@ -110,7 +110,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
     100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
 }
 
-/* ================= FRIENDS PAGE (มีกรอบใหญ่ครอบคลุม) ================= */
+/* ================= FRIENDS PAGE ================= */
 .friends-container{ 
     padding:25px; 
     max-width:850px; 
@@ -222,7 +222,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
     </section>
 </div>
 
-<!-- ================= FRIENDS PAGE (มีกรอบใหญ่แล้ว) ================= -->
+<!-- ================= FRIENDS PAGE ================= -->
 <div id="pageFriends" class="page-section">
     <div class="friends-container">
         <h2 style="margin-bottom:5px;">👥 เพื่อน & คำขอ</h2>
@@ -295,7 +295,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         <button class="start-btn" style="margin-bottom: 15px;" onclick="updateStatus()">บันทึกสถานะ</button>
 
         <div style="border-top: 1px solid rgba(255,255,255,.1); padding-top: 15px; text-align: left;">
-            <label style="display:block; font-size:12px; color:#aaaed0; margin-bottom:5px;">เปลี่ยนชื่อผู้ใช้ (เปลี่ยนได้ทุกๆ 7 วัน)</label>
+            <label style="display:block; font-size:12px; color:#aaaed0; margin-bottom:5px;">เปลี่ยนชื่อผู้ใช้ใหม่</label>
             <input type="text" id="newUsernameInput" class="status-input" placeholder="กรอกชื่อผู้ใช้ใหม่...">
             <button class="start-btn" style="background:linear-gradient(90deg, #f59e0b, #ef4444); max-width:100%;" onclick="handleUpdateUsername()">เปลี่ยนชื่อ</button>
         </div>
@@ -432,8 +432,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                 set(ref(db, `users/${u}`), { 
                     username: u, 
                     status: "ยินดีต้อนรับสู่ Student Chat!",
-                    avatar: DEFAULT_AVATAR,
-                    lastUsernameChange: 0
+                    avatar: DEFAULT_AVATAR
                 });
                 currentUser = u;
                 localStorage.setItem("activeUser", currentUser);
@@ -908,7 +907,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         alert("อัปเดตสถานะเรียบร้อยครับ!");
     };
 
-    window.handleUpdateUsername = function(){
+    window.handleUpdateUsername = async function(){
         const newUsername = document.getElementById("newUsernameInput").value.trim();
         if(!newUsername) {
             alert("กรุณากรอกชื่อใหม่ครับ");
@@ -920,44 +919,84 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
             return;
         }
 
-        const userRef = ref(db, `users/${currentUser}`);
-        
-        get(child(userRef, "lastUsernameChange")).then((snapshot) => {
-            const lastChangeTime = snapshot.exists() ? snapshot.val() : 0;
-            const sevenDaysInMillis = 7 * 24 * 60 * 60 * 1000;
-            const now = Date.now();
-
-            if (lastChangeTime && (now - lastChangeTime < sevenDaysInMillis)) {
-                const daysLeft = Math.ceil((sevenDaysInMillis - (now - lastChangeTime)) / (1000 * 60 * 60 * 24));
-                alert(`คุณเพิ่งเปลี่ยนชื่อไป กรุณารออีก ${daysLeft} วัน จึงจะสามารถเปลี่ยนชื่อใหม่ได้ครับ`);
+        try {
+            const nameSnap = await get(child(ref(db), `users/${newUsername}`));
+            if (nameSnap.exists()) {
+                alert("ชื่อผู้ใช้นี้ถูกใช้งานแล้ว กรุณาใช้ชื่ออื่น");
                 return;
             }
 
-            get(child(ref(db), `users/${newUsername}`)).then((nameSnap) => {
-                if (nameSnap.exists()) {
-                    alert("ชื่อผู้ใช้นี้ถูกใช้งานแล้ว กรุณาใช้ชื่ออื่น");
-                } else {
-                    get(userRef).then((userSnap) => {
-                        if(userSnap.exists()){
-                            const userData = userSnap.val();
-                            userData.username = newUsername;
-                            userData.lastUsernameChange = now;
+            const oldUser = currentUser;
 
-                            set(ref(db, `users/${newUsername}`), userData).then(() => {
-                                remove(userRef).then(() => {
-                                    currentUser = newUsername;
-                                    localStorage.setItem("activeUser", currentUser);
-                                    updateHeader();
-                                    loadProfile();
-                                    document.getElementById("newUsernameInput").value = "";
-                                    alert("เปลี่ยนชื่อสำเร็จ! (ระบบได้ทำการล็อกการเปลี่ยนชื่อเป็นเวลา 7 วันแล้ว)");
-                                });
-                            });
-                        }
-                    });
+            // 1. ดึงข้อมูลโปรไฟล์เดิม
+            const userSnap = await get(child(ref(db), `users/${oldUser}`));
+            const userData = userSnap.exists() ? userSnap.val() : {};
+            userData.username = newUsername;
+
+            // บันทึกโปรไฟล์ไปที่ชื่อใหม่
+            await set(ref(db, `users/${newUsername}`), userData);
+
+            // 2. ย้ายรายชื่อเพื่อนฝั่งเรา (friends/oldUser -> friends/newUsername)
+            const friendsSnap = await get(child(ref(db), `friends/${oldUser}`));
+            if (friendsSnap.exists()) {
+                const friendsList = friendsSnap.val();
+                await set(ref(db, `friends/${newUsername}`), friendsList);
+
+                // อัปเดตฝั่งเพื่อนทุกคนที่เคย add เราไว้ ให้รู้จักชื่อใหม่
+                for (let friendName of Object.keys(friendsList)) {
+                    await set(ref(db, `friends/${friendName}/${newUsername}`), true);
+                    await remove(ref(db, `friends/${friendName}/${oldUser}`));
                 }
-            });
-        });
+            }
+
+            // 3. ย้ายคำขอเพื่อน (requests)
+            const reqSnap = await get(child(ref(db), `requests/${oldUser}`));
+            if (reqSnap.exists()) {
+                await set(ref(db, `requests/${newUsername}`), reqSnap.val());
+            }
+
+            // 4. ค้นหาห้องแชทส่วนตัวทั้งหมดแล้วอัปเดตชื่อผู้ส่งในห้องแชท
+            const chatSnap = await get(child(ref(db), `private_chats`));
+            if (chatSnap.exists()) {
+                const allChats = chatSnap.val();
+                for (let roomId of Object.keys(allChats)) {
+                    if (roomId.includes(oldUser)) {
+                        const newRoomId = roomId.split('_').map(n => n === oldUser ? newUsername : n).sort().join('_');
+                        
+                        // ย้ายประวัติแชทไปยังห้องใหม่
+                        await set(ref(db, `private_chats/${newRoomId}`), allChats[roomId]);
+
+                        // อัปเดตชื่อ sender ในข้อความแชทที่เป็นของเราให้เป็นชื่อใหม่ด้วย
+                        const messages = allChats[roomId];
+                        for (let msgId of Object.keys(messages)) {
+                            if (messages[msgId].sender === oldUser) {
+                                await set(ref(db, `private_chats/${newRoomId}/${msgId}/sender`), newUsername);
+                            }
+                        }
+
+                        // ลบห้องแชทเก่าทิ้ง
+                        await remove(ref(db, `private_chats/${roomId}`));
+                    }
+                }
+            }
+
+            // 5. ลบข้อมูลเก่าทิ้งทั้งหมด
+            await remove(ref(db, `users/${oldUser}`));
+            await remove(ref(db, `friends/${oldUser}`));
+            await remove(ref(db, `requests/${oldUser}`));
+
+            // สลับมาใช้ชื่อใหม่ในระบบ
+            currentUser = newUsername;
+            localStorage.setItem("activeUser", currentUser);
+            updateHeader();
+            loadProfile();
+            document.getElementById("newUsernameInput").value = "";
+            alert("เปลี่ยนชื่อและย้ายข้อมูลแชททั้งหมดสำเร็จเรียบร้อยครับ!");
+
+        } catch (err) {
+            console.error(err);
+            alert("เกิดข้อผิดพลาดในการเปลี่ยนชื่อ กรุณาลองใหม่อีกครั้ง");
+        }
     };
 
     updateHeader();
