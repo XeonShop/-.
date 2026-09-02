@@ -3,247 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Clean Glass Chat</title>
+<title>Realtime Glass Chat</title>
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
 body {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #080b35, #11136c, #080b35);
-    color: #fff;
-    padding: 20px;
+    min-height: 100vh; display: flex; justify-content: center; align-items: center;
+    background: linear-gradient(135deg, #080b35, #11136c, #080b35); color: #fff; padding: 20px;
 }
-
-/* Container หน้าต่างแชตแบบโปร่งแสง */
 .chat-window {
-    width: 100%;
-    max-width: 480px;
-    height: 620px;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 24px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    width: 100%; max-width: 480px; height: 600px;
+    background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 24px;
+    display: flex; flex-direction: column; overflow: hidden;
 }
-
-/* ส่วนหัว Header */
 .chat-header {
-    padding: 18px 24px;
-    background: rgba(255, 255, 255, 0.03);
+    padding: 18px 24px; background: rgba(255, 255, 255, 0.03);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
-
-.chat-header-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.chat-header h3 {
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.status-dot {
-    width: 8px;
-    height: 8px;
-    background: #22c55e;
-    border-radius: 50%;
-    box-shadow: 0 0 8px #22c55e;
-}
-
-/* พื้นที่แสดงข้อความ */
-.messages {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-.messages::-webkit-scrollbar {
-    width: 4px;
-}
-
-.messages::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 10px;
-}
-
-/* รูปแบบข้อความ */
-.message {
-    display: flex;
-    flex-direction: column;
-    max-width: 80%;
-}
-
-.message.incoming {
-    align-self: flex-start;
-}
-
-.message.me {
-    align-self: flex-end;
-}
-
-.bubble {
-    padding: 12px 16px;
-    border-radius: 18px;
-    font-size: 14px;
-    line-height: 1.5;
-    word-break: break-word;
-}
-
-.message.incoming .bubble {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    color: #e2e8f0;
-    border-bottom-left-radius: 4px;
-}
-
-.message.me .bubble {
-    background: linear-gradient(135deg, #7c3aed, #2563eb);
-    color: #fff;
-    border-bottom-right-radius: 4px;
-    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
-}
-
-.message-time {
-    font-size: 10px;
-    color: #70769f;
-    margin-top: 4px;
-}
-
-.message.incoming .message-time {
-    align-self: flex-start;
-}
-
-.message.me .message-time {
-    align-self: flex-end;
-}
-
-/* ช่องพิมพ์ข้อความด้านล่าง */
-.input-area {
-    padding: 16px;
-    background: rgba(0, 0, 0, 0.15);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.input-box {
-    display: flex;
-    gap: 10px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 20px;
-    padding: 6px 6px 6px 16px;
-}
-
-.input-box input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    outline: none;
-    color: #fff;
-    font-size: 14px;
-}
-
-.input-box input::placeholder {
-    color: #747aa7;
-}
-
-.send-btn {
-    width: 38px;
-    height: 38px;
-    border: none;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #22c9ff, #7c3aed);
-    color: white;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 16px;
-    transition: transform 0.2s;
-}
-
-.send-btn:hover {
-    transform: scale(1.08);
-}
+.messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+.message { display: flex; flex-direction: column; max-width: 80%; }
+.message.other { align-self: flex-start; }
+.message.me { align-self: flex-end; }
+.sender { font-size: 11px; color: #a78bfa; margin-bottom: 2px; }
+.bubble { padding: 10px 14px; border-radius: 16px; font-size: 14px; word-break: break-word; }
+.message.other .bubble { background: rgba(255, 255, 255, 0.1); color: #fff; border-bottom-left-radius: 4px; }
+.message.me .bubble { background: linear-gradient(135deg, #7c3aed, #2563eb); color: #fff; border-bottom-right-radius: 4px; }
+.input-area { padding: 16px; background: rgba(0, 0, 0, 0.15); border-top: 1px solid rgba(255, 255, 255, 0.08); }
+.input-box { display: flex; gap: 8px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; padding: 6px; }
+.input-box input { flex: 1; background: transparent; border: none; outline: none; color: #fff; padding-left: 10px; }
+.send-btn { width: 36px; height: 36px; border: none; border-radius: 50%; background: #7c3aed; color: white; cursor: pointer; }
 </style>
 </head>
 <body>
 
 <div class="chat-window">
-    <div class="chat-header">
-        <div class="chat-header-info">
-            <div class="status-dot"></div>
-            <h3>💬 ห้องพูดคุยทั่วไป</h3>
-        </div>
-    </div>
-
-    <div class="messages" id="messages">
-        <div class="message incoming">
-            <div class="bubble">สอบถามเรื่องการบ้านคณิตหน่อยครับ ข้อนี้ต้องทำยังไงบ้างครับ?</div>
-            <div class="message-time">18:20</div>
-        </div>
-
-        <div class="message incoming">
-            <div class="bubble">ลองใช้สูตรนี้ดูนะ แล้วค่อยแทนค่าตัวเลขลงไปน่าจะได้คำตอบครับ 👍</div>
-            <div class="message-time">18:22</div>
-        </div>
-
-        <div class="message me">
-            <div class="bubble">ขอบคุณครับ เดี๋ยวผมลองทำดูครับ 🙏</div>
-            <div class="message-time">18:27</div>
-        </div>
-    </div>
-
+    <div class="chat-header"><h3>💬 Realtime Chat</h3></div>
+    <div class="messages" id="messages"></div>
     <div class="input-area">
         <div class="input-box">
-            <input type="text" id="messageInput" placeholder="พิมพ์ข้อความ..." onkeydown="if(event.key === 'Enter') sendMessage()">
-            <button class="send-btn" onclick="sendMessage()">➤</button>
+            <input type="text" id="userInput" placeholder="พิมพ์ข้อความ..." onkeydown="if(event.key === 'Enter') sendMsg()">
+            <button class="send-btn" onclick="sendMsg()">➤</button>
         </div>
     </div>
 </div>
 
-<script>
-function sendMessage() {
-    const input = document.getElementById("messageInput");
-    const messages = document.getElementById("messages");
+<!-- โหลด Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+// 1. ตั้งค่า Firebase (นำค่ามาจากโปรเจกต์ Firebase ของคุณ)
+const firebaseConfig = {
+    databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com" // ใส่ URL ฐานข้อมูลของคุณที่นี่
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const chatRef = ref(db, "chats");
+
+// สุ่มสร้าง ID ผู้ใช้ชั่วคราว
+const myId = "User_" + Math.floor(Math.random() * 1000);
+
+// 2. ฟังก์ชันส่งข้อความไปหา Server
+window.sendMsg = function() {
+    const input = document.getElementById("userInput");
     const text = input.value.trim();
+    if (text !== "") {
+        push(chatRef, { sender: myId, text: text });
+        input.value = "";
+    }
+};
 
-    if (text === "") return;
-
-    const now = new Date();
-    const time = now.getHours().toString().padStart(2, "0") + ":" + now.getMinutes().toString().padStart(2, "0");
-
-    const messageDiv = document.createElement("div");
-    messageDiv.className = "message me";
-
-    messageDiv.innerHTML = `
-        <div class="bubble">${escapeHTML(text)}</div>
-        <div class="message-time">${time}</div>
+// 3. รอรับข้อความใหม่เมื่อคนอื่นพิมพ์ส่งเข้ามา
+onChildAdded(chatRef, (snapshot) => {
+    const data = snapshot.val();
+    const messages = document.getElementById("messages");
+    
+    const msgDiv = document.createElement("div");
+    const isMe = data.sender === myId;
+    msgDiv.className = `message ${isMe ? 'me' : 'other'}`;
+    
+    msgDiv.innerHTML = `
+        ${!isMe ? `<div class="sender">${data.sender}</div>` : ''}
+        <div class="bubble">${escapeHTML(data.text)}</div>
     `;
-
-    messages.appendChild(messageDiv);
-    input.value = "";
+    
+    messages.appendChild(msgDiv);
     messages.scrollTop = messages.scrollHeight;
-}
+});
 
 function escapeHTML(text) {
     const div = document.createElement("div");
