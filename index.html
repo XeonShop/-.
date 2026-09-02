@@ -110,9 +110,27 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
     100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
 }
 
-/* ================= FRIENDS PAGE ================= */
-.friends-container{ padding:20px 4%; max-width:800px; margin:0 auto; }
-.search-box input{ width:100%; padding:14px 18px; border-radius:14px; border:1px solid #343785; background:#12154c; color:white; font-size:15px; outline:none; margin-bottom:20px; }
+/* ================= FRIENDS PAGE (มีกรอบใหญ่ครอบคลุม) ================= */
+.friends-container{ 
+    padding:25px; 
+    max-width:850px; 
+    margin:25px auto; 
+    background:#12154c; 
+    border:1px solid rgba(133,95,255,.4); 
+    border-radius:24px; 
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+.search-box input{ 
+    width:100%; 
+    padding:14px 18px; 
+    border-radius:14px; 
+    border:1px solid #343785; 
+    background:#080b35; 
+    color:white; 
+    font-size:15px; 
+    outline:none; 
+    margin-bottom:20px; 
+}
 
 .users-grid{ display:grid; grid-template-columns:1fr; gap:12px; }
 
@@ -204,7 +222,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
     </section>
 </div>
 
-<!-- ================= FRIENDS PAGE ================= -->
+<!-- ================= FRIENDS PAGE (มีกรอบใหญ่แล้ว) ================= -->
 <div id="pageFriends" class="page-section">
     <div class="friends-container">
         <h2 style="margin-bottom:5px;">👥 เพื่อน & คำขอ</h2>
@@ -707,7 +725,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                 btn.classList.add("recording");
                 btn.title = "กำลังอัดเสียง... (กดเพื่อหยุดและส่ง)";
             } catch (err) {
-                alert("ไม่สามารถเข้าถึงไมโครโฟนได้ กรุณาเปิดใช้งานสิทธิ์ไมโครโฟนในการตั้งค่าเบราว์เซอร์ (แนะนำให้เปิดผ่าน Google Chrome หรือ Safari โดยตรง)");
+                alert("ไม่สามารถเข้าถึงไมโครโฟนได้ กรุณาเปิดใช้งานสิทธิ์ไมโครโฟนในการตั้งค่าเบราว์เซอร์");
             }
         } else {
             mediaRecorder.stop();
@@ -919,16 +937,13 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                 if (nameSnap.exists()) {
                     alert("ชื่อผู้ใช้นี้ถูกใช้งานแล้ว กรุณาใช้ชื่ออื่น");
                 } else {
-                    // สร้างโหนดผู้ใช้ใหม่ด้วยชื่อใหม่ ดึงข้อมูลเก่ามาใส่ แล้วลบโหนดเก่าออก
                     get(userRef).then((userSnap) => {
                         if(userSnap.exists()){
                             const userData = userSnap.val();
                             userData.username = newUsername;
                             userData.lastUsernameChange = now;
 
-                            // บันทึกข้อมูลลงชื่อใหม่ และอัปเดตเวลาล็อก 7 วัน
                             set(ref(db, `users/${newUsername}`), userData).then(() => {
-                                // ลบข้อมูลชื่อเก่าทิ้ง
                                 remove(userRef).then(() => {
                                     currentUser = newUsername;
                                     localStorage.setItem("activeUser", currentUser);
