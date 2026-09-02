@@ -40,13 +40,8 @@ header{
     cursor:pointer;
 }
 
-.logo-icon{
-    font-size:35px;
-}
-
-.logo span{
-    color:#8b5cf6;
-}
+.logo-icon{ font-size:35px; }
+.logo span{ color:#8b5cf6; }
 
 nav{
     display:flex;
@@ -62,9 +57,7 @@ nav a{
     cursor:pointer;
 }
 
-nav a:hover, nav a.active{
-    color:#22c9ff;
-}
+nav a:hover, nav a.active{ color:#22c9ff; }
 
 .header-buttons{
     display:flex;
@@ -112,13 +105,8 @@ nav a:hover, nav a.active{
 }
 
 /* ================= PAGES ================= */
-.page-section{
-    display:none;
-}
-
-.page-section.active{
-    display:block;
-}
+.page-section{ display:none; }
+.page-section.active{ display:block; }
 
 /* ================= HERO ================= */
 .hero{
@@ -134,41 +122,16 @@ nav a:hover, nav a.active{
                linear-gradient(135deg, #080b35, #11136c, #080b35);
 }
 
-.hero-text{
-    width:50%;
-    position:relative;
-    z-index:2;
-}
-
-.hero-text h1{
-    font-size:65px;
-    line-height:1.05;
-    margin-bottom:25px;
-}
-
+.hero-text{ width:50%; position:relative; z-index:2; }
+.hero-text h1{ font-size:65px; line-height:1.05; margin-bottom:25px; }
 .gradient-text{
     background:linear-gradient(90deg, #9b5cff, #24b8ff);
     -webkit-background-clip:text;
     color:transparent;
 }
-
-.hero-text h2{
-    font-size:25px;
-    margin-bottom:20px;
-}
-
-.hero-text p{
-    color:#b8b9d0;
-    font-size:18px;
-    line-height:1.8;
-    max-width:600px;
-}
-
-.hero-buttons{
-    margin-top:35px;
-    display:flex;
-    gap:20px;
-}
+.hero-text h2{ font-size:25px; margin-bottom:20px; }
+.hero-text p{ color:#b8b9d0; font-size:18px; line-height:1.8; max-width:600px; }
+.hero-buttons{ margin-top:35px; display:flex; gap:20px; }
 
 .start-btn{
     display:inline-block;
@@ -185,12 +148,7 @@ nav a:hover, nav a.active{
 }
 
 /* ================= CHAT CONTAINER ================= */
-.chat-container{
-    padding:40px 7%;
-    max-width:1200px;
-    margin:0 auto;
-}
-
+.chat-container{ padding:40px 7%; max-width:1200px; margin:0 auto; }
 .chat-wrapper{
     display:grid;
     grid-template-columns:280px 1fr;
@@ -203,26 +161,9 @@ nav a:hover, nav a.active{
     box-shadow:0 0 50px rgba(90,50,255,.35);
 }
 
-/* SIDEBAR */
-.chat-sidebar{
-    background:#12154c;
-    border-right:1px solid rgba(255,255,255,.1);
-    display:flex;
-    flex-direction:column;
-}
-
-.sidebar-header{
-    padding:20px;
-    border-bottom:1px solid rgba(255,255,255,.1);
-    font-size:16px;
-    color:#22c9ff;
-}
-
-.friends-list{
-    flex:1;
-    overflow-y:auto;
-    padding:10px;
-}
+.chat-sidebar{ background:#12154c; border-right:1px solid rgba(255,255,255,.1); display:flex; flex-direction:column; }
+.sidebar-header{ padding:20px; border-bottom:1px solid rgba(255,255,255,.1); font-size:16px; color:#22c9ff; }
+.friends-list{ flex:1; overflow-y:auto; padding:10px; }
 
 .friend-item{
     padding:12px 15px;
@@ -241,30 +182,9 @@ nav a:hover, nav a.active{
     border:1px solid rgba(34,201,255,.4);
 }
 
-/* MAIN CHAT AREA */
-.chat-main{
-    display:flex;
-    flex-direction:column;
-    background:#171a62;
-}
-
-.chat-header{
-    height:70px;
-    padding:0 20px;
-    background:rgba(10,13,58,.5);
-    border-bottom:1px solid rgba(255,255,255,.1);
-    display:flex;
-    align-items:center;
-}
-
-.chat-messages{
-    flex:1;
-    padding:20px;
-    overflow-y:auto;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-}
+.chat-main{ display:flex; flex-direction:column; background:#171a62; }
+.chat-header{ height:70px; padding:0 20px; background:rgba(10,13,58,.5); border-bottom:1px solid rgba(255,255,255,.1); display:flex; align-items:center; }
+.chat-messages{ flex:1; padding:20px; overflow-y:auto; display:flex; flex-direction:column; gap:12px; }
 
 .msg-bubble{
     max-width:70%;
@@ -275,56 +195,18 @@ nav a:hover, nav a.active{
     word-break:break-word;
 }
 
-.msg-bubble.me{
-    align-self:flex-end;
-    background:linear-gradient(135deg, #006f9f, #4c1d95);
-    border-bottom-right-radius:3px;
-}
+.msg-bubble.me{ align-self:flex-end; background:linear-gradient(135deg, #006f9f, #4c1d95); border-bottom-right-radius:3px; }
+.msg-bubble.other{ align-self:flex-start; background:#20256e; border-bottom-left-radius:3px; }
 
-.msg-bubble.other{
-    align-self:flex-start;
-    background:#20256e;
-    border-bottom-left-radius:3px;
-}
+.chat-input{ padding:15px; background:#12154c; display:flex; gap:10px; }
+.chat-input input{ flex:1; border:1px solid #343785; border-radius:20px; padding:10px 18px; background:#080b35; color:white; outline:none; }
+.chat-input button{ width:45px; height:45px; border:none; border-radius:50%; background:linear-gradient(135deg, #22c9ff, #7c3aed); color:white; cursor:pointer; }
 
-.chat-input{
-    padding:15px;
-    background:#12154c;
-    display:flex;
-    gap:10px;
-}
+/* ================= FRIENDS PAGE & ONLINE SYSTEM ================= */
+.friends-container{ padding:40px 7%; max-width:1000px; margin:0 auto; }
+.search-filter-wrapper{ display:flex; gap:15px; margin-bottom:25px; flex-wrap:wrap; }
 
-.chat-input input{
-    flex:1;
-    border:1px solid #343785;
-    border-radius:20px;
-    padding:10px 18px;
-    background:#080b35;
-    color:white;
-    outline:none;
-}
-
-.chat-input button{
-    width:45px;
-    height:45px;
-    border:none;
-    border-radius:50%;
-    background:linear-gradient(135deg, #22c9ff, #7c3aed);
-    color:white;
-    cursor:pointer;
-}
-
-/* ================= FRIENDS PAGE ================= */
-.friends-container{
-    padding:40px 7%;
-    max-width:1000px;
-    margin:0 auto;
-}
-
-.search-box{
-    margin-bottom:25px;
-}
-
+.search-box{ flex:1; }
 .search-box input{
     width:100%;
     padding:15px 20px;
@@ -336,11 +218,42 @@ nav a:hover, nav a.active{
     outline:none;
 }
 
-.users-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
-    gap:20px;
+.online-toggle-btn{
+    padding:0 20px;
+    border-radius:15px;
+    border:1px solid #22c55e;
+    background:rgba(34,197,94,.1);
+    color:#22c55e;
+    font-weight:bold;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    transition:.2s;
 }
+
+.online-toggle-btn.active{
+    background:#22c55e;
+    color:#080b35;
+}
+
+.status-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    display:inline-block;
+}
+
+.status-dot.online{
+    background:#22c55e;
+    box-shadow:0 0 8px #22c55e;
+}
+
+.status-dot.offline{
+    background:#64748b;
+}
+
+.users-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:20px; }
 
 .user-card{
     background:#171a62;
@@ -348,89 +261,30 @@ nav a:hover, nav a.active{
     border-radius:18px;
     padding:20px;
     text-align:center;
-}
-
-.user-avatar{
-    font-size:40px;
-    margin-bottom:10px;
-}
-
-.user-card h4{
-    margin-bottom:15px;
-}
-
-.btn-friend{
-    width:100%;
-    padding:10px;
-    border-radius:10px;
-    border:none;
-    font-weight:bold;
-    cursor:pointer;
-    transition:.2s;
-}
-
-.btn-add{
-    background:linear-gradient(90deg, #22c9ff, #7c3aed);
-    color:white;
-}
-
-.btn-remove{
-    background:#ef4444;
-    color:white;
-}
-
-/* ================= AUTH MODAL ================= */
-.auth-overlay{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(5,6,25,.8);
-    z-index:100;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-}
-
-.auth-overlay.active{
-    display:flex;
-}
-
-.auth-box{
-    width:100%;
-    max-width:400px;
-    background:linear-gradient(160deg, #171a62, #0c0e43);
-    border:1px solid rgba(133,95,255,.5);
-    border-radius:25px;
-    padding:35px 30px;
     position:relative;
 }
 
-.auth-close{
-    position:absolute;
-    top:18px;
-    right:20px;
-    background:none;
-    border:none;
-    color:#aaaed0;
-    font-size:20px;
-    cursor:pointer;
-}
+.user-avatar{ font-size:40px; margin-bottom:10px; position:relative; display:inline-block; }
+.avatar-status{ position:absolute; bottom:2px; right:2px; }
 
+.user-card h4{ margin-bottom:5px; }
+.user-card .status-text{ font-size:12px; color:#aaaed0; margin-bottom:15px; }
+
+.btn-friend{ width:100%; padding:10px; border-radius:10px; border:none; font-weight:bold; cursor:pointer; transition:.2s; }
+.btn-add{ background:linear-gradient(90deg, #22c9ff, #7c3aed); color:white; }
+.btn-remove{ background:#ef4444; color:white; }
+
+/* ================= AUTH MODAL ================= */
+.auth-overlay{ display:none; position:fixed; inset:0; background:rgba(5,6,25,.8); z-index:100; align-items:center; justify-content:center; padding:20px; }
+.auth-overlay.active{ display:flex; }
+.auth-box{ width:100%; max-width:400px; background:linear-gradient(160deg, #171a62, #0c0e43); border:1px solid rgba(133,95,255,.5); border-radius:25px; padding:35px 30px; position:relative; }
+.auth-close{ position:absolute; top:18px; right:20px; background:none; border:none; color:#aaaed0; font-size:20px; cursor:pointer; }
 .auth-box h2{ font-size:24px; margin-bottom:7px; }
 .auth-sub{ color:#aaaed0; font-size:14px; margin-bottom:25px; }
 .auth-field{ margin-bottom:16px; }
 .auth-field label{ display:block; font-size:13px; color:#c4c6e6; margin-bottom:6px; }
-.auth-field input{
-    width:100%; padding:12px 14px; border-radius:12px;
-    border:1px solid #343785; background:#0e1044; color:white; font-size:14px; outline:none;
-}
-
-.auth-submit{
-    width:100%; padding:13px; border:none; border-radius:12px;
-    background:linear-gradient(90deg, #22c9ff, #7c3aed);
-    color:white; font-weight:bold; font-size:15px; cursor:pointer;
-}
-
+.auth-field input{ width:100%; padding:12px 14px; border-radius:12px; border:1px solid #343785; background:#0e1044; color:white; font-size:14px; outline:none; }
+.auth-submit{ width:100%; padding:13px; border:none; border-radius:12px; background:linear-gradient(90deg, #22c9ff, #7c3aed); color:white; font-weight:bold; font-size:15px; cursor:pointer; }
 .auth-switch{ text-align:center; margin-top:20px; font-size:13px; color:#aaaed0; }
 .auth-switch button{ background:none; border:none; color:#a855f7; font-weight:bold; cursor:pointer; }
 </style>
@@ -474,10 +328,17 @@ nav a:hover, nav a.active{
 <div id="pageFriends" class="page-section">
     <div class="friends-container">
         <h2>👥 ค้นหาเพื่อนใหม่</h2>
-        <p style="color:#aaaed0; margin-bottom:20px;">เพิ่มเพื่อนเพื่อเริ่มการแชทส่วนตัว</p>
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="พิมพ์ชื่อผู้ใช้เพื่อค้นหา..." onkeyup="renderUsers()">
+        <p style="color:#aaaed0; margin-bottom:20px;">ค้นหาผู้ใช้อื่นๆ หรือกรองเฉพาะคนที่กำลังออนไลน์อยู่</p>
+        
+        <div class="search-filter-wrapper">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="พิมพ์ชื่อผู้ใช้เพื่อค้นหา..." onkeyup="renderUsers()">
+            </div>
+            <button class="online-toggle-btn" id="filterOnlineBtn" onclick="toggleOnlineFilter()">
+                <span class="status-dot online"></span> แสดงเฉพาะคนที่ออนไลน์
+            </button>
         </div>
+
         <div class="users-grid" id="usersListGrid"></div>
     </div>
 </div>
@@ -486,13 +347,11 @@ nav a:hover, nav a.active{
 <div id="pageChat" class="page-section">
     <div class="chat-container">
         <div class="chat-wrapper">
-            <!-- SIDEBAR -->
             <div class="chat-sidebar">
                 <div class="sidebar-header">👥 เพื่อนของคุณ</div>
                 <div class="friends-list" id="sidebarFriendsList"></div>
             </div>
 
-            <!-- CHAT MAIN -->
             <div class="chat-main">
                 <div class="chat-header">
                     <h3 id="chatTargetTitle">กรุณาเลือกเพื่อนเพื่อแชท</h3>
@@ -513,7 +372,6 @@ nav a:hover, nav a.active{
 
 <!-- ================= AUTH MODAL ================= -->
 <div class="auth-overlay" id="authOverlay">
-    <!-- LOGIN -->
     <div class="auth-box" id="loginBox">
         <button class="auth-close" onclick="closeAuth()">✕</button>
         <h2>เข้าสู่ระบบ</h2>
@@ -532,7 +390,6 @@ nav a:hover, nav a.active{
         </div>
     </div>
 
-    <!-- SIGNUP -->
     <div class="auth-box" id="signupBox" style="display:none;">
         <button class="auth-close" onclick="closeAuth()">✕</button>
         <h2>สมัครสมาชิก</h2>
@@ -553,11 +410,30 @@ nav a:hover, nav a.active{
 </div>
 
 <script>
-// ================= SYSTEM DATA =================
 let currentUser = JSON.parse(localStorage.getItem("activeUser")) || null;
 let activeChatFriend = null;
+let filterOnlyOnline = false;
 
-// เปลี่ยนหน้าเว็บ
+// Heartbeat อัปเดตสถานะออนไลน์ทุกๆ 10 วินาที
+function updateHeartbeat(){
+    if(!currentUser) return;
+    
+    let users = JSON.parse(localStorage.getItem("usersDB")) || [];
+    let myUser = users.find(u => u.username === currentUser.username);
+    
+    if(myUser){
+        myUser.lastActive = Date.now();
+        localStorage.setItem("usersDB", JSON.stringify(users));
+    }
+}
+setInterval(updateHeartbeat, 10000);
+
+// ตรวจสอบว่าผู้ใช้คนนั้นออนไลน์อยู่หรือไม่ (พิจารณาจากกิจกรรมภายใน 30 วินาทีล่าสุด)
+function isUserOnline(lastActiveTimestamp){
+    if(!lastActiveTimestamp) return false;
+    return (Date.now() - lastActiveTimestamp) < 30000;
+}
+
 function showPage(pageId){
     if((pageId === 'friends' || pageId === 'chat') && !currentUser){
         alert("กรุณาเข้าสู่ระบบก่อนใช้งานส่วนนี้ครับ");
@@ -582,7 +458,6 @@ function showPage(pageId){
     }
 }
 
-// ================= AUTH SYSTEM =================
 function openAuth(type){
     document.getElementById("authOverlay").classList.add("active");
     switchAuth(type);
@@ -614,7 +489,7 @@ function handleSignup(){
         return;
     }
 
-    const newUser = { username: u, password: p, friends: [] };
+    const newUser = { username: u, password: p, friends: [], lastActive: Date.now() };
     users.push(newUser);
     localStorage.setItem("usersDB", JSON.stringify(users));
 
@@ -631,9 +506,12 @@ function handleLogin(){
     const p = document.getElementById("loginPassword").value.trim();
 
     let users = JSON.parse(localStorage.getItem("usersDB")) || [];
-    const user = users.find(x => x.username === u && x.password === p);
+    let user = users.find(x => x.username === u && x.password === p);
 
     if(user){
+        user.lastActive = Date.now();
+        localStorage.setItem("usersDB", JSON.stringify(users));
+        
         currentUser = user;
         localStorage.setItem("activeUser", JSON.stringify(currentUser));
         updateHeader();
@@ -661,6 +539,7 @@ function updateHeader(){
                 <button class="logout-btn" onclick="handleLogout()">[ออกจากระบบ]</button>
             </div>
         `;
+        updateHeartbeat();
     }else{
         btnContainer.innerHTML = `
             <button class="login" onclick="openAuth('login')">เข้าสู่ระบบ</button>
@@ -669,7 +548,17 @@ function updateHeader(){
     }
 }
 
-// ================= FRIEND SYSTEM =================
+function toggleOnlineFilter(){
+    filterOnlyOnline = !filterOnlyOnline;
+    const btn = document.getElementById("filterOnlineBtn");
+    if(filterOnlyOnline){
+        btn.classList.add("active");
+    }else{
+        btn.classList.remove("active");
+    }
+    renderUsers();
+}
+
 function renderUsers(){
     const grid = document.getElementById("usersListGrid");
     const searchText = document.getElementById("searchInput").value.toLowerCase();
@@ -681,13 +570,21 @@ function renderUsers(){
         if(currentUser && user.username === currentUser.username) return;
         if(searchText && !user.username.toLowerCase().includes(searchText)) return;
 
+        const onlineStatus = isUserOnline(user.lastActive);
+        
+        if(filterOnlyOnline && !onlineStatus) return;
+
         const isFriend = currentUser && currentUser.friends && currentUser.friends.includes(user.username);
         
         const card = document.createElement("div");
         card.className = "user-card";
         card.innerHTML = `
-            <div class="user-avatar">👤</div>
+            <div class="user-avatar">
+                👤
+                <span class="avatar-status status-dot ${onlineStatus ? 'online' : 'offline'}"></span>
+            </div>
             <h4>${user.username}</h4>
+            <div class="status-text">${onlineStatus ? '🟢 ออนไลน์อยู่' : '⚪ ออฟไลน์'}</div>
             <button class="btn-friend ${isFriend ? 'btn-remove' : 'btn-add'}" onclick="toggleFriend('${user.username}')">
                 ${isFriend ? 'ยกเลิกความเป็นเพื่อน' : '+ เพิ่มเพื่อน'}
             </button>
@@ -716,9 +613,9 @@ function toggleFriend(targetUsername){
     renderUsers();
 }
 
-// ================= PRIVATE CHAT SYSTEM =================
 function renderSidebarFriends(){
     const list = document.getElementById("sidebarFriendsList");
+    let users = JSON.parse(localStorage.getItem("usersDB")) || [];
     list.innerHTML = "";
 
     if(!currentUser || !currentUser.friends || currentUser.friends.length === 0){
@@ -726,11 +623,17 @@ function renderSidebarFriends(){
         return;
     }
 
-    currentUser.friends.forEach(friend => {
+    currentUser.friends.forEach(friendName => {
+        const friendUser = users.find(u => u.username === friendName);
+        const onlineStatus = friendUser ? isUserOnline(friendUser.lastActive) : false;
+
         const item = document.createElement("div");
-        item.className = `friend-item ${activeChatFriend === friend ? 'active' : ''}`;
-        item.innerHTML = `<span>💬 ${friend}</span>`;
-        item.onclick = () => selectFriendToChat(friend);
+        item.className = `friend-item ${activeChatFriend === friendName ? 'active' : ''}`;
+        item.innerHTML = `
+            <span>💬 ${friendName}</span>
+            <span class="status-dot ${onlineStatus ? 'online' : 'offline'}"></span>
+        `;
+        item.onclick = () => selectFriendToChat(friendName);
         list.appendChild(item);
     });
 }
@@ -782,7 +685,6 @@ function loadPrivateMessages(){
     msgArea.scrollTop = msgArea.scrollHeight;
 }
 
-// Initialize System
 updateHeader();
 </script>
 </body>
