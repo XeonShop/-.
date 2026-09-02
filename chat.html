@@ -3,1209 +3,253 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Student Chat - ห้องพูดคุย</title>
-
+<title>Clean Glass Chat</title>
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body{
-    font-family:Arial,"Tahoma",sans-serif;
-    background:#080b35;
-    color:white;
-    height:100vh;
-    overflow:hidden;
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #080b35, #11136c, #080b35);
+    color: #fff;
+    padding: 20px;
 }
 
-/* ================= HEADER ================= */
-
-header{
-    height:75px;
-    padding:0 4%;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    background:rgba(5,7,35,.95);
-
-    border-bottom:1px solid rgba(255,255,255,.08);
-
-    position:relative;
-    z-index:10;
+/* Container หน้าต่างแชตแบบโปร่งแสง */
+.chat-window {
+    width: 100%;
+    max-width: 480px;
+    height: 620px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-.logo{
-    display:flex;
-    align-items:center;
-    gap:10px;
-
-    font-size:24px;
-    font-weight:bold;
+/* ส่วนหัว Header */
+.chat-header {
+    padding: 18px 24px;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.logo-icon{
-    font-size:32px;
+.chat-header-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.logo span{
-    color:#8b5cf6;
+.chat-header h3 {
+    font-size: 16px;
+    font-weight: 600;
 }
 
-.back-btn{
-    color:#ddd;
-    text-decoration:none;
-
-    padding:10px 18px;
-
-    border:1px solid #393b91;
-
-    border-radius:12px;
-
-    transition:.3s;
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #22c55e;
 }
 
-.back-btn:hover{
-    background:#25286d;
-    color:#fff;
+/* พื้นที่แสดงข้อความ */
+.messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
 }
 
-/* ================= CHAT LAYOUT ================= */
-
-.chat-container{
-    height:calc(100vh - 75px);
-
-    display:flex;
-
-    background:
-        radial-gradient(
-            circle at 70% 20%,
-            rgba(81,51,220,.2),
-            transparent 30%
-        ),
-        #080b35;
+.messages::-webkit-scrollbar {
+    width: 4px;
 }
 
-/* ================= SIDEBAR ================= */
-
-.sidebar{
-    width:280px;
-
-    background:#101344;
-
-    border-right:1px solid rgba(255,255,255,.08);
-
-    padding:20px;
-
-    overflow-y:auto;
+.messages::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
 }
 
-.sidebar-title{
-    font-size:13px;
-
-    color:#8f94c5;
-
-    margin-bottom:15px;
-
-    text-transform:uppercase;
+/* รูปแบบข้อความ */
+.message {
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
 }
 
-.room{
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
-
-    padding:13px;
-
-    margin-bottom:8px;
-
-    border-radius:12px;
-
-    color:#c9cae5;
-
-    cursor:pointer;
-
-    transition:.3s;
+.message.incoming {
+    align-self: flex-start;
 }
 
-.room:hover{
-    background:#1b1f5c;
+.message.me {
+    align-self: flex-end;
 }
 
-.room.active{
-    background:linear-gradient(
-        90deg,
-        #5735d9,
-        #3539a3
-    );
-
-    color:white;
-
-    box-shadow:0 5px 20px rgba(91,55,220,.25);
+.bubble {
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.5;
+    word-break: break-word;
 }
 
-.room-icon{
-    font-size:20px;
+.message.incoming .bubble {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: #e2e8f0;
+    border-bottom-left-radius: 4px;
 }
 
-/* สมาชิก */
-
-.members-title{
-    margin-top:30px;
-
-    font-size:13px;
-
-    color:#8f94c5;
-
-    margin-bottom:15px;
+.message.me .bubble {
+    background: linear-gradient(135deg, #7c3aed, #2563eb);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
 }
 
-.member{
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
-    padding:9px;
-
-    border-radius:10px;
+.message-time {
+    font-size: 10px;
+    color: #70769f;
+    margin-top: 4px;
 }
 
-.member:hover{
-    background:#191d55;
+.message.incoming .message-time {
+    align-self: flex-start;
 }
 
-.avatar-small{
-    width:35px;
-    height:35px;
-
-    border-radius:50%;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:linear-gradient(
-        135deg,
-        #7c3aed,
-        #22d3ee
-    );
-
-    position:relative;
+.message.me .message-time {
+    align-self: flex-end;
 }
 
-.online-dot{
-    position:absolute;
-
-    width:9px;
-    height:9px;
-
-    background:#22c55e;
-
-    border:2px solid #101344;
-
-    border-radius:50%;
-
-    right:-1px;
-    bottom:0;
+/* ช่องพิมพ์ข้อความด้านล่าง */
+.input-area {
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.15);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.member-name{
-    font-size:14px;
+.input-box {
+    display: flex;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 6px 6px 6px 16px;
 }
 
-.member-status{
-    font-size:11px;
-    color:#6ee7b7;
+.input-box input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 14px;
 }
 
-/* ================= MAIN CHAT ================= */
-
-.chat-main{
-    flex:1;
-
-    display:flex;
-    flex-direction:column;
-
-    min-width:0;
+.input-box input::placeholder {
+    color: #747aa7;
 }
 
-/* Chat Header */
-
-.chat-header{
-    height:70px;
-
-    padding:0 25px;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    background:rgba(13,16,66,.8);
-
-    border-bottom:1px solid rgba(255,255,255,.08);
+.send-btn {
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #22c9ff, #7c3aed);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    transition: transform 0.2s;
 }
 
-.chat-room-name{
-    display:flex;
-    align-items:center;
-    gap:12px;
+.send-btn:hover {
+    transform: scale(1.08);
 }
-
-.chat-room-name h2{
-    font-size:18px;
-}
-
-.chat-room-name p{
-    font-size:12px;
-    color:#8e93bd;
-    margin-top:3px;
-}
-
-.room-hash{
-    width:42px;
-    height:42px;
-
-    border-radius:12px;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    background:linear-gradient(
-        135deg,
-        #7c3aed,
-        #2563eb
-    );
-
-    font-size:22px;
-}
-
-.chat-actions{
-    display:flex;
-    gap:10px;
-}
-
-.action-btn{
-    width:38px;
-    height:38px;
-
-    border-radius:10px;
-
-    background:#181b58;
-
-    border:1px solid #303475;
-
-    color:white;
-
-    cursor:pointer;
-}
-
-/* ================= MESSAGES ================= */
-
-.messages{
-    flex:1;
-
-    padding:25px;
-
-    overflow-y:auto;
-}
-
-.date{
-    text-align:center;
-
-    color:#777da9;
-
-    font-size:12px;
-
-    margin:10px 0 25px;
-}
-
-.message{
-    display:flex;
-
-    gap:12px;
-
-    margin-bottom:25px;
-
-    max-width:800px;
-}
-
-.message.me{
-    margin-left:auto;
-
-    flex-direction:row-reverse;
-}
-
-.avatar{
-    width:42px;
-    height:42px;
-
-    flex-shrink:0;
-
-    border-radius:50%;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    font-size:20px;
-
-    background:linear-gradient(
-        135deg,
-        #7c3aed,
-        #22d3ee
-    );
-}
-
-.message-content{
-    max-width:650px;
-}
-
-.message-top{
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
-    margin-bottom:6px;
-}
-
-.message-name{
-    font-size:14px;
-
-    font-weight:bold;
-}
-
-.message-time{
-    font-size:10px;
-
-    color:#70769f;
-}
-
-.bubble{
-    background:#191d58;
-
-    border:1px solid rgba(255,255,255,.06);
-
-    padding:12px 16px;
-
-    border-radius:5px 16px 16px 16px;
-
-    color:#e8e9f6;
-
-    line-height:1.6;
-
-    font-size:14px;
-}
-
-.message.me .bubble{
-    background:linear-gradient(
-        135deg,
-        #5b35d5,
-        #3539a3
-    );
-
-    border-radius:16px 5px 16px 16px;
-}
-
-/* ================= CODE ================= */
-
-.code-box{
-    margin-top:10px;
-
-    background:#080b20;
-
-    border:1px solid #30345f;
-
-    border-radius:10px;
-
-    overflow:hidden;
-
-    min-width:350px;
-}
-
-.code-header{
-    padding:8px 12px;
-
-    background:#10132f;
-
-    color:#8e93bd;
-
-    font-size:11px;
-}
-
-.code-content{
-    padding:15px;
-
-    color:#67e8f9;
-
-    font-family:Consolas,monospace;
-
-    font-size:13px;
-
-    line-height:1.6;
-}
-
-/* ================= INPUT ================= */
-
-.input-area{
-    padding:15px 20px;
-
-    background:#0e1144;
-
-    border-top:1px solid rgba(255,255,255,.08);
-}
-
-.input-box{
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
-    padding:7px;
-
-    background:#171a55;
-
-    border:1px solid #353979;
-
-    border-radius:18px;
-}
-
-.input-box input{
-    flex:1;
-
-    background:transparent;
-
-    border:none;
-
-    outline:none;
-
-    color:white;
-
-    font-size:14px;
-
-    padding:12px;
-}
-
-.input-box input::placeholder{
-    color:#747aa7;
-}
-
-.input-btn{
-    width:40px;
-    height:40px;
-
-    border:none;
-
-    border-radius:12px;
-
-    background:#25296c;
-
-    color:white;
-
-    cursor:pointer;
-
-    font-size:18px;
-}
-
-.send-btn{
-    width:45px;
-    height:45px;
-
-    border:none;
-
-    border-radius:13px;
-
-    background:linear-gradient(
-        135deg,
-        #22c9ff,
-        #7c3aed
-    );
-
-    color:white;
-
-    cursor:pointer;
-
-    font-size:20px;
-
-    transition:.3s;
-}
-
-.send-btn:hover{
-    transform:scale(1.06);
-
-    box-shadow:0 5px 20px rgba(92,70,255,.4);
-}
-
-/* ================= RIGHT INFO ================= */
-
-.right-panel{
-    width:250px;
-
-    background:#101344;
-
-    border-left:1px solid rgba(255,255,255,.08);
-
-    padding:25px;
-
-    overflow-y:auto;
-}
-
-.profile-card{
-    text-align:center;
-
-    padding-bottom:25px;
-
-    border-bottom:1px solid rgba(255,255,255,.08);
-}
-
-.profile-avatar{
-    width:75px;
-    height:75px;
-
-    margin:auto;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border-radius:50%;
-
-    font-size:35px;
-
-    background:linear-gradient(
-        135deg,
-        #7c3aed,
-        #22d3ee
-    );
-
-    box-shadow:0 0 30px rgba(98,70,255,.3);
-}
-
-.profile-card h3{
-    margin-top:12px;
-}
-
-.profile-card p{
-    color:#777da9;
-    font-size:12px;
-    margin-top:5px;
-}
-
-.info-title{
-    color:#8f94c5;
-
-    font-size:12px;
-
-    margin:25px 0 15px;
-}
-
-.info-item{
-    padding:12px;
-
-    background:#181b55;
-
-    border-radius:10px;
-
-    margin-bottom:8px;
-
-    font-size:13px;
-}
-
-/* ================= MOBILE ================= */
-
-@media(max-width:1000px){
-
-    .right-panel{
-        display:none;
-    }
-
-}
-
-@media(max-width:700px){
-
-    .sidebar{
-        display:none;
-    }
-
-    header{
-        padding:0 15px;
-    }
-
-    .logo{
-        font-size:19px;
-    }
-
-    .back-btn{
-        padding:8px 12px;
-        font-size:12px;
-    }
-
-    .chat-header{
-        padding:0 15px;
-    }
-
-    .messages{
-        padding:15px;
-    }
-
-    .bubble{
-        font-size:13px;
-    }
-
-    .code-box{
-        min-width:0;
-        width:100%;
-    }
-
-}
-
 </style>
 </head>
-
 <body>
 
-<!-- ================= HEADER ================= -->
-
-<header>
-
-    <div class="logo">
-        <div class="logo-icon">💬</div>
-        Student <span>Chat</span>
+<div class="chat-window">
+    <div class="chat-header">
+        <div class="chat-header-info">
+            <div class="status-dot"></div>
+            <h3>💬 ห้องพูดคุยทั่วไป</h3>
+        </div>
     </div>
 
-    <a href="index.html" class="back-btn">
-        ← กลับหน้าหลัก
-    </a>
-
-</header>
-
-
-<!-- ================= CHAT ================= -->
-
-<div class="chat-container">
-
-
-    <!-- ================= SIDEBAR ================= -->
-
-    <aside class="sidebar">
-
-        <div class="sidebar-title">
-            ห้องพูดคุย
+    <div class="messages" id="messages">
+        <div class="message incoming">
+            <div class="bubble">สอบถามเรื่องการบ้านคณิตหน่อยครับ ข้อนี้ต้องทำยังไงบ้างครับ?</div>
+            <div class="message-time">18:20</div>
         </div>
 
-        <div class="room active">
-            <div class="room-icon">💬</div>
-            <div>ห้องพูดคุยทั่วไป</div>
+        <div class="message incoming">
+            <div class="bubble">ลองใช้สูตรนี้ดูนะ แล้วค่อยแทนค่าตัวเลขลงไปน่าจะได้คำตอบครับ 👍</div>
+            <div class="message-time">18:22</div>
         </div>
 
-        <div class="room">
-            <div class="room-icon">📚</div>
-            <div>การบ้าน</div>
+        <div class="message me">
+            <div class="bubble">ขอบคุณครับ เดี๋ยวผมลองทำดูครับ 🙏</div>
+            <div class="message-time">18:27</div>
         </div>
+    </div>
 
-        <div class="room">
-            <div class="room-icon">💻</div>
-            <div>เขียนโปรแกรม</div>
+    <div class="input-area">
+        <div class="input-box">
+            <input type="text" id="messageInput" placeholder="พิมพ์ข้อความ..." onkeydown="if(event.key === 'Enter') sendMessage()">
+            <button class="send-btn" onclick="sendMessage()">➤</button>
         </div>
-
-        <div class="room">
-            <div class="room-icon">🧮</div>
-            <div>คณิตศาสตร์</div>
-        </div>
-
-        <div class="room">
-            <div class="room-icon">🔬</div>
-            <div>วิทยาศาสตร์</div>
-        </div>
-
-        <div class="room">
-            <div class="room-icon">🎨</div>
-            <div>ศิลปะ</div>
-        </div>
-
-
-        <div class="members-title">
-            สมาชิกออนไลน์
-        </div>
-
-
-        <div class="member">
-
-            <div class="avatar-small">
-                👨‍🏫
-                <div class="online-dot"></div>
-            </div>
-
-            <div>
-                <div class="member-name">
-                    ครูพี่ออม ⭐
-                </div>
-
-                <div class="member-status">
-                    ออนไลน์
-                </div>
-            </div>
-
-        </div>
-
-
-        <div class="member">
-
-            <div class="avatar-small">
-                👦
-                <div class="online-dot"></div>
-            </div>
-
-            <div>
-                <div class="member-name">
-                    น้องนนท์
-                </div>
-
-                <div class="member-status">
-                    ออนไลน์
-                </div>
-            </div>
-
-        </div>
-
-
-        <div class="member">
-
-            <div class="avatar-small">
-                👧
-                <div class="online-dot"></div>
-            </div>
-
-            <div>
-                <div class="member-name">
-                    น้องฟ้าใส
-                </div>
-
-                <div class="member-status">
-                    ออนไลน์
-                </div>
-            </div>
-
-        </div>
-
-    </aside>
-
-
-    <!-- ================= MAIN ================= -->
-
-    <main class="chat-main">
-
-
-        <!-- CHAT HEADER -->
-
-        <div class="chat-header">
-
-            <div class="chat-room-name">
-
-                <div class="room-hash">
-                    #
-                </div>
-
-                <div>
-
-                    <h2>
-                        ห้องพูดคุยทั่วไป
-                    </h2>
-
-                    <p>
-                        พูดคุย แลกเปลี่ยนความรู้ และช่วยกันตอบคำถาม
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="chat-actions">
-
-                <button class="action-btn">
-                    🔍
-                </button>
-
-                <button class="action-btn">
-                    👥
-                </button>
-
-                <button class="action-btn">
-                    ⋮
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- ================= MESSAGES ================= -->
-
-        <div class="messages" id="messages">
-
-
-            <div class="date">
-                วันนี้
-            </div>
-
-
-            <!-- MESSAGE 1 -->
-
-            <div class="message">
-
-                <div class="avatar">
-                    👦
-                </div>
-
-                <div class="message-content">
-
-                    <div class="message-top">
-
-                        <div class="message-name">
-                            น้องนนท์
-                        </div>
-
-                        <div class="message-time">
-                            18:20
-                        </div>
-
-                    </div>
-
-                    <div class="bubble">
-
-                        สอบถามเรื่องการบ้านคณิตหน่อยครับ
-                        ข้อนี้ต้องทำยังไงบ้างครับ? 😭
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- MESSAGE 2 -->
-
-            <div class="message">
-
-                <div class="avatar">
-                    👧
-                </div>
-
-                <div class="message-content">
-
-                    <div class="message-top">
-
-                        <div class="message-name">
-                            น้องฟ้าใส
-                        </div>
-
-                        <div class="message-time">
-                            18:22
-                        </div>
-
-                    </div>
-
-                    <div class="bubble">
-
-                        ลองใช้สูตรนี้ดูนะ
-                        แล้วค่อยแทนค่าตัวเลขลงไป
-                        น่าจะได้คำตอบครับ 👍
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- CODE MESSAGE -->
-
-            <div class="message">
-
-                <div class="avatar">
-                    👨‍🏫
-                </div>
-
-                <div class="message-content">
-
-                    <div class="message-top">
-
-                        <div class="message-name">
-                            ครูพี่ออม ⭐
-                        </div>
-
-                        <div class="message-time">
-                            18:25
-                        </div>
-
-                    </div>
-
-                    <div class="bubble">
-
-                        ถ้าใครติดเรื่องเขียนโค้ด
-                        สามารถส่งโค้ดมาให้ช่วยดูได้นะครับ 💻
-
-                        <div class="code-box">
-
-                            <div class="code-header">
-                                JavaScript
-                            </div>
-
-                            <div class="code-content">
-
-                                for (let i = 0; i < 5; i++) {<br>
-                                &nbsp;&nbsp;console.log(i);<br>
-                                }
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- MY MESSAGE -->
-
-            <div class="message me">
-
-                <div class="avatar">
-                    👤
-                </div>
-
-                <div class="message-content">
-
-                    <div class="message-top">
-
-                        <div class="message-name">
-                            คุณ
-                        </div>
-
-                        <div class="message-time">
-                            18:27
-                        </div>
-
-                    </div>
-
-                    <div class="bubble">
-
-                        ขอบคุณครับ เดี๋ยวผมลองทำดูครับ 🙏
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-        </div>
-
-
-        <!-- ================= INPUT ================= -->
-
-        <div class="input-area">
-
-            <div class="input-box">
-
-                <button class="input-btn">
-                    📎
-                </button>
-
-                <input
-                    type="text"
-                    id="messageInput"
-                    placeholder="พิมพ์คำถาม หรือข้อความ..."
-                >
-
-                <button class="input-btn">
-                    😊
-                </button>
-
-                <button
-                    class="send-btn"
-                    onclick="sendMessage()"
-                >
-                    ➤
-                </button>
-
-            </div>
-
-        </div>
-
-    </main>
-
-
-    <!-- ================= RIGHT PANEL ================= -->
-
-    <aside class="right-panel">
-
-        <div class="profile-card">
-
-            <div class="profile-avatar">
-                👤
-            </div>
-
-            <h3>
-                นักเรียน
-            </h3>
-
-            <p>
-                สมาชิก Student Chat
-            </p>
-
-        </div>
-
-
-        <div class="info-title">
-            ห้องนี้เกี่ยวกับ
-        </div>
-
-        <div class="info-item">
-            💬 พูดคุยทั่วไป
-        </div>
-
-        <div class="info-item">
-            📚 ถามเรื่องการบ้าน
-        </div>
-
-        <div class="info-item">
-            💻 ขอคำแนะนำเรื่องโค้ด
-        </div>
-
-        <div class="info-item">
-            🤝 ช่วยเหลือเพื่อน
-        </div>
-
-
-        <div class="info-title">
-            สถิติห้อง
-        </div>
-
-        <div class="info-item">
-            👥 สมาชิก 128 คน
-        </div>
-
-        <div class="info-item">
-            🟢 ออนไลน์ 24 คน
-        </div>
-
-    </aside>
-
+    </div>
 </div>
 
-
 <script>
+function sendMessage() {
+    const input = document.getElementById("messageInput");
+    const messages = document.getElementById("messages");
+    const text = input.value.trim();
 
-function sendMessage(){
-
-    const input =
-        document.getElementById("messageInput");
-
-    const messages =
-        document.getElementById("messages");
-
-    const text =
-        input.value.trim();
-
-    if(text === ""){
-        return;
-    }
+    if (text === "") return;
 
     const now = new Date();
+    const time = now.getHours().toString().padStart(2, "0") + ":" + now.getMinutes().toString().padStart(2, "0");
 
-    const time =
-        now.getHours().toString().padStart(2,"0")
-        + ":" +
-        now.getMinutes().toString().padStart(2,"0");
+    const messageDiv = document.createElement("div");
+    messageDiv.className = "message me";
 
-
-    const message =
-    document.createElement("div");
-
-    message.className = "message me";
-
-
-    message.innerHTML = `
-
-        <div class="avatar">
-            👤
-        </div>
-
-        <div class="message-content">
-
-            <div class="message-top">
-
-                <div class="message-name">
-                    คุณ
-                </div>
-
-                <div class="message-time">
-                    ${time}
-                </div>
-
-            </div>
-
-            <div class="bubble">
-                ${escapeHTML(text)}
-            </div>
-
-        </div>
-
+    messageDiv.innerHTML = `
+        <div class="bubble">${escapeHTML(text)}</div>
+        <div class="message-time">${time}</div>
     `;
 
-
-    messages.appendChild(message);
-
+    messages.appendChild(messageDiv);
     input.value = "";
-
-    messages.scrollTop =
-        messages.scrollHeight;
-
+    messages.scrollTop = messages.scrollHeight;
 }
 
-
-/* ป้องกัน HTML ที่ผู้ใช้พิมพ์ */
-
-function escapeHTML(text){
-
-    const div =
-        document.createElement("div");
-
+function escapeHTML(text) {
+    const div = document.createElement("div");
     div.textContent = text;
-
     return div.innerHTML;
-
 }
-
-
-/* กด Enter เพื่อส่ง */
-
-document
-.getElementById("messageInput")
-.addEventListener("keydown",function(event){
-
-    if(event.key === "Enter"){
-        sendMessage();
-    }
-
-});
-
 </script>
 
 </body>
