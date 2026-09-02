@@ -3,27 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Chat</title>
+    <title>Social Chat App</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .chat-card { background: #fff; width: 100%; max-width: 450px; height: 600px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; }
-        .chat-header { background: #4f46e5; color: #fff; padding: 16px; text-align: center; font-size: 1.2rem; font-weight: bold; position: relative; }
-        .nav-btn { position: absolute; left: 12px; top: 12px; background: #3730a3; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+        .chat-card { background: #fff; width: 100%; max-width: 450px; height: 620px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; }
+        .chat-header { background: #1877f2; color: #fff; padding: 16px; text-align: center; font-size: 1.2rem; font-weight: bold; position: relative; }
+        .nav-btn { position: absolute; left: 12px; top: 12px; background: #1256b3; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
         .chat-body { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #fafafa; }
         .chat-footer { padding: 12px; background: #fff; border-top: 1px solid #e5e7eb; display: flex; gap: 8px; }
         .hidden { display: none !important; }
         input[type="text"] { flex: 1; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; outline: none; }
-        button { background: #4f46e5; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        button:hover { background: #4338ca; }
+        button { background: #1877f2; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        button:hover { background: #1464cc; }
         
-        .friend-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 8px; }
-        .friend-btn { padding: 6px 12px; font-size: 0.85rem; background: #10b981; }
-        .friend-btn:hover { background: #059669; }
+        .section-title { font-size: 0.9rem; font-weight: bold; color: #65676b; margin: 8px 0 4px 0; }
+        .item-card { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 6px; }
+        .btn-green { background: #42b72a; padding: 6px 12px; font-size: 0.85rem; }
+        .btn-green:hover { background: #369622; }
         
-        .msg { padding: 8px 12px; border-radius: 12px; max-width: 75%; word-break: break-word; font-size: 0.95rem; }
-        .msg.me { background: #4f46e5; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
-        .msg.other { background: #e5e7eb; color: #1f2937; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .msg { padding: 8px 12px; border-radius: 18px; max-width: 75%; word-break: break-word; font-size: 0.95rem; }
+        .msg.me { background: #0084ff; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .msg.other { background: #e4e6eb; color: #050505; align-self: flex-start; border-bottom-left-radius: 4px; }
     </style>
 </head>
 <body>
@@ -31,27 +32,31 @@
 <div class="chat-card">
     <div class="chat-header">
         <button id="toggleViewBtn" class="nav-btn hidden">กลับหน้าเพื่อน</button>
-        <span id="headerTitle">Student Chat</span>
+        <span id="headerTitle">Social Chat</span>
     </div>
     
-    <!-- หน้าลงชื่อเข้าใช้ -->
+    <!-- 1. หน้าเข้าสู่ระบบ -->
     <div id="loginSection" class="chat-body" style="justify-content: center; align-items: center;">
-        <h3 style="margin-bottom: 10px; color: #374151;">สมัคร / เข้าสู่ระบบ</h3>
-        <input type="text" id="usernameInput" placeholder="พิมพ์ชื่อของคุณที่นี่..." style="width: 80%; flex: none;">
+        <h3 style="margin-bottom: 10px; color: #1c1e21;">เข้าสู่ระบบ</h3>
+        <input type="text" id="usernameInput" placeholder="พิมพ์ชื่อของคุณ..." style="width: 80%; flex: none;">
         <button id="loginBtn" style="margin-top: 10px; width: 80%;">เริ่มใช้งาน</button>
     </div>
 
-    <!-- หน้าจัดการเพื่อน -->
+    <!-- 2. หน้าจัดการเพื่อนและคำขอ -->
     <div id="friendsSection" class="chat-body hidden">
-        <div style="display: flex; gap: 8px; margin-bottom: 10px;">
-            <input type="text" id="addFriendInput" placeholder="พิมพ์ชื่อเพื่อนเพื่อแอด...">
-            <button id="addFriendBtn">แอดเพื่อน</button>
+        <div style="display: flex; gap: 8px;">
+            <input type="text" id="addFriendInput" placeholder="พิมพ์ชื่อเพื่อนเพื่อส่งคำขอ...">
+            <button id="addFriendBtn">ส่งคำขอ</button>
         </div>
-        <h4 style="color: #4b5563; margin-bottom: 8px;">รายชื่อเพื่อน</h4>
+        
+        <div class="section-title">คำขอเป็นเพื่อนที่รอการตอบรับ</div>
+        <div id="requestsList"></div>
+
+        <div class="section-title">รายชื่อเพื่อน</div>
         <div id="friendsList"></div>
     </div>
 
-    <!-- หน้าห้องแชท -->
+    <!-- 3. หน้าห้องแชท -->
     <div id="chatSection" class="chat-body hidden"></div>
 
     <!-- ช่องพิมพ์ข้อความ -->
@@ -63,9 +68,8 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, push, onChildAdded, set, off } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { getDatabase, ref, push, onChildAdded, set, off, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    // อัปเดต databaseURL ให้ตรงกับรูปภาพของคุณเรียบร้อยแล้ว
     const firebaseConfig = {
         apiKey: "AIzaSyDaN-eSOQve7qn8MPHcOj4IeYWrt-7SwHk",
         authDomain: "xdhi13.firebaseapp.com",
@@ -83,22 +87,21 @@
     let activeChatUser = "";
     let currentChatRef = null;
 
-    // ปุ่มสมัคร / เริ่มใช้งาน
+    // เข้าสู่ระบบ
     document.getElementById("loginBtn").addEventListener("click", () => {
         const name = document.getElementById("usernameInput").value.trim();
         if(!name) return alert("กรุณาพิมพ์ชื่อผู้ใช้");
         currentUser = name;
         
-        set(ref(db, `users/${currentUser}`), { registeredAt: Date.now() });
-
         document.getElementById("loginSection").classList.add("hidden");
         document.getElementById("friendsSection").classList.remove("hidden");
         document.getElementById("headerTitle").innerText = `ผู้ใช้: ${currentUser}`;
         
+        loadFriendRequests();
         loadFriends();
     });
 
-    // ปุ่มย้อนกลับไปหน้าเพื่อน
+    // ปุ่มกลับหน้าเพื่อน
     document.getElementById("toggleViewBtn").addEventListener("click", () => {
         if (currentChatRef) off(currentChatRef);
         document.getElementById("chatSection").classList.add("hidden");
@@ -108,40 +111,70 @@
         document.getElementById("headerTitle").innerText = `ผู้ใช้: ${currentUser}`;
     });
 
-    // ปุ่มแอดเพื่อน
+    // ส่งคำขอเป็นเพื่อน
     document.getElementById("addFriendBtn").addEventListener("click", () => {
-        const friendName = document.getElementById("addFriendInput").value.trim();
-        if (!friendName) return alert("กรุณาใส่ชื่อเพื่อน");
-        if (friendName === currentUser) return alert("ไม่สามารถแอดตัวเองได้");
+        const targetUser = document.getElementById("addFriendInput").value.trim();
+        if (!targetUser) return alert("กรุณาใส่ชื่อเพื่อน");
+        if (targetUser === currentUser) return alert("ไม่สามารถส่งคำขอหาตัวเองได้");
 
-        set(ref(db, `friends/${currentUser}/${friendName}`), true);
-        set(ref(db, `friends/${friendName}/${currentUser}`), true);
-        alert(`แอด ${friendName} เป็นเพื่อนแล้ว!`);
+        set(ref(db, `requests/${targetUser}/${currentUser}`), true);
+        alert(`ส่งคำขอเป็นเพื่อนไปยัง ${targetUser} เรียบร้อยแล้ว`);
         document.getElementById("addFriendInput").value = "";
     });
 
-    // โหลดรายชื่อเพื่อน
+    // โหลดรายการคำขอเป็นเพื่อนที่เข้ามา
+    function loadFriendRequests() {
+        const reqListDiv = document.getElementById("requestsList");
+        onChildAdded(ref(db, `requests/${currentUser}`), (snapshot) => {
+            const sender = snapshot.key;
+            
+            const item = document.createElement("div");
+            item.className = "item-card";
+            item.id = `req-${sender}`;
+            item.innerHTML = `
+                <span>👤 ${sender}</span>
+                <button class="btn-green" id="accept-${sender}">ยอมรับ</button>
+            `;
+            reqListDiv.appendChild(item);
+            
+            document.getElementById(`accept-${sender}`).addEventListener("click", () => {
+                acceptFriendRequest(sender);
+            });
+        });
+    }
+
+    // กดรับเพื่อน
+    function acceptFriendRequest(sender) {
+        set(ref(db, `friends/${currentUser}/${sender}`), true);
+        set(ref(db, `friends/${sender}/${currentUser}`), true);
+        remove(ref(db, `requests/${currentUser}/${sender}`));
+        
+        const reqElement = document.getElementById(`req-${sender}`);
+        if(reqElement) reqElement.remove();
+        alert(`คุณและ ${sender} เป็นเพื่อนกันแล้ว`);
+    }
+
+    // โหลดรายชื่อเพื่อนที่ยอมรับแล้ว
     function loadFriends() {
         const listDiv = document.getElementById("friendsList");
-        listDiv.innerHTML = "";
         onChildAdded(ref(db, `friends/${currentUser}`), (snapshot) => {
             const friendName = snapshot.key;
             
             const item = document.createElement("div");
-            item.className = "friend-item";
+            item.className = "item-card";
             item.innerHTML = `
                 <span>👤 ${friendName}</span>
-                <button class="friend-btn" id="btn-${friendName}">ทักแชท</button>
+                <button id="btn-chat-${friendName}">ทักแชท</button>
             `;
             listDiv.appendChild(item);
             
-            document.getElementById(`btn-${friendName}`).addEventListener("click", () => {
+            document.getElementById(`btn-chat-${friendName}`).addEventListener("click", () => {
                 openChatWith(friendName);
             });
         });
     }
 
-    // เปิดห้องแชท
+    // เปิดหน้าแชท
     function openChatWith(friendName) {
         activeChatUser = friendName;
         document.getElementById("friendsSection").classList.add("hidden");
@@ -175,7 +208,7 @@
         input.value = "";
     }
 
-    // ดึงข้อความออนไลน์
+    // ดึงข้อความสนทนา
     function listenForMessages() {
         const chatBody = document.getElementById("chatSection");
         chatBody.innerHTML = "";
