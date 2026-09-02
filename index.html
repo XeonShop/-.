@@ -26,6 +26,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .signup{ padding:8px 14px; border-radius:12px; background:linear-gradient(135deg, #9333ea, #c026ff); color:white; border:none; font-size:13px; cursor:pointer; }
 
 .user-profile-badge{ background:#171a62; border:1px solid #7c3aed; padding:6px 12px; border-radius:12px; font-size:13px; display:flex; gap:8px; align-items:center; }
+.user-avatar-small{ width:24px; height:24px; border-radius:50%; object-fit:cover; }
 .logout-btn{ background:none; border:none; color:#ef4444; cursor:pointer; font-size:12px; font-weight:bold; }
 
 /* ================= PAGES ================= */
@@ -52,13 +53,14 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .chat-sidebar{ flex:1; background:#12154c; display:flex; flex-direction:column; overflow-y:auto; }
 .friends-list{ padding:10px; }
 
-.friend-item{ padding:15px; border-radius:14px; margin-bottom:8px; background:rgba(255,255,255,.05); cursor:pointer; display:flex; align-items:center; justify-content:space-between; font-size:16px; }
+.friend-item{ padding:12px 15px; border-radius:14px; margin-bottom:8px; background:rgba(255,255,255,.05); cursor:pointer; display:flex; align-items:center; gap:12px; font-size:15px; }
 .friend-item:active, .friend-item.active{ background:linear-gradient(135deg, rgba(34,201,255,.3), rgba(124,58,237,.4)); border:1px solid rgba(34,201,255,.5); }
+.friend-item-img{ width:36px; height:36px; border-radius:50%; object-fit:cover; background:#343785; flex-shrink:0; }
 
 .chat-main{ flex:1; display:none; flex-direction:column; background:#171a62; position:relative; }
 .chat-main.active{ display:flex; }
 .chat-header{ height:55px; padding:0 15px; background:rgba(10,13,58,.6); border-bottom:1px solid rgba(255,255,255,.1); display:flex; align-items:center; justify-content:space-between; }
-.chat-header h3{ font-size:16px; }
+.chat-header h3{ font-size:16px; display:flex; align-items:center; gap:8px; }
 .back-to-list-btn{ background:#343785; color:white; border:none; padding:6px 12px; border-radius:8px; font-size:12px; cursor:pointer; }
 
 .chat-messages{ flex:1; padding:15px; overflow-y:auto; display:flex; flex-direction:column; gap:12px; }
@@ -72,15 +74,12 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .msg-row.me .msg-bubble{ background:linear-gradient(135deg, #006f9f, #4c1d95); border-bottom-right-radius:4px; }
 .msg-row.other .msg-bubble{ background:#20256e; border-bottom-left-radius:4px; }
 
-/* สไตล์กล่องอ้างอิงการตอบกลับ */
 .reply-preview-box{ background:rgba(0,0,0,0.25); border-left:3px solid #22c9ff; padding:6px 10px; border-radius:6px; margin-bottom:6px; font-size:12px; color:#ddd; }
 .reply-preview-box .reply-user{ font-weight:bold; color:#22c9ff; margin-bottom:2px; }
 
-/* ปุ่มจุด 3 จุด */
 .msg-menu-btn{ background:none; border:none; color:#a3a8d1; font-size:18px; padding:4px 8px; cursor:pointer; border-radius:50%; opacity:0.6; transition:.2s; }
 .msg-menu-btn:hover, .msg-menu-btn:active{ opacity:1; background:rgba(255,255,255,.1); }
 
-/* ป๊อปอัพเมนูตัวเลือก */
 .msg-options-menu{ display:none; position:absolute; top:100%; z-index:20; background:#0e1140; border:1px solid rgba(133,95,255,.6); border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.5); overflow:hidden; min-width:140px; }
 .msg-options-menu.active{ display:block; }
 .msg-row.me .msg-options-menu{ right:0; }
@@ -91,7 +90,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .menu-item:hover{ background:rgba(34,201,255,.15); }
 .menu-item.danger{ color:#f87171; }
 
-/* ส่วนแสดงแถบสถานะตอบกลับก่อนพิมพ์ */
 .active-reply-bar{ display:none; background:#0f1248; border-top:1px solid rgba(255,255,255,.1); padding:8px 15px; align-items:center; justify-content:space-between; font-size:13px; }
 .active-reply-bar.active{ display:flex; }
 .active-reply-info{ border-left:3px solid #22c9ff; padding-left:8px; color:#aaaed0; }
@@ -109,7 +107,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 
 .user-card{ background:#171a62; border:1px solid rgba(133,95,255,.4); border-radius:16px; padding:15px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
 .user-info{ display:flex; align-items:center; gap:12px; }
-.user-avatar{ font-size:32px; }
+.user-avatar-img{ width:45px; height:45px; border-radius:50%; object-fit:cover; background:#343785; }
 .user-details h4{ font-size:16px; margin-bottom:2px; }
 .user-details p{ font-size:12px; color:#aaaed0; }
 
@@ -120,7 +118,9 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 
 /* ================= PROFILE PAGE ================= */
 .profile-card{ max-width:450px; margin:20px auto; background:#171a62; border:1px solid rgba(133,95,255,.5); border-radius:22px; padding:25px 20px; text-align:center; }
-.profile-avatar{ font-size:60px; margin-bottom:10px; }
+.profile-avatar-container{ position:relative; width:100px; height:100px; margin:0 auto 15px; }
+.profile-avatar-img{ width:100px; height:100px; border-radius:50%; object-fit:cover; border:3px solid #22c9ff; background:#080b35; }
+.upload-btn-label{ position:absolute; bottom:0; right:0; background:#7c3aed; color:white; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; border:2px solid #171a62; }
 .profile-card h3{ font-size:22px; color:#22c9ff; margin-bottom:6px; }
 .profile-card p{ color:#aaaed0; margin-bottom:20px; font-size:14px; }
 .status-input{ width:100%; padding:14px; border-radius:14px; border:1px solid #343785; background:#080b35; color:white; outline:none; font-size:15px; margin-bottom:15px; }
@@ -224,7 +224,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                     </div>
                 </div>
 
-                <!-- แถบอ้างอิงตอนตอบกลับ -->
                 <div class="active-reply-bar" id="activeReplyBar">
                     <div class="active-reply-info">
                         กำลังตอบกลับ <b id="replyTargetUser" style="color:#22c9ff;">...</b>: <span id="replyTargetText">...</span>
@@ -244,7 +243,11 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 <!-- ================= PROFILE PAGE ================= -->
 <div id="pageProfile" class="page-section">
     <div class="profile-card">
-        <div class="profile-avatar">👤</div>
+        <div class="profile-avatar-container">
+            <img id="profileAvatarImg" class="profile-avatar-img" src="" alt="Profile">
+            <label for="avatarFileInput" class="upload-btn-label">📷</label>
+            <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
+        </div>
         <h3 id="profileUsername">ชื่อผู้ใช้</h3>
         <p id="profileStatusDisplay">"ยังไม่มีสถานะ"</p>
         <input type="text" id="statusInput" class="status-input" placeholder="พิมพ์ข้อความสถานะใหม่...">
@@ -300,10 +303,12 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
+    const DEFAULT_AVATAR = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2322c9ff'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>";
+
     let currentUser = localStorage.getItem("activeUser") || null;
     let activeChatFriend = null;
     let currentChatListener = null;
-    let replyData = null; // เก็บสถานะข้อความที่กดตอบกลับ
+    let replyData = null;
 
     window.showPage = function(pageId){
         if((pageId === 'friends' || pageId === 'chat' || pageId === 'profile') && !currentUser){
@@ -373,7 +378,11 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
             if (snapshot.exists()) {
                 alert("ชื่อผู้ใช้นี้มีในระบบแล้ว");
             } else {
-                set(ref(db, `users/${u}`), { username: u, status: "ยินดีต้อนรับสู่ Student Chat!" });
+                set(ref(db, `users/${u}`), { 
+                    username: u, 
+                    status: "ยินดีต้อนรับสู่ Student Chat!",
+                    avatar: DEFAULT_AVATAR
+                });
                 currentUser = u;
                 localStorage.setItem("activeUser", currentUser);
                 updateHeader();
@@ -411,12 +420,16 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
     function updateHeader(){
         const btnContainer = document.getElementById("authNavButtons");
         if(currentUser){
-            btnContainer.innerHTML = `
-                <div class="user-profile-badge">
-                    👤 ${currentUser}
-                    <button class="logout-btn" onclick="handleLogout()">ออก</button>
-                </div>
-            `;
+            get(child(ref(db), `users/${currentUser}/avatar`)).then((snapshot) => {
+                const avatarUrl = snapshot.exists() ? snapshot.val() : DEFAULT_AVATAR;
+                btnContainer.innerHTML = `
+                    <div class="user-profile-badge">
+                        <img src="${avatarUrl}" class="user-avatar-small">
+                        ${currentUser}
+                        <button class="logout-btn" onclick="handleLogout()">ออก</button>
+                    </div>
+                `;
+            });
         }else{
             btnContainer.innerHTML = `
                 <button class="login" onclick="openAuth('login')">เข้าสู่ระบบ</button>
@@ -460,11 +473,13 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                             actionType = "acceptRequest";
                         }
 
+                        const userAvatar = usersData[username].avatar || DEFAULT_AVATAR;
+
                         const card = document.createElement("div");
                         card.className = "user-card";
                         card.innerHTML = `
                             <div class="user-info">
-                                <div class="user-avatar">👤</div>
+                                <img src="${userAvatar}" class="user-avatar-img">
                                 <div class="user-details">
                                     <h4>${username}</h4>
                                     <p>${usersData[username].status || ''}</p>
@@ -511,18 +526,24 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
             }
 
             Object.keys(friendsData).forEach(friendName => {
-                const item = document.createElement("div");
-                item.className = `friend-item ${activeChatFriend === friendName ? 'active' : ''}`;
-                item.innerHTML = `<span>💬 ${friendName}</span>`;
-                item.onclick = () => selectFriendToChat(friendName);
-                list.appendChild(item);
+                get(child(ref(db), `users/${friendName}/avatar`)).then((avatarSnap) => {
+                    const avatarUrl = avatarSnap.exists() ? avatarSnap.val() : DEFAULT_AVATAR;
+                    const item = document.createElement("div");
+                    item.className = `friend-item ${activeChatFriend === friendName ? 'active' : ''}`;
+                    item.innerHTML = `
+                        <img src="${avatarUrl}" class="friend-item-img">
+                        <span>${friendName}</span>
+                    `;
+                    item.onclick = () => selectFriendToChat(friendName, avatarUrl);
+                    list.appendChild(item);
+                });
             });
         });
     }
 
-    function selectFriendToChat(friendUsername){
+    function selectFriendToChat(friendUsername, avatarUrl){
         activeChatFriend = friendUsername;
-        document.getElementById("chatTargetTitle").innerText = `💬 ${friendUsername}`;
+        document.getElementById("chatTargetTitle").innerHTML = `<img src="${avatarUrl}" class="user-avatar-small"> ${friendUsername}`;
         renderSidebarFriends();
         loadPrivateMessages();
         toggleMobileChatView('main');
@@ -569,7 +590,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
             Object.keys(messages).forEach(msgId => {
                 const msg = messages[msgId];
 
-                // ถ้าเราลบเฉพาะฉัน (deletedForMe) จะไม่นำมาโชว์ที่ฝั่งเรา
                 if(msg.deletedFor && msg.deletedFor[currentUser]) return;
 
                 const isMe = msg.sender === currentUser;
@@ -605,7 +625,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         });
     }
 
-    // เมนูปุ่มจุด 3 จุด
     window.toggleMsgMenu = function(e, msgId){
         e.stopPropagation();
         const currentMenu = document.getElementById(`menu-${msgId}`);
@@ -620,7 +639,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         document.querySelectorAll('.msg-options-menu').forEach(el => el.classList.remove('active'));
     };
 
-    // 1. ตอบกลับ
     window.startReply = function(sender, text){
         replyData = { sender, text };
         document.getElementById("replyTargetUser").innerText = sender;
@@ -635,7 +653,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         document.getElementById("activeReplyBar").classList.remove('active');
     };
 
-    // 2. ยกเลิกข้อความ (ลบทั้ง 2 ฝั่ง)
     window.unsendMsg = function(msgId){
         if(!activeChatFriend) return;
         const roomId = [currentUser, activeChatFriend].sort().join("_");
@@ -643,7 +660,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         closeAllMsgMenus();
     };
 
-    // 3. ลบเฉพาะฉัน (คนอื่นยังเห็นอยู่)
     window.deleteForMe = function(msgId){
         if(!activeChatFriend) return;
         const roomId = [currentUser, activeChatFriend].sort().join("_");
@@ -657,9 +673,60 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
             if (snapshot.exists()) {
                 const data = snapshot.val();
                 document.getElementById("profileStatusDisplay").innerText = `"${data.status || 'ยังไม่มีสถานะ'}"`;
+                document.getElementById("profileAvatarImg").src = data.avatar || DEFAULT_AVATAR;
             }
         });
     }
+
+    /* ระบบเปลี่ยนรูปโปรไฟล์จากมือถือ */
+    window.handleImageUpload = function(event){
+        const file = event.target.files[0];
+        if(!file) return;
+
+        if(!file.type.startsWith('image/')){
+            alert("กรุณาเลือกไฟล์รูปภาพเท่านั้นครับ");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e){
+            const img = new Image();
+            img.onload = function(){
+                // ย่อขนาดรูปภาพเพื่อประหยัดพื้นที่จัดเก็บ
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const maxSize = 200;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > maxSize) {
+                        height *= maxSize / width;
+                        width = maxSize;
+                    }
+                } else {
+                    if (height > maxSize) {
+                        width *= maxSize / height;
+                        height = maxSize;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+
+                const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                
+                // บันทึกลง Firebase
+                set(ref(db, `users/${currentUser}/avatar`), resizedDataUrl);
+                document.getElementById("profileAvatarImg").src = resizedDataUrl;
+                updateHeader();
+                alert("เปลี่ยนรูปโปรไฟล์สำเร็จเรียบร้อยครับ!");
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    };
 
     window.updateStatus = function(){
         const statusText = document.getElementById("statusInput").value.trim();
