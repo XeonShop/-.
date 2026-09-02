@@ -3,64 +3,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Chat - ระบบสมาชิก เพื่อน และแชท</title>
+<title>Student Chat - ระบบสมาชิก แอดเพื่อน และแชท</title>
 <style>
-*{ margin:0; padding:0; box-sizing:border-box; font-family:Arial, sans-serif; }
-body{ background:#080b35; color:white; min-height:100vh; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+body { background: #080b35; color: white; min-height: 100vh; }
 
-/* HEADER */
-header{
-    height:70px; padding:0 5%; display:flex; align-items:center; justify-content:space-between;
-    background:rgba(5,7,35,.95); border-bottom:1px solid rgba(255,255,255,.08);
-    position:sticky; top:0; z-index:100; backdrop-filter:blur(10px);
+/* Navigation Header */
+header {
+    height: 70px; padding: 0 5%; display: flex; align-items: center; justify-content: space-between;
+    background: rgba(5, 7, 35, 0.95); border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px);
 }
-.logo{ font-size:22px; font-weight:bold; color:#8b5cf6; cursor:pointer; }
-nav{ display:flex; gap:10px; align-items:center; }
-nav button{
-    background:transparent; border:none; color:#ddd; padding:8px 14px; border-radius:10px;
-    cursor:pointer; font-size:14px; transition:.3s;
+.logo { font-size: 22px; font-weight: bold; color: #8b5cf6; cursor: pointer; }
+nav { display: flex; gap: 10px; align-items: center; }
+nav button {
+    background: transparent; border: none; color: #ddd; padding: 8px 16px; border-radius: 10px;
+    cursor: pointer; font-size: 14px; transition: 0.3s;
 }
-nav button:hover, nav button.active{ background:#302461; color:#22c9ff; }
-.user-tag{ background:#171a62; border:1px solid #7c3aed; padding:6px 12px; border-radius:20px; font-size:13px; }
+nav button:hover, nav button.active { background: #302461; color: #22c9ff; }
+.user-tag { background: #171a62; border: 1px solid #7c3aed; padding: 6px 14px; border-radius: 20px; font-size: 13px; }
 
-/* PAGE CONTAINER */
-.page{ display:none; padding:30px 5%; max-width:1100px; margin:auto; }
-.page.active{ display:block; }
+/* Page Layout */
+.page { display: none; padding: 30px 5%; max-width: 1100px; margin: auto; }
+.page.active { display: block; }
 
-/* CHAT LAYOUT */
-.chat-layout{ display:grid; grid-template-columns:240px 1fr; gap:20px; height:600px; }
-.sidebar, .chat-box{ background:#101442; border:1px solid rgba(255,255,255,.1); border-radius:20px; overflow:hidden; }
-.sidebar{ padding:15px; display:flex; flex-direction:column; gap:10px; }
-.sidebar h3{ font-size:16px; margin-bottom:5px; color:#22c9ff; }
-.friend-item{
-    padding:10px; background:#181c59; border-radius:12px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;
+/* Chat Layout */
+.chat-layout { display: grid; grid-template-columns: 260px 1fr; gap: 20px; height: 600px; }
+.sidebar, .chat-box { background: #101442; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; overflow: hidden; }
+.sidebar { padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+.sidebar h3 { font-size: 16px; margin-bottom: 5px; color: #22c9ff; }
+.friend-item {
+    padding: 12px; background: #181c59; border-radius: 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s;
 }
-.friend-item:hover, .friend-item.active{ background:#302461; border:1px solid #22c9ff; }
+.friend-item:hover, .friend-item.active { background: #302461; border: 1px solid #22c9ff; }
 
-/* CHAT BOX */
-.chat-box{ display:flex; flex-direction:column; }
-.chat-header{ padding:15px 20px; background:#0c0e38; border-bottom:1px solid rgba(255,255,255,.1); }
-.chat-messages{ flex:1; padding:20px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; }
-.msg{ max-width:70%; padding:10px 14px; border-radius:14px; font-size:14px; word-break:break-word; }
-.msg.me{ align-self:flex-end; background:linear-gradient(135deg,#7c3aed,#22c9ff); color:white; border-bottom-right-radius:2px; }
-.msg.other{ align-self:flex-start; background:#20266e; color:white; border-bottom-left-radius:2px; }
-.chat-input{ padding:15px; background:#0c0e38; display:flex; gap:10px; border-top:1px solid rgba(255,255,255,.1); }
-.chat-input input{ flex:1; padding:12px; background:#181c59; border:1px solid #343785; border-radius:10px; color:white; outline:none; }
-.chat-input button{ width:45px; border:none; border-radius:10px; background:#22c9ff; color:black; font-weight:bold; cursor:pointer; }
+/* Chat Window */
+.chat-box { display: flex; flex-direction: column; }
+.chat-header { padding: 18px 20px; background: #0c0e38; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+.chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+.msg { max-width: 70%; padding: 10px 14px; border-radius: 14px; font-size: 14px; word-break: break-word; }
+.msg.me { align-self: flex-end; background: linear-gradient(135deg, #7c3aed, #22c9ff); color: white; border-bottom-right-radius: 2px; }
+.msg.other { align-self: flex-start; background: #20266e; color: white; border-bottom-left-radius: 2px; }
+.chat-input { padding: 15px; background: #0c0e38; display: flex; gap: 10px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+.chat-input input { flex: 1; padding: 12px; background: #181c59; border: 1px solid #343785; border-radius: 10px; color: white; outline: none; }
+.chat-input button { width: 45px; border: none; border-radius: 10px; background: #22c9ff; color: black; font-weight: bold; cursor: pointer; }
 
-/* FRIENDS SYSTEM */
-.user-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:15px; margin-top:15px; }
-.user-card{ background:#101442; border:1px solid rgba(255,255,255,.1); border-radius:15px; padding:15px; display:flex; justify-content:space-between; align-items:center; }
-.btn-add{ background:#7c3aed; color:white; border:none; padding:6px 12px; border-radius:8px; cursor:pointer; }
-.btn-remove{ background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:8px; cursor:pointer; }
+/* Add Friends Search */
+.search-box { display: flex; gap: 10px; margin-bottom: 20px; }
+.search-box input { flex: 1; padding: 12px; background: #101442; border: 1px solid #343785; border-radius: 10px; color: white; outline: none; }
+.user-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; }
+.user-card { background: #101442; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+.btn-add { background: #7c3aed; color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
+.btn-remove { background: #ef4444; color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
 
-/* AUTH MODAL */
-.auth-box{ max-width:380px; margin:80px auto; background:#101442; border:1px solid #7c3aed; padding:30px; border-radius:20px; }
-.auth-box h2{ margin-bottom:15px; color:#22c9ff; text-align:center; }
-.auth-box input{ width:100%; padding:12px; margin-bottom:12px; background:#181c59; border:1px solid #343785; border-radius:10px; color:white; outline:none; }
-.auth-box button{ width:100%; padding:12px; background:linear-gradient(90deg,#22c9ff,#7c3aed); border:none; border-radius:10px; color:white; font-weight:bold; cursor:pointer; }
+/* Auth Forms */
+.auth-box { max-width: 380px; margin: 60px auto; background: #101442; border: 1px solid #7c3aed; padding: 30px; border-radius: 20px; }
+.auth-box h2 { margin-bottom: 15px; color: #22c9ff; text-align: center; }
+.auth-box input { width: 100%; padding: 12px; margin-bottom: 12px; background: #181c59; border: 1px solid #343785; border-radius: 10px; color: white; outline: none; }
+.auth-box button { width: 100%; padding: 12px; background: linear-gradient(90deg, #22c9ff, #7c3aed); border: none; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; }
 
-.notify{ position:fixed; bottom:20px; right:20px; background:#22c9ff; color:black; padding:12px 20px; border-radius:10px; font-weight:bold; display:none; }
+.notify { position: fixed; bottom: 20px; right: 20px; background: #22c9ff; color: black; padding: 12px 20px; border-radius: 10px; font-weight: bold; display: none; }
 </style>
 </head>
 <body>
@@ -75,13 +77,14 @@ nav button:hover, nav button.active{ background:#302461; color:#22c9ff; }
     </nav>
 </header>
 
-<!-- HOME -->
+<!-- HOME PAGE -->
 <div id="home" class="page active">
-    <h1 style="font-size:40px; margin-bottom:10px;">ยินดีต้อนรับสู่ Student Chat</h1>
-    <p style="color:#aaa;">สมัครสมาชิก ค้นหาเพื่อน เพิ่มเพื่อน และเริ่มแชทคุยกันได้ทันที!</p>
+    <h1 style="font-size: 40px; margin-bottom: 10px;">ยินดีต้อนรับสู่ Student Chat</h1>
+    <p style="color: #aaa; margin-bottom: 20px;">ระบบสมัครสมาชิก เพิ่มเพื่อน และแชทส่วนตัว</p>
+    <button onclick="switchPage('friends')" style="padding: 12px 24px; background: #22c9ff; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">เริ่มหาเพื่อนคุยเลย</button>
 </div>
 
-<!-- CHAT -->
+<!-- CHAT PAGE -->
 <div id="chat" class="page">
     <div class="chat-layout">
         <div class="sidebar">
@@ -101,31 +104,35 @@ nav button:hover, nav button.active{ background:#302461; color:#22c9ff; }
     </div>
 </div>
 
-<!-- FRIENDS -->
+<!-- FRIENDS PAGE -->
 <div id="friends" class="page">
     <h2>🔎 รายชื่อผู้ใช้งานในระบบ</h2>
+    <br>
+    <div class="search-box">
+        <input type="text" id="searchFriendInput" placeholder="พิมพ์ชื่อเพื่อนเพื่อค้นหา..." onkeyup="renderAllUsers()">
+    </div>
     <div class="user-grid" id="allUsersList"></div>
 </div>
 
-<!-- LOGIN -->
+<!-- LOGIN PAGE -->
 <div id="login" class="page">
     <div class="auth-box">
         <h2>เข้าสู่ระบบ</h2>
         <input type="text" id="loginUser" placeholder="ชื่อผู้ใช้">
         <input type="password" id="loginPass" placeholder="รหัสผ่าน">
         <button onclick="login()">เข้าสู่ระบบ</button>
-        <p style="margin-top:10px; text-align:center; font-size:12px;">ยังไม่มีบัญชี? <a href="#" onclick="switchPage('signup')" style="color:#22c9ff;">สมัครสมาชิก</a></p>
+        <p style="margin-top: 15px; text-align: center; font-size: 13px;">ยังไม่มีบัญชี? <a href="#" onclick="switchPage('signup')" style="color: #22c9ff;">สมัครสมาชิก</a></p>
     </div>
 </div>
 
-<!-- SIGNUP -->
+<!-- SIGNUP PAGE -->
 <div id="signup" class="page">
     <div class="auth-box">
         <h2>สมัครสมาชิก</h2>
         <input type="text" id="regUser" placeholder="ตั้งชื่อผู้ใช้">
         <input type="password" id="regPass" placeholder="ตั้งรหัสผ่าน">
         <button onclick="register()">สมัครสมาชิก</button>
-        <p style="margin-top:10px; text-align:center; font-size:12px;">มีบัญชีอยู่แล้ว? <a href="#" onclick="switchPage('login')" style="color:#22c9ff;">เข้าสู่ระบบ</a></p>
+        <p style="margin-top: 15px; text-align: center; font-size: 13px;">มีบัญชีอยู่แล้ว? <a href="#" onclick="switchPage('login')" style="color: #22c9ff;">เข้าสู่ระบบ</a></p>
     </div>
 </div>
 
@@ -135,50 +142,51 @@ nav button:hover, nav button.active{ background:#302461; color:#22c9ff; }
 let currentUser = JSON.parse(localStorage.getItem("activeUser")) || null;
 let activeChatFriend = null;
 
-// สลับหน้า
-function switchPage(pageId){
+function switchPage(pageId) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
     
     document.getElementById(pageId).classList.add('active');
     
-    if(pageId === 'friends') renderAllUsers();
-    if(pageId === 'chat') {
-        if(!currentUser) { showNotify("กรุณาเข้าสู่ระบบก่อนใช้งาน"); switchPage('login'); return; }
+    if (pageId === 'friends') {
+        if (!currentUser) { showNotify("กรุณาเข้าสู่ระบบก่อนค้นหาเพื่อน"); switchPage('login'); return; }
+        renderAllUsers();
+    }
+    if (pageId === 'chat') {
+        if (!currentUser) { showNotify("กรุณาเข้าสู่ระบบก่อนใช้งานแชท"); switchPage('login'); return; }
         renderFriendsSidebar();
     }
 }
 
-// ระบบสมัครสมาชิก (จำรหัสผ่านไว้ใน localStorage)
-function register(){
+// ระบบสมัครสมาชิก
+function register() {
     const u = document.getElementById("regUser").value.trim();
     const p = document.getElementById("regPass").value.trim();
-    if(!u || !p) return showNotify("กรุณากรอกข้อมูลให้ครบ");
+    if (!u || !p) return showNotify("กรุณากรอกข้อมูลให้ครบ");
 
     let users = JSON.parse(localStorage.getItem("usersDB")) || [];
-    if(users.some(x => x.username === u)) return showNotify("ชื่อผู้ใช้นี้ถูกใช้ไปแล้ว");
+    if (users.some(x => x.username === u)) return showNotify("ชื่อผู้ใช้นี้ถูกใช้ไปแล้ว");
 
     const newUser = { username: u, password: p, friends: [] };
     users.push(newUser);
     localStorage.setItem("usersDB", JSON.stringify(users));
 
-    // ล็อกอินให้อัตโนมัติหลังสมัครเสร็จ
     localStorage.setItem("activeUser", JSON.stringify(newUser));
     currentUser = newUser;
     updateUserNav();
     showNotify("สมัครสมาชิกสำเร็จ!");
-    switchPage("chat");
+    switchPage("friends");
 }
 
 // ระบบเข้าสู่ระบบ
-function login(){
+function login() {
     const u = document.getElementById("loginUser").value.trim();
     const p = document.getElementById("loginPass").value.trim();
     
     let users = JSON.parse(localStorage.getItem("usersDB")) || [];
     const user = users.find(x => x.username === u && x.password === p);
 
-    if(user){
+    if (user) {
         localStorage.setItem("activeUser", JSON.stringify(user));
         currentUser = user;
         updateUserNav();
@@ -189,65 +197,64 @@ function login(){
     }
 }
 
-function logout(){
+function logout() {
     localStorage.removeItem("activeUser");
     currentUser = null;
     activeChatFriend = null;
     updateUserNav();
     switchPage("home");
-    showNotify("ออกจากระบบแล้ว");
+    showNotify("ออกจากระบบเรียบร้อย");
 }
 
-function updateUserNav(){
+function updateUserNav() {
     const nav = document.getElementById("userNav");
-    if(currentUser){
-        nav.innerHTML = `<span class="user-tag">👤 ${currentUser.username} <a href="#" onclick="logout()" style="color:#ef4444; margin-left:8px;">[ออก]</a></span>`;
+    if (currentUser) {
+        nav.innerHTML = `<span class="user-tag">👤 ${currentUser.username} <a href="#" onclick="logout()" style="color:#ef4444; margin-left:8px; text-decoration:none;">[ออก]</a></span>`;
     } else {
         nav.innerHTML = `<button onclick="switchPage('login')">เข้าสู่ระบบ</button>`;
     }
 }
 
-// แสดงรายชื่อผู้ใช้ทั้งหมดในระบบเพื่อกดเพิ่มเพื่อน
-function renderAllUsers(){
+// แสดงผู้ใช้อื่นๆ ทั้งหมดในระบบ + ฟังก์ชันค้นหา
+function renderAllUsers() {
     const list = document.getElementById("allUsersList");
+    const searchText = document.getElementById("searchFriendInput").value.toLowerCase();
     let users = JSON.parse(localStorage.getItem("usersDB")) || [];
     list.innerHTML = "";
 
     users.forEach(u => {
-        if(currentUser && u.username === currentUser.username) return; // ไม่แสดงตัวเอง
+        if (currentUser && u.username === currentUser.username) return;
+        if (searchText && !u.username.toLowerCase().includes(searchText)) return;
 
         const isFriend = currentUser && currentUser.friends && currentUser.friends.includes(u.username);
         const card = document.createElement("div");
         card.className = "user-card";
         card.innerHTML = `
-            <span>👦 ${u.username}</span>
-            ${currentUser ? `
-                <button class="${isFriend ? 'btn-remove' : 'btn-add'}" onclick="toggleFriend('${u.username}')">
-                    ${isFriend ? 'ลบเพื่อน' : '+ เพิ่มเพื่อน'}
-                </button>
-            ` : ''}
+            <span>👦 <b>${u.username}</b></span>
+            <button class="${isFriend ? 'btn-remove' : 'btn-add'}" onclick="toggleFriend('${u.username}')">
+                ${isFriend ? 'ลบเพื่อน' : '+ เพิ่มเพื่อน'}
+            </button>
         `;
         list.appendChild(card);
     });
 }
 
-// ระบบเพิ่ม/ลบเพื่อน
-function toggleFriend(targetUsername){
+// เพิ่ม / ลบ เพื่อน
+function toggleFriend(targetUsername) {
     let users = JSON.parse(localStorage.getItem("usersDB")) || [];
     let myData = users.find(u => u.username === currentUser.username);
 
-    if(!myData.friends) myData.friends = [];
+    if (!myData.friends) myData.friends = [];
 
     const index = myData.friends.indexOf(targetUsername);
-    if(index > -1){
+    if (index > -1) {
         myData.friends.splice(index, 1);
-        showNotify("ลบเพื่อนแล้ว");
+        showNotify("ลบเพื่อนสำเร็จ");
     } else {
         myData.friends.push(targetUsername);
-        showNotify("เพิ่มเพื่อนเรียบร้อย!");
+        showNotify("เพิ่มเพื่อนเรียบร้อยแล้ว!");
     }
 
-    // อัปเดตข้อมูลใน Storage
     localStorage.setItem("usersDB", JSON.stringify(users));
     currentUser = myData;
     localStorage.setItem("activeUser", JSON.stringify(currentUser));
@@ -255,13 +262,13 @@ function toggleFriend(targetUsername){
     renderAllUsers();
 }
 
-// แสดงรายชื่อเพื่อนที่แถมข้างห้องแชท
-function renderFriendsSidebar(){
+// แสดงแถบเพื่อนข้างห้องแชท
+function renderFriendsSidebar() {
     const sidebar = document.getElementById("friendSidebarList");
     sidebar.innerHTML = "";
 
-    if(!currentUser.friends || currentUser.friends.length === 0){
-        sidebar.innerHTML = "<small style='color:#777;'>ยังไม่มีเพื่อน กด 'ค้นหาเพื่อน' เพื่อเพิ่มเพื่อนก่อนครับ</small>";
+    if (!currentUser.friends || currentUser.friends.length === 0) {
+        sidebar.innerHTML = "<small style='color:#aaa;'>ยังไม่มีเพื่อน<br>ไปที่เมนู 'ค้นหาเพื่อน' เพื่อเพิ่มเพื่อนก่อนครับ</small>";
         return;
     }
 
@@ -274,8 +281,8 @@ function renderFriendsSidebar(){
     });
 }
 
-// เลือกเพื่อนที่จะคุยด้วย
-function selectChatFriend(friendUsername){
+// เลือกเพื่อนเพื่อส่งข้อความ
+function selectChatFriend(friendUsername) {
     activeChatFriend = friendUsername;
     document.getElementById("currentChatTarget").innerText = `กำลังคุยกับ: ${friendUsername}`;
     renderFriendsSidebar();
@@ -283,14 +290,12 @@ function selectChatFriend(friendUsername){
 }
 
 // ส่งข้อความ
-function sendMsg(){
+function sendMsg() {
     const input = document.getElementById("msgInput");
     const text = input.value.trim();
-    if(!text || !activeChatFriend) return;
+    if (!text || !activeChatFriend) return;
 
     let allChats = JSON.parse(localStorage.getItem("chatMessagesDB")) || [];
-    
-    // สร้าง Room ID สำหรับการคุยระหว่างสองคน (เช่น "A_B")
     const roomId = [currentUser.username, activeChatFriend].sort().join("_");
 
     allChats.push({
@@ -304,12 +309,12 @@ function sendMsg(){
     loadChatMessages();
 }
 
-// โหลดข้อความแชทเฉพาะคู่ที่เลือก
-function loadChatMessages(){
+// โหลดประวัติแชท
+function loadChatMessages() {
     const box = document.getElementById("chatMessages");
     box.innerHTML = "";
 
-    if(!activeChatFriend) return;
+    if (!activeChatFriend) return;
 
     const roomId = [currentUser.username, activeChatFriend].sort().join("_");
     let allChats = JSON.parse(localStorage.getItem("chatMessagesDB")) || [];
@@ -325,14 +330,14 @@ function loadChatMessages(){
     box.scrollTop = box.scrollHeight;
 }
 
-function showNotify(msg){
+function showNotify(msg) {
     const n = document.getElementById("notify");
     n.innerText = msg;
     n.style.display = "block";
     setTimeout(() => n.style.display = "none", 2000);
 }
 
-// โหลดระบบเริ่มต้น
+// เริ่มต้นเปิดระบบ
 updateUserNav();
 </script>
 </body>
