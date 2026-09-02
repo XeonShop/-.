@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เพื่อนของฉัน - Student Chat</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#080b1f,#17104a,#111b3d);
+    color:white;
+    min-height:100vh;
+}
+
+/* HEADER */
+header{
+    height:70px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 6%;
+    background:rgba(10,10,35,.85);
+    border-bottom:1px solid rgba(130,100,255,.3);
+    backdrop-filter:blur(10px);
+}
+
+.logo{
+    font-size:25px;
+    font-weight:bold;
+    color:#00d9ff;
+}
+
+nav{
+    display:flex;
+    gap:15px;
+}
+
+nav a{
+    color:#ddd;
+    text-decoration:none;
+    padding:10px 16px;
+    border-radius:10px;
+    transition:.3s;
+}
+
+nav a:hover{
+    background:#29205e;
+    color:#00d9ff;
+}
+
+nav .active{
+    background:#34246d;
+    color:#fff;
+}
+
+/* MAIN */
+.container{
+    width:90%;
+    max-width:1100px;
+    margin:40px auto;
+}
+
+.title{
+    margin-bottom:25px;
+}
+
+.title h1{
+    font-size:35px;
+}
+
+.title p{
+    color:#aaa;
+    margin-top:8px;
+}
+
+/* SEARCH */
+.search-box{
+    display:flex;
+    gap:10px;
+    margin-bottom:30px;
+}
+
+.search-box input{
+    flex:1;
+    padding:15px 18px;
+    border:none;
+    outline:none;
+    border-radius:12px;
+    background:#171632;
+    color:white;
+    border:1px solid #332b69;
+    font-size:16px;
+}
+
+.search-box button{
+    padding:0 25px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#6d45ff,#00bfff);
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.search-box button:hover{
+    transform:translateY(-2px);
+}
+
+/* USER CARDS */
+.section-title{
+    margin-bottom:15px;
+    font-size:22px;
+}
+
+.users{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:18px;
+}
+
+.user-card{
+    background:rgba(24,21,57,.9);
+    border:1px solid #332b69;
+    border-radius:18px;
+    padding:20px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    transition:.3s;
+}
+
+.user-card:hover{
+    transform:translateY(-4px);
+    border-color:#6951ff;
+    box-shadow:0 10px 30px rgba(60,40,200,.2);
+}
+
+.avatar{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#673fff,#00cfff);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:25px;
+    flex-shrink:0;
+}
+
+.user-info{
+    flex:1;
+}
+
+.user-info h3{
+    font-size:17px;
+}
+
+.user-info p{
+    color:#aaa;
+    font-size:13px;
+    margin-top:5px;
+}
+
+.online{
+    color:#35e58b !important;
+}
+
+.add-btn{
+    border:none;
+    background:#6847ff;
+    color:white;
+    padding:10px 14px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.add-btn:hover{
+    background:#8065ff;
+}
+
+.add-btn.added{
+    background:#253d36;
+    color:#46e89b;
+}
+
+/* FRIENDS */
+.friend-section{
+    margin-top:45px;
+}
+
+.friend-card{
+    background:rgba(24,21,57,.9);
+    border:1px solid #332b69;
+    border-radius:18px;
+    padding:18px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:12px;
+}
+
+.friend-card .avatar{
+    width:50px;
+    height:50px;
+}
+
+.friend-info{
+    flex:1;
+}
+
+.friend-info h3{
+    font-size:16px;
+}
+
+.chat-btn{
+    border:none;
+    padding:10px 15px;
+    border-radius:10px;
+    background:#00aeea;
+    color:white;
+    cursor:pointer;
+}
+
+.remove-btn{
+    border:none;
+    padding:10px 15px;
+    border-radius:10px;
+    background:#392038;
+    color:#ff7777;
+    cursor:pointer;
+}
+
+/* EMPTY */
+.empty{
+    text-align:center;
+    padding:30px;
+    color:#888;
+    background:#12112b;
+    border-radius:15px;
+    border:1px dashed #393363;
+}
+
+/* NOTIFICATION */
+.notification{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    background:#1e1a45;
+    border:1px solid #6650ff;
+    padding:15px 20px;
+    border-radius:12px;
+    display:none;
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+
+/* MOBILE */
+@media(max-width:600px){
+    header{
+        padding:0 4%;
+    }
+
+    nav a{
+        padding:8px;
+        font-size:13px;
+    }
+
+    .title h1{
+        font-size:28px;
+    }
+
+    .search-box{
+        flex-direction:column;
+    }
+
+    .search-box button{
+        padding:13px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        💬 Student Chat
+    </div>
+
+    <nav>
+        <a href="index.html">🏠 หน้าแรก</a>
+        <a href="chat.html">💬 ห้องแชท</a>
+        <a href="friends.html" class="active">👥 เพื่อน</a>
+    </nav>
+
+</header>
+
+
+<div class="container">
+
+    <div class="title">
+        <h1>👥 เพื่อนของฉัน</h1>
+        <p>ค้นหาเพื่อนและเพิ่มเพื่อนเพื่อพูดคุยกัน</p>
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="🔎 ค้นหาชื่อเพื่อน..."
+        >
+
+        <button onclick="searchUsers()">
+            ค้นหา
+        </button>
+
+    </div>
+
+
+    <!-- SEARCH RESULT -->
+
+    <h2 class="section-title">
+        🔎 ผู้ใช้ที่แนะนำ
+    </h2>
+
+    <div class="users" id="userList"></div>
+
+
+    <!-- FRIEND LIST -->
+
+    <div class="friend-section">
+
+        <h2 class="section-title">
+            💙 เพื่อนของฉัน
+        </h2>
+
+        <div id="friendList"></div>
+
+    </div>
+
+</div>
+
+
+<div class="notification" id="notification">
+    ✅ เพิ่มเพื่อนสำเร็จ!
+</div>
+
+
+<script>
+
+/* =========================
+   รายชื่อผู้ใช้ตัวอย่าง
+========================= */
+
+const users = [
+
+    {
+        id:1,
+        name:"นนท์",
+        avatar:"👦",
+        status:"ออนไลน์"
+    },
+
+    {
+        id:2,
+        name:"มาร์ค",
+        avatar:"😎",
+        status:"ออนไลน์"
+    },
+
+    {
+        id:3,
+        name:"ฟ้า",
+        avatar:"👧",
+        status:"ออนไลน์"
+    },
+
+    {
+        id:4,
+        name:"เจมส์",
+        avatar:"🧑",
+        status:"ออฟไลน์"
+    },
+
+    {
+        id:5,
+        name:"บีม",
+        avatar:"🙂",
+        status:"ออนไลน์"
+    },
+
+    {
+        id:6,
+        name:"ไนท์",
+        avatar:"🧑‍💻",
+        status:"ออฟไลน์"
+    }
+
+];
+
+
+/* =========================
+   โหลดเพื่อนจากเครื่อง
+========================= */
+
+let friends = JSON.parse(
+    localStorage.getItem("studentFriends")
+) || [];
+
+
+/* =========================
+   แสดงผู้ใช้
+========================= */
+
+function displayUsers(list = users){
+
+    const userList =
+        document.getElementById("userList");
+
+    userList.innerHTML = "";
+
+    if(list.length === 0){
+
+        userList.innerHTML = `
+            <div class="empty">
+                😢 ไม่พบผู้ใช้ที่ค้นหา
+            </div>
+        `;
+
+        return;
+    }
+
+
+    list.forEach(user => {
+
+        const isFriend =
+            friends.includes(user.id);
+
+
+        userList.innerHTML += `
+
+            <div class="user-card">
+
+                <div class="avatar">
+                    ${user.avatar}
+                </div>
+
+                <div class="user-info">
+
+                    <h3>
+                        ${user.name}
+                    </h3>
+
+                    <p class="${
+                        user.status === "ออนไลน์"
+                        ? "online"
+                        : ""
+                    }">
+
+                        ● ${user.status}
+
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="add-btn ${
+                        isFriend ? "added" : ""
+                    }"
+                    onclick="toggleFriend(${user.id})"
+                    id="add-${user.id}"
+                >
+
+                    ${
+                        isFriend
+                        ? "✓ เป็นเพื่อนแล้ว"
+                        : "➕ แอดเพื่อน"
+                    }
+
+                </button>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+/* =========================
+   เพิ่ม / ลบเพื่อน
+========================= */
+
+function toggleFriend(id){
+
+    const index =
+        friends.indexOf(id);
+
+
+    if(index === -1){
+
+        friends.push(id);
+
+        showNotification(
+            "✅ ส่งคำขอเป็นเพื่อนแล้ว!"
+        );
+
+    }else{
+
+        friends.splice(index,1);
+
+        showNotification(
+            "❌ ลบเพื่อนแล้ว"
+        );
+
+    }
+
+
+    localStorage.setItem(
+        "studentFriends",
+        JSON.stringify(friends)
+    );
+
+
+    displayUsers();
+
+    displayFriends();
+
+}
+
+
+/* =========================
+   แสดงรายชื่อเพื่อน
+========================= */
+
+function displayFriends(){
+
+    const friendList =
+        document.getElementById("friendList");
+
+    friendList.innerHTML = "";
+
+
+    const myFriends =
+        users.filter(user =>
+            friends.includes(user.id)
+        );
+
+
+    if(myFriends.length === 0){
+
+        friendList.innerHTML = `
+
+            <div class="empty">
+
+                👥 ยังไม่มีเพื่อน
+
+                <br>
+
+                <small>
+                    ค้นหาเพื่อนด้านบนแล้วกด
+                    "แอดเพื่อน"
+                </small>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    myFriends.forEach(user => {
+
+        friendList.innerHTML += `
+
+            <div class="friend-card">
+
+                <div class="avatar">
+                    ${user.avatar}
+                </div>
+
+
+                <div class="friend-info">
+
+                    <h3>
+                        ${user.name}
+                    </h3>
+
+                    <p class="${
+                        user.status === "ออนไลน์"
+                        ? "online"
+                        : ""
+                    }">
+
+                        ● ${user.status}
+
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="chat-btn"
+                    onclick="openChat('${user.name}')"
+                >
+                    💬 แชท
+                </button>
+
+
+                <button
+                    class="remove-btn"
+                    onclick="toggleFriend(${user.id})"
+                >
+                    ลบ
+                </button>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+/* =========================
+   ค้นหา
+========================= */
+
+function searchUsers(){
+
+    const keyword =
+        document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const result =
+        users.filter(user =>
+            user.name
+            .toLowerCase()
+            .includes(keyword)
+        );
+
+
+    displayUsers(result);
+
+}
+
+
+/* =========================
+   กด Enter เพื่อค้นหา
+========================= */
+
+document
+.getElementById("searchInput")
+.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+
+            searchUsers();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   เปิดแชท
+========================= */
+
+function openChat(name){
+
+    localStorage.setItem(
+        "chatWith",
+        name
+    );
+
+    window.location.href =
+        "chat.html";
+
+}
+
+
+/* =========================
+   แจ้งเตือน
+========================= */
+
+function showNotification(text){
+
+    const notification =
+        document.getElementById(
+            "notification"
+        );
+
+
+    notification.innerText =
+        text;
+
+
+    notification.style.display =
+        "block";
+
+
+    setTimeout(() => {
+
+        notification.style.display =
+            "none";
+
+    },2000);
+
+}
+
+
+/* =========================
+   เริ่มต้น
+========================= */
+
+displayUsers();
+
+displayFriends();
+
+</script>
+
+</body>
+</html>
