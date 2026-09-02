@@ -34,24 +34,24 @@
         <span id="headerTitle">Student Chat</span>
     </div>
     
-    <!-- 1. หน้าลงชื่อเข้าใช้ -->
+    <!-- หน้าลงชื่อเข้าใช้/สมัครใช้งาน -->
     <div id="loginSection" class="chat-body" style="justify-content: center; align-items: center;">
-        <h3 style="margin-bottom: 10px; color: #374151;">ระบุชื่อเพื่อเริ่มใช้งาน</h3>
+        <h3 style="margin-bottom: 10px; color: #374151;">สมัคร / เข้าสู่ระบบ</h3>
         <input type="text" id="usernameInput" placeholder="พิมพ์ชื่อของคุณที่นี่..." style="width: 80%; flex: none;">
-        <button id="loginBtn" style="margin-top: 10px; width: 80%;">เข้าสู่ระบบ</button>
+        <button id="loginBtn" style="margin-top: 10px; width: 80%;">เริ่มใช้งาน</button>
     </div>
 
-    <!-- 2. หน้าจัดการเพื่อน -->
+    <!-- หน้าจัดการเพื่อน -->
     <div id="friendsSection" class="chat-body hidden">
         <div style="display: flex; gap: 8px; margin-bottom: 10px;">
-            <input type="text" id="addFriendInput" placeholder="พิมพ์ชื่อเพื่อนเพื่อค้นหา...">
-            <button id="addFriendBtn">เพิ่มเพื่อน</button>
+            <input type="text" id="addFriendInput" placeholder="พิมพ์ชื่อเพื่อนเพื่อแอด...">
+            <button id="addFriendBtn">แอดเพื่อน</button>
         </div>
-        <h4 style="color: #4b5563; margin-bottom: 8px;">รายชื่อเพื่อนของคุณ</h4>
+        <h4 style="color: #4b5563; margin-bottom: 8px;">รายชื่อเพื่อน</h4>
         <div id="friendsList"></div>
     </div>
 
-    <!-- 3. หน้าห้องแชท -->
+    <!-- หน้าห้องแชท -->
     <div id="chatSection" class="chat-body hidden"></div>
 
     <!-- ช่องพิมพ์ข้อความ -->
@@ -82,13 +82,13 @@
     let activeChatUser = "";
     let currentChatRef = null;
 
-    // ปุ่มเข้าสู่ระบบ
+    // ปุ่มสมัคร / เริ่มใช้งาน
     document.getElementById("loginBtn").addEventListener("click", () => {
         const name = document.getElementById("usernameInput").value.trim();
-        if(!name) return alert("โปรดใส่ชื่อก่อนเริ่มใช้งาน");
+        if(!name) return alert("กรุณาพิมพ์ชื่อผู้ใช้");
         currentUser = name;
         
-        set(ref(db, `users/${currentUser}`), { online: true });
+        set(ref(db, `users/${currentUser}`), { registeredAt: Date.now() });
 
         document.getElementById("loginSection").classList.add("hidden");
         document.getElementById("friendsSection").classList.remove("hidden");
@@ -97,9 +97,9 @@
         loadFriends();
     });
 
-    // ปุ่มกลับหน้าเพื่อน
+    // ปุ่มย้อนกลับไปหน้าเพื่อน
     document.getElementById("toggleViewBtn").addEventListener("click", () => {
-        if (currentChatRef) off(currentChatRef); // หยุดดึงข้อมูลห้องเดิม
+        if (currentChatRef) off(currentChatRef);
         document.getElementById("chatSection").classList.add("hidden");
         document.getElementById("footerSection").classList.add("hidden");
         document.getElementById("toggleViewBtn").classList.add("hidden");
@@ -107,19 +107,19 @@
         document.getElementById("headerTitle").innerText = `ผู้ใช้: ${currentUser}`;
     });
 
-    // ปุ่มเพิ่มเพื่อน
+    // ปุ่มแอดเพื่อน
     document.getElementById("addFriendBtn").addEventListener("click", () => {
         const friendName = document.getElementById("addFriendInput").value.trim();
         if (!friendName) return alert("กรุณาใส่ชื่อเพื่อน");
-        if (friendName === currentUser) return alert("ไม่สามารถเพิ่มตัวเองเป็นเพื่อนได้");
+        if (friendName === currentUser) return alert("ไม่สามารถแอดตัวเองได้");
 
         set(ref(db, `friends/${currentUser}/${friendName}`), true);
         set(ref(db, `friends/${friendName}/${currentUser}`), true);
-        alert(`เพิ่ม ${friendName} เป็นเพื่อนเรียบร้อย!`);
+        alert(`แอด ${friendName} เป็นเพื่อนแล้ว!`);
         document.getElementById("addFriendInput").value = "";
     });
 
-    // โหลดรายชื่อเพื่อน Realtime
+    // โหลดรายชื่อเพื่อน
     function loadFriends() {
         const listDiv = document.getElementById("friendsList");
         listDiv.innerHTML = "";
@@ -140,7 +140,7 @@
         });
     }
 
-    // เปิดห้องแชทส่วนตัว
+    // เปิดห้องแชท
     function openChatWith(friendName) {
         activeChatUser = friendName;
         document.getElementById("friendsSection").classList.add("hidden");
@@ -152,7 +152,7 @@
         listenForMessages();
     }
 
-    // ปุ่มส่งข้อความ
+    // ส่งข้อความ
     document.getElementById("sendBtn").addEventListener("click", sendMessage);
     document.getElementById("messageInput").addEventListener("keypress", (e) => {
         if(e.key === 'Enter') sendMessage();
@@ -163,7 +163,6 @@
         const text = input.value.trim();
         if(!text || !activeChatUser) return;
         
-        // สร้าง รหัสห้องแชทลับ ระหว่างสองคน
         const chatId = [currentUser, activeChatUser].sort().join("_");
         
         push(ref(db, `private_chats/${chatId}`), {
@@ -175,7 +174,7 @@
         input.value = "";
     }
 
-    // ดึงข้อความมาแสดงผล
+    // ดึงข้อความออนไลน์
     function listenForMessages() {
         const chatBody = document.getElementById("chatSection");
         chatBody.innerHTML = "";
