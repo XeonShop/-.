@@ -76,22 +76,27 @@ nav a:hover, nav a.active{ color:#22c9ff; }
 .search-box{ flex:1; }
 .search-box input{ width:100%; padding:15px 20px; border-radius:15px; border:1px solid #343785; background:#12154c; color:white; font-size:16px; outline:none; }
 
-.status-dot{ width:10px; height:10px; border-radius:50%; display:inline-block; }
-.status-dot.online{ background:#22c55e; box-shadow:0 0 8px #22c55e; }
-.status-dot.offline{ background:#64748b; }
-
 .users-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:20px; }
 
 .user-card{ background:#171a62; border:1px solid rgba(133,95,255,.4); border-radius:18px; padding:20px; text-align:center; position:relative; }
 .user-avatar{ font-size:40px; margin-bottom:10px; position:relative; display:inline-block; }
-.avatar-status{ position:absolute; bottom:2px; right:2px; }
 
 .user-card h4{ margin-bottom:5px; }
-.user-card .status-text{ font-size:12px; color:#aaaed0; margin-bottom:15px; }
 
-.btn-friend{ width:100%; padding:10px; border-radius:10px; border:none; font-weight:bold; cursor:pointer; transition:.2s; }
+.btn-friend{ width:100%; padding:10px; border-radius:10px; border:none; font-weight:bold; cursor:pointer; transition:.2s; margin-top:10px; }
 .btn-add{ background:linear-gradient(90deg, #22c9ff, #7c3aed); color:white; }
+.btn-accept{ background:#22c55e; color:white; }
 .btn-remove{ background:#ef4444; color:white; }
+
+/* ================= PROFILE PAGE ================= */
+.profile-card{
+    max-width:500px; margin:40px auto; background:#171a62; border:1px solid rgba(133,95,255,.5);
+    border-radius:25px; padding:30px; text-align:center;
+}
+.profile-avatar{ font-size:70px; margin-bottom:15px; }
+.profile-card h3{ font-size:24px; color:#22c9ff; margin-bottom:10px; }
+.profile-card p{ color:#aaaed0; margin-bottom:20px; }
+.status-input{ width:100%; padding:12px; border-radius:12px; border:1px solid #343785; background:#080b35; color:white; outline:none; margin-bottom:15px; }
 
 /* ================= AUTH MODAL ================= */
 .auth-overlay{ display:none; position:fixed; inset:0; background:rgba(5,6,25,.8); z-index:100; align-items:center; justify-content:center; padding:20px; }
@@ -121,6 +126,7 @@ nav a:hover, nav a.active{ color:#22c9ff; }
         <a onclick="showPage('home')" id="navHome" class="active">🏠 หน้าแรก</a>
         <a onclick="showPage('friends')" id="navFriends">👥 ค้นหาเพื่อน</a>
         <a onclick="showPage('chat')" id="navChat">💬 ห้องแชท</a>
+        <a onclick="showPage('profile')" id="navProfile">👤 โปรไฟล์</a>
     </nav>
 
     <div class="header-buttons" id="authNavButtons">
@@ -146,8 +152,8 @@ nav a:hover, nav a.active{ color:#22c9ff; }
 <!-- ================= FRIENDS PAGE ================= -->
 <div id="pageFriends" class="page-section">
     <div class="friends-container">
-        <h2>👥 ค้นหาเพื่อนใหม่</h2>
-        <p style="color:#aaaed0; margin-bottom:20px;">ค้นหาผู้ใช้ในระบบ Realtime Database</p>
+        <h2>👥 ค้นหาเพื่อนใหม่ & คำขอเป็นเพื่อน</h2>
+        <p style="color:#aaaed0; margin-bottom:20px;">ค้นหาผู้ใช้เพื่อส่งคำขอเป็นเพื่อน หรือรับคำขอที่เข้ามา</p>
         
         <div class="search-filter-wrapper">
             <div class="search-box">
@@ -183,6 +189,17 @@ nav a:hover, nav a.active{ color:#22c9ff; }
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- ================= PROFILE PAGE ================= -->
+<div id="pageProfile" class="page-section">
+    <div class="profile-card">
+        <div class="profile-avatar">👤</div>
+        <h3 id="profileUsername">ชื่อผู้ใช้</h3>
+        <p id="profileStatusDisplay">"ยังไม่มีสถานะ"</p>
+        <input type="text" id="statusInput" class="status-input" placeholder="พิมพ์ข้อความสถานะของคุณ...">
+        <button class="start-btn" onclick="updateStatus()">บันทึกสถานะ</button>
     </div>
 </div>
 
@@ -239,7 +256,7 @@ nav a:hover, nav a.active{ color:#22c9ff; }
     let currentChatListener = null;
 
     window.showPage = function(pageId){
-        if((pageId === 'friends' || pageId === 'chat') && !currentUser){
+        if((pageId === 'friends' || pageId === 'chat' || pageId === 'profile') && !currentUser){
             alert("กรุณาเข้าสู่ระบบก่อนใช้งานส่วนนี้ครับ");
             openAuth('login');
             return;
@@ -259,6 +276,10 @@ nav a:hover, nav a.active{ color:#22c9ff; }
             document.getElementById('pageChat').classList.add('active');
             document.getElementById('navChat').classList.add('active');
             renderSidebarFriends();
+        } else if(pageId === 'profile'){
+            document.getElementById('pageProfile').classList.add('active');
+            document.getElementById('navProfile').classList.add('active');
+            loadProfile();
         }
     };
 
@@ -289,7 +310,7 @@ nav a:hover, nav a.active{ color:#22c9ff; }
             if (snapshot.exists()) {
                 alert("ชื่อผู้ใช้นี้มีในระบบแล้ว");
             } else {
-                set(ref(db, `users/${u}`), { username: u, registeredAt: Date.now() });
+                set(ref(db, `users/${u}`), { username: u, status: "ยินดีต้อนรับสู่ Student Chat!" });
                 currentUser = u;
                 localStorage.setItem("activeUser", currentUser);
                 updateHeader();
@@ -341,6 +362,7 @@ nav a:hover, nav a.active{ color:#22c9ff; }
         }
     }
 
+    // หน้าค้นหาเพื่อนและแสดงปุ่มตามสถานะ (คำขอ / เพื่อนแล้ว)
     window.renderUsers = function(){
         const grid = document.getElementById("usersListGrid");
         const searchText = document.getElementById("searchInput").value.toLowerCase();
@@ -352,42 +374,64 @@ nav a:hover, nav a.active{ color:#22c9ff; }
             onValue(ref(db, `friends/${currentUser}`), (friendSnap) => {
                 const friendsData = friendSnap.val() || {};
 
-                Object.keys(usersData).forEach(username => {
-                    if(username === currentUser) return;
-                    if(searchText && !username.toLowerCase().includes(searchText)) return;
+                onValue(ref(db, `requests/${currentUser}`), (reqSnap) => {
+                    const requestsData = reqSnap.val() || {};
 
-                    const isFriend = !!friendsData[username];
+                    Object.keys(usersData).forEach(username => {
+                        if(username === currentUser) return;
+                        if(searchText && !username.toLowerCase().includes(searchText)) return;
 
-                    const card = document.createElement("div");
-                    card.className = "user-card";
-                    card.innerHTML = `
-                        <div class="user-avatar">👤</div>
-                        <h4>${username}</h4>
-                        <button class="btn-friend ${isFriend ? 'btn-remove' : 'btn-add'}" id="btn-friend-${username}">
-                            ${isFriend ? 'ยกเลิกความเป็นเพื่อน' : '+ เพิ่มเพื่อน'}
-                        </button>
-                    `;
-                    grid.appendChild(card);
+                        const isFriend = !!friendsData[username];
+                        const hasRequest = !!requestsData[username];
 
-                    document.getElementById(`btn-friend-${username}`).addEventListener('click', () => {
-                        toggleFriend(username, isFriend);
+                        let btnText = "+ ส่งคำขอเป็นเพื่อน";
+                        let btnClass = "btn-add";
+                        let actionType = "sendRequest";
+
+                        if(isFriend){
+                            btnText = "ยกเลิกความเป็นเพื่อน";
+                            btnClass = "btn-remove";
+                            actionType = "removeFriend";
+                        } else if(hasRequest){
+                            btnText = "ยอมรับคำขอเป็นเพื่อน";
+                            btnClass = "btn-accept";
+                            actionType = "acceptRequest";
+                        }
+
+                        const card = document.createElement("div");
+                        card.className = "user-card";
+                        card.innerHTML = `
+                            <div class="user-avatar">👤</div>
+                            <h4>${username}</h4>
+                            <p style="font-size:12px; color:#aaaed0;">${usersData[username].status || ''}</p>
+                            <button class="btn-friend ${btnClass}" id="btn-act-${username}">
+                                ${btnText}
+                            </button>
+                        `;
+                        grid.appendChild(card);
+
+                        document.getElementById(`btn-act-${username}`).addEventListener('click', () => {
+                            if(actionType === "sendRequest"){
+                                set(ref(db, `requests/${username}/${currentUser}`), true);
+                                alert(`ส่งคำขอไปยัง ${username} แล้ว`);
+                            } else if(actionType === "acceptRequest"){
+                                set(ref(db, `friends/${currentUser}/${username}`), true);
+                                set(ref(db, `friends/${username}/${currentUser}`), true);
+                                remove(ref(db, `requests/${currentUser}/${username}`));
+                                alert(`คุณและ ${username} เป็นเพื่อนกันแล้ว`);
+                            } else if(actionType === "removeFriend"){
+                                remove(ref(db, `friends/${currentUser}/${username}`));
+                                remove(ref(db, `friends/${username}/${currentUser}`));
+                            }
+                            renderUsers();
+                        });
                     });
-                });
+                }, { onlyOnce: true });
             }, { onlyOnce: true });
         });
     };
 
-    function toggleFriend(targetUsername, isFriend){
-        if(isFriend){
-            remove(ref(db, `friends/${currentUser}/${targetUsername}`));
-            remove(ref(db, `friends/${targetUsername}/${currentUser}`));
-        } else {
-            set(ref(db, `friends/${currentUser}/${targetUsername}`), true);
-            set(ref(db, `friends/${targetUsername}/${currentUser}`), true);
-        }
-        renderUsers();
-    }
-
+    // แสดงเพื่อนในแถบข้างแชท
     function renderSidebarFriends(){
         const list = document.getElementById("sidebarFriendsList");
         list.innerHTML = "";
@@ -397,7 +441,7 @@ nav a:hover, nav a.active{ color:#22c9ff; }
             const friendsData = snapshot.val();
 
             if(!friendsData){
-                list.innerHTML = `<div style="text-align:center; color:#aaa; font-size:12px; margin-top:20px;">ยังไม่มีเพื่อน<br>ไปที่ "ค้นหาเพื่อน" เพื่อเพิ่มเพื่อนก่อนครับ</div>`;
+                list.innerHTML = `<div style="text-align:center; color:#aaa; font-size:12px; margin-top:20px;">ยังไม่มีเพื่อน<br>ไปที่ "ค้นหาเพื่อน" เพื่อส่งคำขอครับ</div>`;
                 return;
             }
 
@@ -455,6 +499,27 @@ nav a:hover, nav a.active{ color:#22c9ff; }
             msgArea.scrollTop = msgArea.scrollHeight;
         });
     }
+
+    // หน้าโปรไฟล์
+    function loadProfile(){
+        document.getElementById("profileUsername").innerText = currentUser;
+        get(child(ref(db), `users/${currentUser}`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                document.getElementById("profileStatusDisplay").innerText = `"${data.status || 'ยังไม่มีสถานะ'}"`;
+            }
+        });
+    }
+
+    window.updateStatus = function(){
+        const statusText = document.getElementById("statusInput").value.trim();
+        if(!statusText) return;
+
+        set(ref(db, `users/${currentUser}/status`), statusText);
+        document.getElementById("profileStatusDisplay").innerText = `"${statusText}"`;
+        document.getElementById("statusInput").value = "";
+        alert("อัปเดตสถานะโปรไฟล์เรียบร้อยครับ!");
+    };
 
     updateHeader();
 </script>
