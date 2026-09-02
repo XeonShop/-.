@@ -272,8 +272,15 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         </div>
         <h3 id="profileUsername">ชื่อผู้ใช้</h3>
         <p id="profileStatusDisplay">"ยังไม่มีสถานะ"</p>
+        
         <input type="text" id="statusInput" class="status-input" placeholder="พิมพ์ข้อความสถานะใหม่...">
-        <button class="start-btn" onclick="updateStatus()">บันทึกสถานะ</button>
+        <button class="start-btn" style="margin-bottom: 15px;" onclick="updateStatus()">บันทึกสถานะ</button>
+
+        <div style="border-top: 1px solid rgba(255,255,255,.1); padding-top: 15px; text-align: left;">
+            <label style="display:block; font-size:12px; color:#aaaed0; margin-bottom:5px;">เปลี่ยนชื่อผู้ใช้ (เปลี่ยนได้ทุกๆ 7 วัน)</label>
+            <input type="text" id="newUsernameInput" class="status-input" placeholder="กรอกชื่อผู้ใช้ใหม่...">
+            <button class="start-btn" style="background:linear-gradient(90deg, #f59e0b, #ef4444); max-width:100%;" onclick="handleUpdateUsername()">เปลี่ยนชื่อ</button>
+        </div>
     </div>
 </div>
 
@@ -407,7 +414,8 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                 set(ref(db, `users/${u}`), { 
                     username: u, 
                     status: "ยินดีต้อนรับสู่ Student Chat!",
-                    avatar: DEFAULT_AVATAR
+                    avatar: DEFAULT_AVATAR,
+                    lastUsernameChange: 0
                 });
                 currentUser = u;
                 localStorage.setItem("activeUser", currentUser);
@@ -880,6 +888,61 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         document.getElementById("profileStatusDisplay").innerText = `"${statusText}"`;
         document.getElementById("statusInput").value = "";
         alert("อัปเดตสถานะเรียบร้อยครับ!");
+    };
+
+    window.handleUpdateUsername = function(){
+        const newUsername = document.getElementById("newUsernameInput").value.trim();
+        if(!newUsername) {
+            alert("กรุณากรอกชื่อใหม่ครับ");
+            return;
+        }
+
+        if(newUsername === currentUser) {
+            alert("นี่คือชื่อปัจจุบันของคุณอยู่แล้วครับ");
+            return;
+        }
+
+        const userRef = ref(db, `users/${currentUser}`);
+        
+        get(child(userRef, "lastUsernameChange")).then((snapshot) => {
+            const lastChangeTime = snapshot.exists() ? snapshot.val() : 0;
+            const sevenDaysInMillis = 7 * 24 * 60 * 60 * 1000;
+            const now = Date.now();
+
+            if (lastChangeTime && (now - lastChangeTime < sevenDaysInMillis)) {
+                const daysLeft = Math.ceil((sevenDaysInMillis - (now - lastChangeTime)) / (1000 * 60 * 60 * 24));
+                alert(`คุณเพิ่งเปลี่ยนชื่อไป กรุณารออีก ${daysLeft} วัน จึงจะสามารถเปลี่ยนชื่อใหม่ได้ครับ`);
+                return;
+            }
+
+            get(child(ref(db), `users/${newUsername}`)).then((nameSnap) => {
+                if (nameSnap.exists()) {
+                    alert("ชื่อผู้ใช้นี้ถูกใช้งานแล้ว กรุณาใช้ชื่ออื่น");
+                } else {
+                    // สร้างโหนดผู้ใช้ใหม่ด้วยชื่อใหม่ ดึงข้อมูลเก่ามาใส่ แล้วลบโหนดเก่าออก
+                    get(userRef).then((userSnap) => {
+                        if(userSnap.exists()){
+                            const userData = userSnap.val();
+                            userData.username = newUsername;
+                            userData.lastUsernameChange = now;
+
+                            // บันทึกข้อมูลลงชื่อใหม่ และอัปเดตเวลาล็อก 7 วัน
+                            set(ref(db, `users/${newUsername}`), userData).then(() => {
+                                // ลบข้อมูลชื่อเก่าทิ้ง
+                                remove(userRef).then(() => {
+                                    currentUser = newUsername;
+                                    localStorage.setItem("activeUser", currentUser);
+                                    updateHeader();
+                                    loadProfile();
+                                    document.getElementById("newUsernameInput").value = "";
+                                    alert("เปลี่ยนชื่อสำเร็จ! (ระบบได้ทำการล็อกการเปลี่ยนชื่อเป็นเวลา 7 วันแล้ว)");
+                                });
+                            });
+                        }
+                    });
+                }
+            });
+        });
     };
 
     updateHeader();
