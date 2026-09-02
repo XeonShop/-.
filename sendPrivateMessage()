@@ -1,0 +1,25 @@
+function sendPrivateMessage(){
+    const input = document.getElementById("msgInput");
+    const text = input.value.trim();
+
+    // แจ้งเตือนทันทีถ้ายังไม่ได้เลือกผู้รับ
+    if(!activeChatFriend){
+        alert("กรุณาคลิกเลือกชื่อคนที่จะคุยด้วยจากแถบด้านซ้ายก่อนครับ");
+        return;
+    }
+
+    if(!text) return;
+
+    let allChats = JSON.parse(localStorage.getItem("privateChatsDB")) || [];
+    const roomId = [currentUser.username, activeChatFriend].sort().join("_");
+
+    allChats.push({
+        room: roomId,
+        sender: currentUser.username,
+        text: text
+    });
+
+    localStorage.setItem("privateChatsDB", JSON.stringify(allChats));
+    input.value = "";
+    loadPrivateMessages();
+}
