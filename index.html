@@ -7,379 +7,289 @@
 <title>Student Chat</title>
 
 <style>
-
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
+    font-family:Arial, "Tahoma", sans-serif;
 }
 
 body{
-    font-family:Arial, "Tahoma", sans-serif;
-    background:#080b35;
+    background:#070b1d;
     color:white;
+    min-height:100vh;
 }
 
 /* ================= HEADER ================= */
 
 header{
-    height:80px;
+    height:75px;
     padding:0 7%;
     display:flex;
     align-items:center;
     justify-content:space-between;
-
-    background:rgba(5,7,35,0.9);
-    border-bottom:1px solid rgba(255,255,255,0.08);
-
-    position:relative;
-    z-index:10;
+    background:rgba(7,11,29,.85);
+    border-bottom:1px solid rgba(0,212,255,.15);
+    position:sticky;
+    top:0;
+    z-index:100;
+    backdrop-filter:blur(15px);
 }
 
 .logo{
+    font-size:25px;
+    font-weight:bold;
     display:flex;
     align-items:center;
     gap:10px;
-    font-size:26px;
-    font-weight:bold;
-}
-
-.logo-icon{
-    font-size:35px;
 }
 
 .logo span{
-    color:#8b5cf6;
+    color:#00d4ff;
 }
+
+.logo-icon{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#00d4ff,#7c3aed);
+    box-shadow:0 0 25px rgba(0,212,255,.35);
+}
+
+/* NAV */
 
 nav{
     display:flex;
-    gap:35px;
+    gap:30px;
 }
 
 nav a{
-    color:#ddd;
+    color:#d8e7ff;
     text-decoration:none;
     font-size:15px;
     transition:.3s;
 }
 
 nav a:hover{
-    color:#a855f7;
+    color:#00d4ff;
 }
+
+/* BUTTONS */
 
 .header-buttons{
     display:flex;
-    gap:15px;
+    gap:10px;
+}
+
+.header-buttons button{
+    padding:10px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:.3s;
 }
 
 .login{
-    padding:12px 22px;
-    border:1px solid #4935a5;
-    border-radius:15px;
+    background:transparent;
     color:white;
-    text-decoration:none;
-    background:none;
-    font-size:15px;
-    cursor:pointer;
-    font-family:inherit;
+    border:1px solid #315079;
+}
+
+.login:hover{
+    border-color:#00d4ff;
+    color:#00d4ff;
 }
 
 .signup{
-    padding:12px 22px;
-    border-radius:15px;
-    background:linear-gradient(135deg,#9333ea,#c026ff);
-    color:white;
-    text-decoration:none;
     border:none;
-    font-size:15px;
-    cursor:pointer;
-    font-family:inherit;
+    color:white;
+    background:linear-gradient(135deg,#00bfff,#6d28d9);
+    box-shadow:0 0 20px rgba(0,212,255,.2);
+}
+
+.signup:hover{
+    transform:translateY(-2px);
 }
 
 /* ================= HERO ================= */
 
 .hero{
     min-height:650px;
-    padding:80px 7% 110px;
-
+    padding:90px 7%;
     display:flex;
     align-items:center;
     justify-content:space-between;
-
-    position:relative;
-    overflow:hidden;
-
+    gap:50px;
     background:
-        radial-gradient(circle at 75% 40%,rgba(72,40,220,.35),transparent 30%),
-        linear-gradient(135deg,#080b35,#11136c,#080b35);
+        radial-gradient(circle at 20% 30%,rgba(0,212,255,.13),transparent 35%),
+        radial-gradient(circle at 80% 20%,rgba(124,58,237,.2),transparent 35%);
 }
-
-/* ดาว */
-
-.hero::before{
-    content:"";
-    position:absolute;
-    inset:0;
-
-    background-image:
-        radial-gradient(#4f8cff 1px,transparent 1px),
-        radial-gradient(#9b5cff 1px,transparent 1px);
-
-    background-size:100px 100px,150px 150px;
-    opacity:.4;
-}
-
-/* ข้อความ */
 
 .hero-text{
-    width:50%;
-    position:relative;
-    z-index:2;
+    max-width:650px;
 }
 
-.hero-text h1{
-    font-size:65px;
-    line-height:1.05;
+.badge{
+    display:inline-block;
+    padding:8px 16px;
+    border:1px solid rgba(0,212,255,.3);
+    border-radius:30px;
+    color:#00d4ff;
+    background:rgba(0,212,255,.05);
     margin-bottom:25px;
 }
 
-.gradient-text{
-    background:linear-gradient(90deg,#9b5cff,#24b8ff);
+.hero h1{
+    font-size:60px;
+    line-height:1.1;
+    margin-bottom:25px;
+}
+
+.hero h1 span{
+    background:linear-gradient(90deg,#00d4ff,#8b5cf6);
     -webkit-background-clip:text;
     color:transparent;
 }
 
-.hero-text h2{
-    font-size:25px;
-    margin-bottom:20px;
-}
-
-.hero-text p{
-    color:#b8b9d0;
+.hero p{
+    color:#aebbd0;
     font-size:18px;
     line-height:1.8;
-    max-width:600px;
-}
-
-/* ปุ่ม */
-
-.hero-buttons{
-    margin-top:35px;
-    display:flex;
-    gap:20px;
+    margin-bottom:35px;
 }
 
 .start-btn{
-    padding:17px 35px;
-    border-radius:15px;
-
-    background:linear-gradient(90deg,#22c9ff,#7c3aed);
-
-    color:white;
+    display:inline-block;
+    padding:16px 28px;
+    border-radius:14px;
     text-decoration:none;
-
+    color:white;
     font-weight:bold;
     font-size:17px;
-
-    box-shadow:0 10px 30px rgba(67,56,202,.4);
-
+    background:linear-gradient(135deg,#00bfff,#6d28d9);
+    box-shadow:0 10px 35px rgba(0,212,255,.25);
     transition:.3s;
 }
 
 .start-btn:hover{
     transform:translateY(-4px);
+    box-shadow:0 15px 45px rgba(0,212,255,.4);
 }
 
-.info-btn{
-    padding:17px 35px;
-
-    border:1px solid #6855db;
-    border-radius:15px;
-
-    color:white;
-    text-decoration:none;
-
-    transition:.3s;
-}
-
-.info-btn:hover{
-    background:rgba(255,255,255,.08);
-}
-
-/* ================= CHAT MOCKUP ================= */
+/* ================= CHAT PREVIEW ================= */
 
 .chat-preview{
-    width:450px;
-    height:530px;
-
-    position:relative;
-    z-index:2;
-
-    border-radius:30px;
-
-    background:
-        linear-gradient(145deg,#171a62,#0c0e43);
-
-    border:2px solid rgba(133,95,255,.6);
-
-    box-shadow:
-        0 0 50px rgba(90,50,255,.35),
-        inset 0 0 40px rgba(70,50,200,.2);
-
+    width:430px;
+    min-height:390px;
     padding:20px;
+    border-radius:25px;
+    background:rgba(18,25,55,.8);
+    border:1px solid rgba(0,212,255,.18);
+    box-shadow:0 25px 80px rgba(0,0,0,.4);
 }
 
-.chat-top{
+.chat-header{
     display:flex;
-    justify-content:space-between;
     align-items:center;
-
-    padding:10px;
-    border-bottom:1px solid rgba(255,255,255,.1);
+    gap:12px;
+    padding-bottom:18px;
+    border-bottom:1px solid rgba(255,255,255,.08);
 }
 
-.chat-title{
-    font-size:18px;
-    font-weight:bold;
+.online-dot{
+    width:10px;
+    height:10px;
+    background:#22c55e;
+    border-radius:50%;
+    box-shadow:0 0 12px #22c55e;
 }
 
-.chat-status{
-    color:#5eead4;
-    font-size:12px;
+.chat-header small{
+    color:#7d91ad;
 }
 
-/* ข้อความ */
-
-.chat-messages{
-    padding:20px 5px;
-}
-
-.chat-message{
+.message{
+    margin-top:20px;
     display:flex;
-    gap:10px;
-    margin-bottom:20px;
+    gap:12px;
 }
 
 .avatar{
     width:40px;
     height:40px;
-
     border-radius:50%;
-
     display:flex;
-    justify-content:center;
     align-items:center;
-
-    background:linear-gradient(135deg,#7c3aed,#22d3ee);
-
-    flex-shrink:0;
+    justify-content:center;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
 }
 
-.bubble{
-    background:#f8fafc;
-    color:#222;
-
+.message-box{
+    background:#111b3b;
     padding:12px 15px;
-
-    border-radius:15px;
-
-    font-size:13px;
-    line-height:1.5;
+    border-radius:14px;
+    max-width:280px;
 }
 
-.bubble.code{
-    background:#111827;
-    color:#67e8f9;
-
-    font-family:monospace;
+.message-box b{
+    color:#00d4ff;
+    display:block;
+    margin-bottom:5px;
 }
 
-/* ช่องพิมพ์ */
-
-.chat-input{
-    position:absolute;
-
-    bottom:20px;
-    left:20px;
-    right:20px;
-
-    display:flex;
-
-    background:#12154c;
-
-    border:1px solid #343785;
-
-    border-radius:30px;
-
-    padding:7px;
-}
-
-.chat-input span{
-    flex:1;
-    padding:10px 15px;
-    color:#777caa;
-}
-
-.send{
-    width:45px;
-    height:45px;
-
-    border-radius:50%;
-
-    background:#7c3aed;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
+.message-box p{
+    color:#d9e2f0;
+    font-size:14px;
 }
 
 /* ================= FEATURES ================= */
 
 .features{
-    background:#f5f6ff;
-    color:#1e2450;
+    padding:80px 7%;
+}
 
-    padding:70px 7% 100px;
+.section-title{
+    text-align:center;
+    margin-bottom:50px;
+}
 
+.section-title h2{
+    font-size:38px;
+    margin-bottom:12px;
+}
+
+.section-title p{
+    color:#8797b0;
+}
+
+.feature-grid{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-
     gap:20px;
-
-    position:relative;
 }
 
 .feature-card{
-    background:white;
-
+    padding:30px;
     border-radius:20px;
-
-    padding:30px 25px;
-
-    box-shadow:0 10px 30px rgba(30,40,100,.1);
-
+    background:linear-gradient(
+        145deg,
+        rgba(21,31,65,.9),
+        rgba(10,15,35,.9)
+    );
+    border:1px solid rgba(255,255,255,.07);
     transition:.3s;
 }
 
 .feature-card:hover{
-    transform:translateY(-8px);
+    transform:translateY(-7px);
+    border-color:rgba(0,212,255,.4);
 }
 
 .feature-icon{
-    width:55px;
-    height:55px;
-
-    border-radius:15px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    font-size:28px;
-
-    background:linear-gradient(135deg,#7c3aed,#38bdf8);
-
+    font-size:35px;
     margin-bottom:20px;
 }
 
@@ -388,60 +298,176 @@ nav a:hover{
 }
 
 .feature-card p{
-    color:#686b87;
-    line-height:1.6;
-    font-size:14px;
+    color:#91a0b8;
+    line-height:1.7;
 }
 
 /* ================= STATS ================= */
 
 .stats{
-    margin:-45px auto 60px;
-
-    width:80%;
-
-    position:relative;
-    z-index:5;
-
-    background:#171b67;
-
-    border-radius:60px;
-
-    padding:25px;
-
+    padding:40px 7% 80px;
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
 
+.stat{
     text-align:center;
-
-    box-shadow:0 15px 40px rgba(0,0,0,.2);
+    padding:30px;
+    background:#0e1530;
+    border-radius:20px;
+    border:1px solid rgba(0,212,255,.1);
 }
 
 .stat h2{
-    font-size:28px;
-    color:#38bdf8;
+    font-size:38px;
+    color:#00d4ff;
 }
 
 .stat p{
-    color:#aaaed0;
-    font-size:13px;
+    color:#8797b0;
+    margin-top:8px;
+}
+
+/* ================= ONLINE ================= */
+
+.online-section{
+    padding:20px 7% 80px;
+}
+
+.online-box{
+    max-width:700px;
+    margin:auto;
+    padding:30px;
+    text-align:center;
+    border-radius:25px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(16,42,45,.8),
+            rgba(11,25,42,.8)
+        );
+    border:1px solid rgba(34,197,94,.2);
+}
+
+.online-status{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.green-dot{
+    width:13px;
+    height:13px;
+    background:#22c55e;
+    border-radius:50%;
+    box-shadow:0 0 15px #22c55e;
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+    0%,100%{
+        transform:scale(1);
+        opacity:1;
+    }
+    50%{
+        transform:scale(1.4);
+        opacity:.6;
+    }
+}
+
+.online-number{
+    font-size:45px;
+    font-weight:bold;
+    color:#22c55e;
+    margin:10px 0;
+}
+
+.online-box p{
+    color:#8797b0;
 }
 
 /* ================= FOOTER ================= */
 
 footer{
-    background:#080b35;
-
+    padding:30px 7%;
     text-align:center;
+    border-top:1px solid rgba(255,255,255,.06);
+    color:#64748b;
+}
 
-    padding:30px;
+/* ================= LOGIN ================= */
 
-    color:#8f93b8;
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.75);
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+}
+
+.modal.active{
+    display:flex;
+}
+
+.auth-box{
+    width:400px;
+    padding:35px;
+    border-radius:25px;
+    background:#101831;
+    border:1px solid rgba(0,212,255,.25);
+    box-shadow:0 20px 80px rgba(0,0,0,.6);
+}
+
+.auth-box h2{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.auth-box input{
+    width:100%;
+    padding:14px;
+    margin-bottom:15px;
+    border-radius:10px;
+    border:1px solid #293858;
+    background:#080e22;
+    color:white;
+    outline:none;
+}
+
+.auth-box input:focus{
+    border-color:#00d4ff;
+}
+
+.auth-submit{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:linear-gradient(135deg,#00bfff,#6d28d9);
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.close{
+    float:right;
+    cursor:pointer;
+    font-size:22px;
+    color:#8291aa;
 }
 
 /* ================= MOBILE ================= */
 
-@media(max-width:900px){
+@media(max-width:1000px){
+
+    header{
+        padding:0 4%;
+    }
 
     nav{
         display:none;
@@ -450,218 +476,54 @@ footer{
     .hero{
         flex-direction:column;
         text-align:center;
-        gap:60px;
+        padding:70px 5%;
     }
 
-    .hero-text{
-        width:100%;
-    }
-
-    .hero-text h1{
-        font-size:45px;
-    }
-
-    .hero-buttons{
-        justify-content:center;
+    .hero h1{
+        font-size:43px;
     }
 
     .chat-preview{
         width:100%;
-        max-width:450px;
+        max-width:430px;
     }
 
-    .features{
+    .feature-grid{
         grid-template-columns:repeat(2,1fr);
     }
-
 }
 
 @media(max-width:600px){
-
-    header{
-        padding:0 20px;
-    }
-
-    .header-buttons{
-        display:none;
-    }
 
     .logo{
         font-size:20px;
     }
 
-    .hero{
-        padding:60px 20px 100px;
+    .header-buttons button{
+        padding:8px 10px;
+        font-size:12px;
     }
 
-    .hero-text h1{
-        font-size:38px;
+    .hero h1{
+        font-size:35px;
     }
 
-    .hero-text h2{
-        font-size:20px;
-    }
-
-    .hero-text p{
+    .hero p{
         font-size:15px;
     }
 
-    .hero-buttons{
-        flex-direction:column;
-    }
-
-    .features{
+    .feature-grid{
         grid-template-columns:1fr;
-        padding:50px 20px;
     }
 
     .stats{
-        width:90%;
-        grid-template-columns:repeat(2,1fr);
-        gap:25px;
-        border-radius:25px;
+        grid-template-columns:1fr;
     }
 
+    .auth-box{
+        width:90%;
+    }
 }
-
-/* ================= AUTH MODAL (เข้าสู่ระบบ / สมัครสมาชิก) ================= */
-
-.auth-overlay{
-    display:none;
-
-    position:fixed;
-    inset:0;
-
-    background:rgba(5,6,25,.75);
-
-    z-index:100;
-
-    align-items:center;
-    justify-content:center;
-
-    padding:20px;
-}
-
-.auth-overlay.active{
-    display:flex;
-}
-
-.auth-box{
-    width:100%;
-    max-width:400px;
-
-    background:linear-gradient(160deg,#171a62,#0c0e43);
-
-    border:1px solid rgba(133,95,255,.5);
-    border-radius:25px;
-
-    padding:35px 30px;
-
-    position:relative;
-
-    box-shadow:0 20px 60px rgba(0,0,0,.4);
-}
-
-.auth-close{
-    position:absolute;
-    top:18px;
-    right:20px;
-
-    background:none;
-    border:none;
-
-    color:#aaaed0;
-    font-size:20px;
-    cursor:pointer;
-    line-height:1;
-}
-
-.auth-close:hover{
-    color:white;
-}
-
-.auth-box h2{
-    font-size:24px;
-    margin-bottom:6px;
-}
-
-.auth-box .auth-sub{
-    color:#aaaed0;
-    font-size:14px;
-    margin-bottom:25px;
-}
-
-.auth-field{
-    margin-bottom:16px;
-}
-
-.auth-field label{
-    display:block;
-    font-size:13px;
-    color:#c4c6e6;
-    margin-bottom:6px;
-}
-
-.auth-field input{
-    width:100%;
-
-    padding:12px 14px;
-
-    border-radius:12px;
-    border:1px solid #343785;
-
-    background:#0e1044;
-    color:white;
-
-    font-size:14px;
-    font-family:inherit;
-}
-
-.auth-field input:focus{
-    outline:none;
-    border-color:#8b5cf6;
-}
-
-.auth-submit{
-    width:100%;
-
-    padding:13px;
-    margin-top:6px;
-
-    border:none;
-    border-radius:12px;
-
-    background:linear-gradient(90deg,#22c9ff,#7c3aed);
-
-    color:white;
-    font-weight:bold;
-    font-size:15px;
-    font-family:inherit;
-
-    cursor:pointer;
-
-    box-shadow:0 10px 25px rgba(67,56,202,.4);
-}
-
-.auth-switch{
-    text-align:center;
-    margin-top:20px;
-    font-size:13px;
-    color:#aaaed0;
-}
-
-.auth-switch button{
-    background:none;
-    border:none;
-
-    color:#a855f7;
-    font-weight:bold;
-    font-family:inherit;
-    font-size:13px;
-
-    cursor:pointer;
-}
-
 </style>
 </head>
 
@@ -677,16 +539,18 @@ footer{
     </div>
 
     <nav>
-        <a href="#">🏠 หน้าแรก</a>
-        <a href="#chat">💬 ห้องพูดคุย</a>
-        <a href="#categories">▦ หมวดหมู่</a>
-        <a href="#about">❕ เกี่ยวกับเรา</a>
-        <a href="#contact">☻ ติดต่อเรา</a>
+        <a href="index.html">🏠 หน้าแรก</a>
+        <a href="chat.html">💬 ห้องแชท</a>
     </nav>
 
     <div class="header-buttons">
-        <button type="button" class="login" onclick="openAuth('login')">เข้าสู่ระบบ</button>
-        <button type="button" class="signup" onclick="openAuth('signup')">สมัครสมาชิก</button>
+        <button class="login" onclick="openAuth('login')">
+            เข้าสู่ระบบ
+        </button>
+
+        <button class="signup" onclick="openAuth('signup')">
+            สมัครสมาชิก
+        </button>
     </div>
 
 </header>
@@ -698,117 +562,91 @@ footer{
 
     <div class="hero-text">
 
+        <div class="badge">
+            ✨ Community สำหรับนักเรียน
+        </div>
+
         <h1>
-            ห้องพูดคุย<br>
-            <span class="gradient-text">สำหรับนักเรียน</span>
+            พูดคุย<br>
+            <span>เรียนรู้ไปด้วยกัน</span>
         </h1>
 
-        <h2>
-            ถาม-ตอบ แลกเปลี่ยนความรู้ ช่วยกันหาคำตอบ
-        </h2>
-
         <p>
-            ไม่ว่าจะเป็นการบ้าน การเรียน โค้ด
-            หรือข้อสงสัยต่าง ๆ
-            มาร่วมพูดคุยและเรียนรู้ไปด้วยกัน
-            ในชุมชนของเรา
+            พื้นที่สำหรับนักเรียนในการพูดคุย
+            ถามการบ้าน แลกเปลี่ยนความรู้
+            ช่วยกันแก้ปัญหา และพูดคุยเรื่องที่สนใจ
         </p>
 
-        <div class="hero-buttons">
-
-            <a href="#chat" class="start-btn">
-                🏠 เริ่มต้นพูดคุยเลย
-            </a>
-
-            <a href="#about" class="info-btn">
-                ▶ ดูวิธีการใช้งาน
-            </a>
-
-        </div>
+        <a href="chat.html" class="start-btn">
+            💬 เริ่มต้นพูดคุยเลย
+        </a>
 
     </div>
 
 
-    <!-- CHAT -->
+    <!-- CHAT PREVIEW -->
 
-    <div class="chat-preview" id="chat">
+    <div class="chat-preview">
 
-        <div class="chat-top">
+        <div class="chat-header">
 
-            <div class="chat-title">
-                ☰ &nbsp; # ห้องพูดคุยทั่วไป
-            </div>
+            <div class="online-dot"></div>
 
-            <div class="chat-status">
-                ● ออนไลน์
+            <div>
+                <b>ห้องพูดคุยทั่วไป</b>
+                <br>
+                <small>กำลังออนไลน์</small>
             </div>
 
         </div>
 
 
-        <div class="chat-messages">
+        <div class="message">
 
-            <div class="chat-message">
+            <div class="avatar">👨🏻</div>
 
-                <div class="avatar">
-                    👦
-                </div>
+            <div class="message-box">
 
-                <div class="bubble">
-                    <b>น้องนาย</b><br>
-                    สอบถามเรื่องการบ้านคณิตหน่อยครับ
-                    ข้อนี้ต้องทำยังไงบ้างครับ?
-                    <small>10:30</small>
-                </div>
+                <b>นนท์</b>
 
-            </div>
-
-
-            <div class="chat-message">
-
-                <div class="avatar">
-                    👧
-                </div>
-
-                <div class="bubble">
-                    <b>ครูยุ้ย</b><br>
-                    ลองใช้สูตรนี้ดูนะคะ
-                    น่าจะช่วยได้
-                    <small>10:32</small>
-                </div>
-
-            </div>
-
-
-            <div class="chat-message">
-
-                <div class="avatar">
-                    👨‍🏫
-                </div>
-
-                <div class="bubble code">
-
-                    <b>ครูออม ⭐</b><br><br>
-
-                    for (let i = 0; i < 5; i++) {<br>
-                    &nbsp;&nbsp;console.log(i);<br>
-                    }
-
-                </div>
+                <p>
+                    มีใครช่วยสอนข้อนี้หน่อยได้ไหมครับ?
+                </p>
 
             </div>
 
         </div>
 
 
-        <div class="chat-input">
+        <div class="message">
 
-            <span>
-                พิมพ์ข้อความ...
-            </span>
+            <div class="avatar">👩🏻</div>
 
-            <div class="send">
-                ➤
+            <div class="message-box">
+
+                <b>มิน</b>
+
+                <p>
+                    ได้เลย เดี๋ยวเราช่วยอธิบายให้ 😊
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="message">
+
+            <div class="avatar">👨🏻‍💻</div>
+
+            <div class="message-box">
+
+                <b>ต้น</b>
+
+                <p>
+                    ใครเขียน HTML เป็นบ้างครับ?
+                </p>
+
             </div>
 
         </div>
@@ -820,77 +658,75 @@ footer{
 
 <!-- ================= FEATURES ================= -->
 
-<section class="features" id="categories">
+<section class="features">
 
-    <div class="feature-card">
+    <div class="section-title">
 
-        <div class="feature-icon">
-            💬
-        </div>
-
-        <h3>
-            ถาม-ตอบได้ทุกเรื่อง
-        </h3>
+        <h2>สิ่งที่ทำได้ใน Student Chat</h2>
 
         <p>
-            ไม่ว่าจะเป็นการบ้าน การเรียน
-            หรือเรื่องที่สงสัย
-            สามารถถามเพื่อน ๆ ได้เลย!
+            พูดคุย เรียนรู้ และช่วยเหลือกัน
         </p>
 
     </div>
 
 
-    <div class="feature-card">
+    <div class="feature-grid">
 
-        <div class="feature-icon">
-            👥
+        <div class="feature-card">
+
+            <div class="feature-icon">💬</div>
+
+            <h3>ห้องพูดคุย</h3>
+
+            <p>
+                เข้าร่วมพูดคุยกับเพื่อน ๆ
+                และแลกเปลี่ยนความคิดเห็น
+            </p>
+
         </div>
 
-        <h3>
-            ชุมชนนักเรียน
-        </h3>
 
-        <p>
-            พบเพื่อนใหม่ แลกเปลี่ยนความรู้
-            และช่วยกันหาคำตอบ
-        </p>
+        <div class="feature-card">
 
-    </div>
+            <div class="feature-icon">📚</div>
 
+            <h3>ช่วยการบ้าน</h3>
 
-    <div class="feature-card">
+            <p>
+                ถามโจทย์การบ้าน
+                และช่วยกันหาคำตอบ
+            </p>
 
-        <div class="feature-icon">
-            &lt;/&gt;
         </div>
 
-        <h3>
-            ขอ Code / แชร์โค้ด
-        </h3>
 
-        <p>
-            ขอคำแนะนำ ช่วยแก้โค้ด
-            หรือแชร์ความรู้ด้านการเขียนโปรแกรม
-        </p>
+        <div class="feature-card">
 
-    </div>
+            <div class="feature-icon">💻</div>
 
+            <h3>เขียนโปรแกรม</h3>
 
-    <div class="feature-card">
+            <p>
+                พูดคุยเกี่ยวกับ HTML CSS
+                JavaScript และการเขียนโค้ด
+            </p>
 
-        <div class="feature-icon">
-            🏆
         </div>
 
-        <h3>
-            ระบบเกียรติยศ
-        </h3>
 
-        <p>
-            สะสมแต้มจากการช่วยเหลือเพื่อน
-            และไต่อันดับในกระดานคะแนน
-        </p>
+        <div class="feature-card">
+
+            <div class="feature-icon">🤝</div>
+
+            <h3>ช่วยเหลือกัน</h3>
+
+            <p>
+                สร้างสังคมที่ทุกคนสามารถ
+                ช่วยกันเรียนรู้ได้
+            </p>
+
+        </div>
 
     </div>
 
@@ -902,134 +738,105 @@ footer{
 <section class="stats">
 
     <div class="stat">
-        <h2>2,543</h2>
-        <p>สมาชิกทั้งหมด</p>
+
+        <h2>6+</h2>
+
+        <p>
+            ห้องพูดคุย
+        </p>
+
     </div>
 
-    <div class="stat">
-        <h2>12,846</h2>
-        <p>ข้อความทั้งหมด</p>
-    </div>
 
     <div class="stat">
-        <h2>3,892</h2>
-        <p>คำถามที่ถูกถาม</p>
+
+        <h2>24/7</h2>
+
+        <p>
+            เปิดให้พูดคุย
+        </p>
+
     </div>
 
+
     <div class="stat">
-        <h2>1,245</h2>
-        <p>ผู้ช่วยเหลือดีเด่น</p>
+
+        <h2>∞</h2>
+
+        <p>
+            การเรียนรู้
+        </p>
+
     </div>
 
 </section>
 
 
-<!-- ================= ABOUT ================= -->
+<!-- ================= ONLINE ================= -->
 
-<section id="about" style="
-padding:80px 10%;
-background:#0f1248;
-text-align:center;
-">
+<section class="online-section">
 
-    <h2 style="font-size:35px;margin-bottom:20px;">
-        📚 เรียนรู้ไปด้วยกัน
-    </h2>
+    <div class="online-box">
 
-    <p style="
-    color:#aaaed0;
-    max-width:700px;
-    margin:auto;
-    line-height:1.8;
-    ">
-        Student Chat คือพื้นที่สำหรับนักเรียน
-        ที่ต้องการพูดคุย แลกเปลี่ยนความรู้
-        ถามการบ้าน ขอคำแนะนำเกี่ยวกับโค้ด
-        และช่วยเหลือซึ่งกันและกัน
-    </p>
+        <div class="online-status">
+
+            <div class="green-dot"></div>
+
+            <b>ONLINE NOW</b>
+
+        </div>
+
+        <div class="online-number" id="onlineCount">
+            24
+        </div>
+
+        <p>
+            คนกำลังออนไลน์และพูดคุยกันอยู่ตอนนี้
+        </p>
+
+    </div>
 
 </section>
 
 
 <!-- ================= FOOTER ================= -->
 
-<footer id="contact">
+<footer>
 
-    💬 Student Chat
-
-    <br><br>
-
-    © 2026 Student Chat | ห้องพูดคุยสำหรับนักเรียน
+    © 2026 Student Chat
+    • Community สำหรับนักเรียน
 
 </footer>
 
 
-<!-- ================= AUTH MODAL (เข้าสู่ระบบ / สมัครสมาชิก) ================= -->
+<!-- ================= LOGIN MODAL ================= -->
 
-<div class="auth-overlay" id="authOverlay">
+<div class="modal" id="authModal">
 
-    <!-- ฟอร์มเข้าสู่ระบบ -->
-    <div class="auth-box" id="loginBox">
+    <div class="auth-box">
 
-        <button type="button" class="auth-close" onclick="closeAuth()">✕</button>
+        <span class="close" onclick="closeAuth()">✕</span>
 
-        <h2>เข้าสู่ระบบ</h2>
-        <p class="auth-sub">ยินดีต้อนรับกลับมาที่ Student Chat</p>
+        <h2 id="authTitle">
+            เข้าสู่ระบบ
+        </h2>
 
-        <form onsubmit="return false;">
+        <input
+            type="text"
+            placeholder="ชื่อผู้ใช้"
+        >
 
-            <div class="auth-field">
-                <label for="loginEmail">อีเมล หรือ ชื่อผู้ใช้</label>
-                <input type="text" id="loginEmail" placeholder="กรอกอีเมลหรือชื่อผู้ใช้" required>
-            </div>
+        <input
+            type="password"
+            placeholder="รหัสผ่าน"
+        >
 
-            <div class="auth-field">
-                <label for="loginPassword">รหัสผ่าน</label>
-                <input type="password" id="loginPassword" placeholder="กรอกรหัสผ่าน" required>
-            </div>
-
-            <button type="submit" class="auth-submit">เข้าสู่ระบบ</button>
-
-        </form>
-
-        <div class="auth-switch">
-            ยังไม่มีบัญชี? <button type="button" onclick="switchAuth('signup')">สมัครสมาชิก</button>
-        </div>
-
-    </div>
-
-    <!-- ฟอร์มสมัครสมาชิก -->
-    <div class="auth-box" id="signupBox" style="display:none;">
-
-        <button type="button" class="auth-close" onclick="closeAuth()">✕</button>
-
-        <h2>สมัครสมาชิก</h2>
-        <p class="auth-sub">เข้าร่วมชุมชน Student Chat วันนี้</p>
-
-        <form onsubmit="return false;">
-
-            <div class="auth-field">
-                <label for="signupName">ชื่อผู้ใช้</label>
-                <input type="text" id="signupName" placeholder="ตั้งชื่อผู้ใช้ของคุณ" required>
-            </div>
-
-            <div class="auth-field">
-                <label for="signupEmail">อีเมล</label>
-                <input type="email" id="signupEmail" placeholder="กรอกอีเมลของคุณ" required>
-            </div>
-
-            <div class="auth-field">
-                <label for="signupPassword">รหัสผ่าน</label>
-                <input type="password" id="signupPassword" placeholder="ตั้งรหัสผ่าน" required>
-            </div>
-
-            <button type="submit" class="auth-submit">สมัครสมาชิก</button>
-
-        </form>
-
-        <div class="auth-switch">
-            มีบัญชีอยู่แล้ว? <button type="button" onclick="switchAuth('login')">เข้าสู่ระบบ</button>
-        </div>
+        <button
+            class="auth-submit"
+            onclick="loginDemo()"
+        >
+            ดำเนินการต่อ
+        </button>
 
     </div>
 
@@ -1038,34 +845,74 @@ text-align:center;
 
 <script>
 
+/* ================= AUTH ================= */
+
 function openAuth(type){
-    document.getElementById('authOverlay').classList.add('active');
-    switchAuth(type);
+
+    const modal = document.getElementById("authModal");
+    const title = document.getElementById("authTitle");
+
+    if(type === "signup"){
+        title.innerText = "สมัครสมาชิก";
+    }else{
+        title.innerText = "เข้าสู่ระบบ";
+    }
+
+    modal.classList.add("active");
 }
+
 
 function closeAuth(){
-    document.getElementById('authOverlay').classList.remove('active');
+
+    document
+        .getElementById("authModal")
+        .classList.remove("active");
+
 }
 
-function switchAuth(type){
-    const loginBox = document.getElementById('loginBox');
-    const signupBox = document.getElementById('signupBox');
 
-    if(type === 'signup'){
-        loginBox.style.display = 'none';
-        signupBox.style.display = 'block';
-    } else {
-        signupBox.style.display = 'none';
-        loginBox.style.display = 'block';
+function loginDemo(){
+
+    alert("ฟังก์ชันระบบสมาชิกจะเชื่อมต่อในขั้นตอนต่อไป");
+
+}
+
+
+/* ================= ONLINE COUNTER ================= */
+
+let online = 24;
+
+function updateOnline(){
+
+    const change =
+        Math.floor(Math.random() * 5) - 2;
+
+    online += change;
+
+    if(online < 10){
+        online = 10;
     }
+
+    document.getElementById("onlineCount")
+        .innerText = online;
+
 }
 
-// ปิด modal เมื่อคลิกพื้นหลังด้านนอกกล่อง
-document.getElementById('authOverlay').addEventListener('click', function(e){
-    if(e.target === this){
+setInterval(updateOnline,5000);
+
+
+/* ================= CLOSE MODAL ================= */
+
+window.onclick = function(event){
+
+    const modal =
+        document.getElementById("authModal");
+
+    if(event.target === modal){
         closeAuth();
     }
-});
+
+}
 
 </script>
 
