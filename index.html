@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Chat</title>
+<title>Student Chat - ระบบสมาชิก</title>
 
 <style>
 *{
@@ -19,8 +19,7 @@ body{
     min-height:100vh;
 }
 
-/* ================= HEADER ================= */
-
+/* Header */
 header{
     height:70px;
     padding:0 6%;
@@ -44,6 +43,7 @@ header{
 nav{
     display:flex;
     gap:8px;
+    align-items:center;
 }
 
 nav a{
@@ -52,16 +52,36 @@ nav a{
     padding:10px 14px;
     border-radius:10px;
     transition:.3s;
+    cursor:pointer;
 }
 
-nav a:hover,
-nav a.active{
+nav a:hover, nav a.active{
     background:#302461;
     color:#00d9ff;
 }
 
-/* ================= PAGE ================= */
+.auth-nav-btn{
+    background:linear-gradient(135deg,#6847ff,#00bfff);
+    color:white !important;
+    border:none;
+    padding:8px 16px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    margin-left:10px;
+}
 
+.user-profile-tag{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#1c1847;
+    padding:6px 12px;
+    border-radius:20px;
+    border:1px solid #3d357a;
+}
+
+/* Page Control */
 .page{
     display:none;
     min-height:calc(100vh - 70px);
@@ -71,17 +91,12 @@ nav a.active{
     display:block;
 }
 
-/* ================= HOME ================= */
-
+/* Home */
 .home{
     max-width:1150px;
     margin:auto;
     padding:70px 25px;
-}
-
-.hero{
     text-align:center;
-    padding:50px 20px;
 }
 
 .hero h1{
@@ -92,384 +107,87 @@ nav a.active{
     color:transparent;
 }
 
-.hero p{
-    color:#aaa;
-    font-size:18px;
-    line-height:1.7;
-    max-width:700px;
-    margin:auto;
-}
-
 .start-btn{
-    display:inline-block;
     margin-top:30px;
     padding:15px 30px;
     border-radius:14px;
     background:linear-gradient(135deg,#6847ff,#00bfff);
     color:white;
-    text-decoration:none;
     font-weight:bold;
     border:none;
     cursor:pointer;
     font-size:16px;
 }
 
-.online-box{
-    margin:35px auto;
-    width:max-content;
-    padding:12px 22px;
-    background:#151532;
-    border:1px solid #34316b;
-    border-radius:30px;
+/* Auth Modal Form */
+.auth-container{
+    max-width:400px;
+    margin:60px auto;
+    background:rgba(20,18,50,0.95);
+    border:1px solid #3b3378;
+    padding:35px 30px;
+    border-radius:20px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.5);
 }
 
-.online-dot{
-    display:inline-block;
-    width:10px;
-    height:10px;
-    background:#35e58b;
-    border-radius:50%;
-    margin-right:8px;
-    box-shadow:0 0 12px #35e58b;
-}
-
-/* FEATURES */
-
-.features{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:20px;
-    margin-top:40px;
-}
-
-.feature{
-    background:rgba(24,21,57,.9);
-    border:1px solid #332b69;
-    padding:30px;
-    border-radius:18px;
+.auth-container h2{
+    margin-bottom:20px;
     text-align:center;
-}
-
-.feature-icon{
-    font-size:40px;
-    margin-bottom:15px;
-}
-
-.feature h3{
-    margin-bottom:10px;
-}
-
-.feature p{
-    color:#999;
-    line-height:1.6;
-}
-
-/* ================= CHAT ================= */
-
-.chat-page{
-    max-width:1200px;
-    margin:auto;
-    padding:30px 20px;
-}
-
-.chat-layout{
-    display:grid;
-    grid-template-columns:230px 1fr 230px;
-    gap:15px;
-}
-
-/* SIDEBAR */
-
-.sidebar,
-.rightbar,
-.chat-box{
-    background:rgba(18,17,45,.95);
-    border:1px solid #332b69;
-    border-radius:18px;
-}
-
-.sidebar{
-    padding:20px;
-}
-
-.sidebar h3{
-    margin-bottom:15px;
-}
-
-.room{
-    padding:12px;
-    border-radius:10px;
-    margin-bottom:7px;
-    color:#bbb;
-    cursor:pointer;
-}
-
-.room:hover,
-.room.selected{
-    background:#302461;
     color:#00d9ff;
 }
 
-/* CHAT BOX */
-
-.chat-box{
-    min-height:650px;
-    display:flex;
-    flex-direction:column;
-    overflow:hidden;
+.form-group{
+    margin-bottom:18px;
 }
 
-.chat-header{
-    padding:18px;
-    border-bottom:1px solid #332b69;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+.form-group label{
+    display:block;
+    margin-bottom:8px;
+    font-size:14px;
+    color:#ccc;
 }
 
-.chat-header h2{
-    font-size:18px;
-}
-
-.chat-header span{
-    color:#35e58b;
-    font-size:13px;
-}
-
-.messages{
-    flex:1;
-    padding:20px;
-    overflow-y:auto;
-    min-height:480px;
-}
-
-.welcome{
-    height:100%;
-    min-height:430px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-direction:column;
-    text-align:center;
-    color:#777;
-}
-
-.welcome div{
-    font-size:60px;
-    margin-bottom:15px;
-}
-
-.message{
-    background:#29244d;
-    padding:12px 15px;
-    border-radius:14px;
-    margin-bottom:10px;
-    width:max-content;
-    max-width:75%;
-}
-
-.my-message{
-    margin-left:auto;
-    background:linear-gradient(135deg,#6242e8,#395bd8);
-}
-
-.chat-input{
-    padding:15px;
-    border-top:1px solid #332b69;
-    display:flex;
-    gap:10px;
-}
-
-.chat-input input{
-    flex:1;
-    background:#101027;
-    border:1px solid #39356b;
+.form-group input{
+    width:100%;
+    padding:12px;
+    background:#100f2e;
+    border:1px solid #3d357a;
+    border-radius:10px;
     color:white;
+    outline:none;
+}
+
+.form-group input:focus{
+    border-color:#00d9ff;
+}
+
+.auth-btn{
+    width:100%;
     padding:14px;
-    border-radius:12px;
-    outline:none;
-}
-
-.chat-input button{
-    width:50px;
-    border:none;
-    border-radius:12px;
-    background:#6847ff;
-    color:white;
-    font-size:20px;
-    cursor:pointer;
-}
-
-/* RIGHT */
-
-.rightbar{
-    padding:20px;
-}
-
-.rightbar h3{
-    margin-bottom:20px;
-}
-
-.member{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:10px 0;
-    border-bottom:1px solid #292650;
-}
-
-.avatar{
-    width:42px;
-    height:42px;
-    border-radius:50%;
     background:linear-gradient(135deg,#6847ff,#00bfff);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-.member small{
-    color:#35e58b;
-}
-
-/* ================= FRIENDS ================= */
-
-.friends-page{
-    max-width:1100px;
-    margin:auto;
-    padding:40px 20px;
-}
-
-.page-title{
-    margin-bottom:25px;
-}
-
-.page-title h1{
-    font-size:35px;
-}
-
-.page-title p{
-    color:#999;
-    margin-top:8px;
-}
-
-.search{
-    display:flex;
-    gap:10px;
-    margin-bottom:30px;
-}
-
-.search input{
-    flex:1;
-    background:#14132e;
+    border:none;
+    border-radius:10px;
     color:white;
-    border:1px solid #39356b;
-    border-radius:12px;
-    padding:15px;
-    outline:none;
+    font-weight:bold;
     font-size:16px;
-}
-
-.search button{
-    border:none;
-    padding:0 25px;
-    border-radius:12px;
-    background:linear-gradient(135deg,#6847ff,#00bfff);
-    color:white;
     cursor:pointer;
+    margin-top:10px;
 }
 
-.users{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:15px;
-}
-
-.user-card{
-    background:#181637;
-    border:1px solid #332b69;
-    border-radius:16px;
-    padding:18px;
-    display:flex;
-    align-items:center;
-    gap:13px;
-}
-
-.user-info{
-    flex:1;
-}
-
-.user-info h3{
-    margin-bottom:5px;
-}
-
-.status{
-    font-size:13px;
-    color:#35e58b;
-}
-
-.add-btn{
-    background:#6847ff;
-    color:white;
-    border:none;
-    padding:10px 13px;
-    border-radius:9px;
-    cursor:pointer;
-}
-
-.add-btn.added{
-    background:#263d35;
-    color:#45e69b;
-}
-
-.friend-section{
-    margin-top:45px;
-}
-
-.friend-card{
-    background:#181637;
-    border:1px solid #332b69;
-    border-radius:16px;
-    padding:15px;
-    display:flex;
-    align-items:center;
-    gap:13px;
-    margin-bottom:12px;
-}
-
-.friend-info{
-    flex:1;
-}
-
-.chat-friend{
-    background:#00aeea;
-    border:none;
-    color:white;
-    padding:9px 13px;
-    border-radius:9px;
-    cursor:pointer;
-}
-
-.remove-friend{
-    background:#382036;
-    border:none;
-    color:#ff7777;
-    padding:9px 13px;
-    border-radius:9px;
-    cursor:pointer;
-}
-
-.empty{
-    background:#13122c;
-    border:1px dashed #39356b;
-    padding:25px;
-    border-radius:14px;
+.auth-switch{
     text-align:center;
-    color:#777;
+    margin-top:18px;
+    font-size:14px;
+    color:#aaa;
 }
 
-/* ================= NOTIFICATION ================= */
+.auth-switch a{
+    color:#00d9ff;
+    text-decoration:none;
+    cursor:pointer;
+}
 
+/* Notification */
 .notification{
     position:fixed;
     right:25px;
@@ -481,940 +199,186 @@ nav a.active{
     display:none;
     z-index:999;
 }
-
-/* ================= MOBILE ================= */
-
-@media(max-width:900px){
-
-    .chat-layout{
-        grid-template-columns:1fr;
-    }
-
-    .sidebar,
-    .rightbar{
-        display:none;
-    }
-
-    .features{
-        grid-template-columns:1fr;
-    }
-
-    .users{
-        grid-template-columns:1fr;
-    }
-
-    nav a{
-        font-size:13px;
-        padding:8px;
-    }
-
-    .hero h1{
-        font-size:40px;
-    }
-}
 </style>
 </head>
-
 <body>
 
-<!-- ================= HEADER ================= -->
-
 <header>
-
-    <div class="logo">
-        💬 Student Chat
-    </div>
-
+    <div class="logo">💬 Student Chat</div>
     <nav>
-
-        <a href="#" class="active" onclick="showPage('home',this)">
-            🏠 หน้าแรก
-        </a>
-
-        <a href="#" onclick="showPage('chat',this)">
-            💬 ห้องแชท
-        </a>
-
-        <a href="#" onclick="showPage('friends',this)">
-            👥 เพื่อน
-        </a>
-
+        <a onclick="showPage('home',this)" class="active">🏠 หน้าแรก</a>
+        <a onclick="showPage('chat',this)">💬 ห้องแชท</a>
+        
+        <div id="authNavArea">
+            <button class="auth-nav-btn" onclick="showPage('login')">เข้าสู่ระบบ / สมัครสมาชิก</button>
+        </div>
     </nav>
-
 </header>
 
-
-<!-- ================= HOME ================= -->
-
+<!-- HOME PAGE -->
 <section id="home" class="page active">
-
     <div class="home">
-
         <div class="hero">
-
             <h1>Student Chat</h1>
-
-            <p>
-                พื้นที่พูดคุยสำหรับนักเรียน
-                หาเพื่อน แชร์ความรู้ ถามการบ้าน
-                และพูดคุยกันได้อย่างสนุกสนาน
-            </p>
-
-            <button
-                class="start-btn"
-                onclick="showPageByName('chat')"
-            >
-                💬 เริ่มต้นพูดคุยเลย
-            </button>
-
-            <div class="online-box">
-                <span class="online-dot"></span>
-                ตอนนี้มี
-                <b id="onlineCount">24</b>
-                คนออนไลน์
-            </div>
-
+            <p>พื้นที่พูดคุยสำหรับนักเรียน หาเพื่อน แชร์ความรู้ ถามการบ้าน</p>
+            <button class="start-btn" onclick="checkAuthAndGoChat()">💬 เริ่มต้นพูดคุยเลย</button>
         </div>
-
-
-        <div class="features">
-
-            <div class="feature">
-
-                <div class="feature-icon">💬</div>
-
-                <h3>ห้องแชท</h3>
-
-                <p>
-                    เข้าห้องพูดคุยและส่งข้อความ
-                    กับเพื่อนนักเรียน
-                </p>
-
-            </div>
-
-
-            <div class="feature">
-
-                <div class="feature-icon">👥</div>
-
-                <h3>แอดเพื่อน</h3>
-
-                <p>
-                    ค้นหาผู้ใช้และเพิ่มเพื่อน
-                    เพื่อพูดคุยกัน
-                </p>
-
-            </div>
-
-
-            <div class="feature">
-
-                <div class="feature-icon">📚</div>
-
-                <h3>แบ่งปันความรู้</h3>
-
-                <p>
-                    พูดคุยเรื่องการบ้าน
-                    วิชาเรียน และโปรแกรม
-                </p>
-
-            </div>
-
-        </div>
-
     </div>
-
 </section>
 
-
-<!-- ================= CHAT ================= -->
-
+<!-- CHAT PAGE -->
 <section id="chat" class="page">
-
-    <div class="chat-page">
-
-        <div class="chat-layout">
-
-            <!-- LEFT -->
-
-            <aside class="sidebar">
-
-                <h3>💬 ห้องแชท</h3>
-
-                <div class="room selected">
-                    💬 พูดคุยทั่วไป
-                </div>
-
-                <div class="room">
-                    📚 การบ้าน
-                </div>
-
-                <div class="room">
-                    💻 เขียนโปรแกรม
-                </div>
-
-                <div class="room">
-                    ➗ คณิตศาสตร์
-                </div>
-
-                <div class="room">
-                    🔬 วิทยาศาสตร์
-                </div>
-
-                <div class="room">
-                    🎨 ศิลปะ
-                </div>
-
-            </aside>
-
-
-            <!-- CENTER -->
-
-            <main class="chat-box">
-
-                <div class="chat-header">
-
-                    <div>
-                        <h2>💬 ห้องพูดคุยทั่วไป</h2>
-
-                        <span>
-                            ● ออนไลน์
-                        </span>
-                    </div>
-
-                    <div>
-                        👥 <span id="roomOnline">24</span>
-                    </div>
-
-                </div>
-
-
-                <div
-                    class="messages"
-                    id="messages"
-                >
-
-                    <div
-                        class="welcome"
-                        id="welcome"
-                    >
-
-                        <div>💬</div>
-
-                        <h2>
-                            ยินดีต้อนรับสู่ห้องแชท
-                        </h2>
-
-                        <p>
-                            พิมพ์ข้อความด้านล่าง
-                            เพื่อเริ่มพูดคุย
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="chat-input">
-
-                    <input
-                        type="text"
-                        id="messageInput"
-                        placeholder="พิมพ์ข้อความ..."
-                    >
-
-                    <button onclick="sendMessage()">
-                        ➤
-                    </button>
-
-                </div>
-
-            </main>
-
-
-            <!-- RIGHT -->
-
-            <aside class="rightbar">
-
-                <h3>🟢 ออนไลน์</h3>
-
-                <div class="member">
-
-                    <div class="avatar">👦</div>
-
-                    <div>
-                        <b>นนท์</b>
-                        <br>
-                        <small>ออนไลน์</small>
-                    </div>
-
-                </div>
-
-
-                <div class="member">
-
-                    <div class="avatar">😎</div>
-
-                    <div>
-                        <b>มาร์ค</b>
-                        <br>
-                        <small>ออนไลน์</small>
-                    </div>
-
-                </div>
-
-
-                <div class="member">
-
-                    <div class="avatar">👧</div>
-
-                    <div>
-                        <b>ฟ้า</b>
-                        <br>
-                        <small>ออนไลน์</small>
-                    </div>
-
-                </div>
-
-
-                <div class="member">
-
-                    <div class="avatar">🙂</div>
-
-                    <div>
-                        <b>บีม</b>
-                        <br>
-                        <small>ออนไลน์</small>
-                    </div>
-
-                </div>
-
-            </aside>
-
-        </div>
-
+    <div style="text-align:center; padding:50px;">
+        <h2>💬 ห้องแชทส่วนตัวของคุณ (<span id="chatUsername">ผู้ใช้</span>)</h2>
+        <p style="color:#aaa; margin-top:10px;">ระบบเชื่อมต่อบัญชีเรียบร้อย พร้อมใช้งาน!</p>
     </div>
-
 </section>
 
-
-<!-- ================= FRIENDS ================= -->
-
-<section id="friends" class="page">
-
-    <div class="friends-page">
-
-        <div class="page-title">
-
-            <h1>👥 เพื่อนของฉัน</h1>
-
-            <p>
-                ค้นหาและเพิ่มเพื่อนใน Student Chat
-            </p>
-
+<!-- LOGIN PAGE -->
+<section id="login" class="page">
+    <div class="auth-container">
+        <h2>เข้าสู่ระบบ</h2>
+        <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label>ชื่อผู้ใช้ (Username)</label>
+                <input type="text" id="loginUser" required placeholder="กรอกชื่อผู้ใช้">
+            </div>
+            <div class="form-group">
+                <label>รหัสผ่าน</label>
+                <input type="password" id="loginPass" required placeholder="กรอกรหัสผ่าน">
+            </div>
+            <button type="submit" class="auth-btn">เข้าสู่ระบบ</button>
+        </form>
+        <div class="auth-switch">
+            ยังไม่มีบัญชี? <a onclick="showPage('signup')">สมัครสมาชิกที่นี่</a>
         </div>
-
-
-        <!-- SEARCH -->
-
-        <div class="search">
-
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="🔎 ค้นหาชื่อเพื่อน..."
-                onkeydown="searchEnter(event)"
-            >
-
-            <button onclick="searchUsers()">
-                ค้นหา
-            </button>
-
-        </div>
-
-
-        <h2 style="margin-bottom:15px;">
-            🔎 ผู้ใช้ที่แนะนำ
-        </h2>
-
-
-        <div
-            class="users"
-            id="userList"
-        ></div>
-
-
-        <!-- FRIEND LIST -->
-
-        <div class="friend-section">
-
-            <h2 style="margin-bottom:15px;">
-                💙 เพื่อนของฉัน
-            </h2>
-
-            <div id="friendList"></div>
-
-        </div>
-
     </div>
-
 </section>
 
+<!-- SIGNUP PAGE -->
+<section id="signup" class="page">
+    <div class="auth-container">
+        <h2>สมัครสมาชิก</h2>
+        <form onsubmit="handleSignup(event)">
+            <div class="form-group">
+                <label>ตั้งชื่อผู้ใช้ (Username)</label>
+                <input type="text" id="signupUser" required placeholder="เช่น Nont_Student">
+            </div>
+            <div class="form-group">
+                <label>รหัสผ่าน</label>
+                <input type="password" id="signupPass" required placeholder="อย่างน้อย 4 ตัวอักษร">
+            </div>
+            <button type="submit" class="auth-btn">สร้างบัญชีผู้ใช้</button>
+        </form>
+        <div class="auth-switch">
+            มีบัญชีอยู่แล้ว? <a onclick="showPage('login')">เข้าสู่ระบบ</a>
+        </div>
+    </div>
+</section>
 
-<!-- NOTIFICATION -->
-
-<div
-    class="notification"
-    id="notification"
->
-    ✅ เพิ่มเพื่อนสำเร็จ
-</div>
-
+<div class="notification" id="notification"></div>
 
 <script>
+// จัดการสลับหน้า
+function showPage(pageId, element){
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.getElementById(pageId).classList.add("active");
 
-/* =====================================================
-   PAGE SYSTEM
-===================================================== */
+    document.querySelectorAll("nav a").forEach(a => a.classList.remove("active"));
+    if(element) element.classList.add("active");
+}
 
-function showPage(page,element){
+// ตรวจสอบระบบบัญชี
+let currentUser = JSON.parse(localStorage.getItem("activeUser")) || null;
 
-    document
-        .querySelectorAll(".page")
-        .forEach(p => p.classList.remove("active"));
-
-    document
-        .getElementById(page)
-        .classList.add("active");
-
-
-    document
-        .querySelectorAll("nav a")
-        .forEach(a => a.classList.remove("active"));
-
-
-    if(element){
-        element.classList.add("active");
+function updateUI(){
+    const authNav = document.getElementById("authNavArea");
+    if(currentUser){
+        authNav.innerHTML = `
+            <div class="user-profile-tag">
+                <span>👤 <b>${currentUser.username}</b></span>
+                <a onclick="logout()" style="color:#ff7777; font-size:12px; margin-left:5px;">[ออกจากระบบ]</a>
+            </div>
+        `;
+        document.getElementById("chatUsername").textContent = currentUser.username;
+    } else {
+        authNav.innerHTML = `<button class="auth-nav-btn" onclick="showPage('login')">เข้าสู่ระบบ / สมัครสมาชิก</button>`;
     }
-
 }
 
+// สมัครสมาชิก
+function handleSignup(e){
+    e.preventDefault();
+    const user = document.getElementById("signupUser").value.trim();
+    const pass = document.getElementById("signupPass").value.trim();
 
-function showPageByName(page){
+    let users = JSON.parse(localStorage.getItem("chatUsers")) || [];
 
-    document
-        .querySelectorAll(".page")
-        .forEach(p => p.classList.remove("active"));
-
-    document
-        .getElementById(page)
-        .classList.add("active");
-
-
-    document
-        .querySelectorAll("nav a")
-        .forEach(a => a.classList.remove("active"));
-
-}
-
-
-/* =====================================================
-   CHAT SYSTEM
-===================================================== */
-
-const messageInput =
-    document.getElementById("messageInput");
-
-const messages =
-    document.getElementById("messages");
-
-
-function sendMessage(){
-
-    const text =
-        messageInput.value.trim();
-
-
-    if(text === ""){
+    if(users.some(u => u.username === user)){
+        showNotify("❌ ชื่อผู้ใช้นี้ถูกใช้ไปแล้ว");
         return;
     }
 
+    const newUser = { username: user, password: pass };
+    users.push(newUser);
+    localStorage.setItem("chatUsers", JSON.stringify(users));
 
-    const welcome =
-        document.getElementById("welcome");
-
-
-    if(welcome){
-        welcome.remove();
-    }
-
-
-    const message =
-        document.createElement("div");
-
-
-    message.className =
-        "message my-message";
-
-
-    message.textContent =
-        text;
-
-
-    messages.appendChild(message);
-
-
-    messageInput.value = "";
-
-
-    messages.scrollTop =
-        messages.scrollHeight;
-
+    // ล็อกอินอัตโนมัติหลังสมัคร
+    localStorage.setItem("activeUser", JSON.stringify(newUser));
+    currentUser = newUser;
+    
+    updateUI();
+    showNotify("✅ สมัครสมาชิกสำเร็จ!");
+    showPage("chat");
 }
 
+// เข้าสู่ระบบ
+function handleLogin(e){
+    e.preventDefault();
+    const user = document.getElementById("loginUser").value.trim();
+    const pass = document.getElementById("loginPass").value.trim();
 
-messageInput.addEventListener(
-    "keydown",
-    function(event){
+    let users = JSON.parse(localStorage.getItem("chatUsers")) || [];
+    const validUser = users.find(u => u.username === user && u.password === pass);
 
-        if(event.key === "Enter"){
-
-            event.preventDefault();
-
-            sendMessage();
-
-        }
-
+    if(validUser){
+        localStorage.setItem("activeUser", JSON.stringify(validUser));
+        currentUser = validUser;
+        updateUI();
+        showNotify("✅ เข้าสู่ระบบสำเร็จ");
+        showPage("chat");
+    } else {
+        showNotify("❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
     }
-);
-
-
-/* =====================================================
-   ONLINE COUNT
-===================================================== */
-
-let online = 24;
-
-
-setInterval(function(){
-
-    const change =
-        Math.floor(Math.random() * 5) - 2;
-
-
-    online += change;
-
-
-    if(online < 10){
-        online = 10;
-    }
-
-
-    document.getElementById(
-        "onlineCount"
-    ).textContent = online;
-
-
-    document.getElementById(
-        "roomOnline"
-    ).textContent = online;
-
-},5000);
-
-
-/* =====================================================
-   FRIEND SYSTEM
-===================================================== */
-
-const users = [
-
-    {
-        id:1,
-        name:"นนท์",
-        avatar:"👦",
-        status:"ออนไลน์"
-    },
-
-    {
-        id:2,
-        name:"มาร์ค",
-        avatar:"😎",
-        status:"ออนไลน์"
-    },
-
-    {
-        id:3,
-        name:"ฟ้า",
-        avatar:"👧",
-        status:"ออนไลน์"
-    },
-
-    {
-        id:4,
-        name:"เจมส์",
-        avatar:"🧑",
-        status:"ออฟไลน์"
-    },
-
-    {
-        id:5,
-        name:"บีม",
-        avatar:"🙂",
-        status:"ออนไลน์"
-    },
-
-    {
-        id:6,
-        name:"ไนท์",
-        avatar:"🧑‍💻",
-        status:"ออฟไลน์"
-    }
-
-];
-
-
-let friends =
-    JSON.parse(
-        localStorage.getItem(
-            "studentFriends"
-        )
-    ) || [];
-
-
-/* =====================================================
-   DISPLAY USERS
-===================================================== */
-
-function displayUsers(list = users){
-
-    const userList =
-        document.getElementById(
-            "userList"
-        );
-
-
-    userList.innerHTML = "";
-
-
-    if(list.length === 0){
-
-        userList.innerHTML = `
-            <div class="empty">
-                😢 ไม่พบผู้ใช้
-            </div>
-        `;
-
-        return;
-    }
-
-
-    list.forEach(user => {
-
-        const isFriend =
-            friends.includes(user.id);
-
-
-        userList.innerHTML += `
-
-            <div class="user-card">
-
-                <div class="avatar">
-                    ${user.avatar}
-                </div>
-
-                <div class="user-info">
-
-                    <h3>
-                        ${user.name}
-                    </h3>
-
-                    <div class="status"
-                         style="
-                         color:${
-                            user.status === "ออนไลน์"
-                            ? "#35e58b"
-                            : "#777"
-                         };
-                         ">
-
-                        ● ${user.status}
-
-                    </div>
-
-                </div>
-
-
-                <button
-                    class="add-btn ${
-                        isFriend ? "added" : ""
-                    }"
-                    onclick="toggleFriend(${user.id})"
-                >
-
-                    ${
-                        isFriend
-                        ? "✓ เป็นเพื่อนแล้ว"
-                        : "➕ แอดเพื่อน"
-                    }
-
-                </button>
-
-            </div>
-
-        `;
-
-    });
-
 }
 
+// ออกจากระบบ
+function logout(){
+    localStorage.removeItem("activeUser");
+    currentUser = null;
+    updateUI();
+    showNotify("🚪 ออกจากระบบเรียบร้อย");
+    showPage("home");
+}
 
-/* =====================================================
-   ADD / REMOVE FRIEND
-===================================================== */
-
-function toggleFriend(id){
-
-    const index =
-        friends.indexOf(id);
-
-
-    if(index === -1){
-
-        friends.push(id);
-
-        showNotification(
-            "✅ เพิ่มเพื่อนสำเร็จ!"
-        );
-
-    }else{
-
-        friends.splice(index,1);
-
-        showNotification(
-            "❌ ลบเพื่อนแล้ว"
-        );
-
+function checkAuthAndGoChat(){
+    if(currentUser){
+        showPage("chat");
+    } else {
+        showNotify("🔒 กรุณาล็อกอินก่อนเข้าใช้งาน");
+        showPage("login");
     }
-
-
-    localStorage.setItem(
-        "studentFriends",
-        JSON.stringify(friends)
-    );
-
-
-    displayUsers();
-
-    displayFriends();
-
 }
 
-
-/* =====================================================
-   DISPLAY FRIENDS
-===================================================== */
-
-function displayFriends(){
-
-    const friendList =
-        document.getElementById(
-            "friendList"
-        );
-
-
-    friendList.innerHTML = "";
-
-
-    const myFriends =
-        users.filter(
-            user => friends.includes(user.id)
-        );
-
-
-    if(myFriends.length === 0){
-
-        friendList.innerHTML = `
-
-            <div class="empty">
-
-                👥 ยังไม่มีเพื่อน
-
-                <br><br>
-
-                ค้นหาชื่อด้านบน
-                แล้วกด "แอดเพื่อน"
-
-            </div>
-
-        `;
-
-        return;
-    }
-
-
-    myFriends.forEach(user => {
-
-        friendList.innerHTML += `
-
-            <div class="friend-card">
-
-                <div class="avatar">
-                    ${user.avatar}
-                </div>
-
-
-                <div class="friend-info">
-
-                    <h3>
-                        ${user.name}
-                    </h3>
-
-                    <div
-                        class="status"
-                        style="
-                        color:${
-                            user.status === "ออนไลน์"
-                            ? "#35e58b"
-                            : "#777"
-                        };
-                        "
-                    >
-
-                        ● ${user.status}
-
-                    </div>
-
-                </div>
-
-
-                <button
-                    class="chat-friend"
-                    onclick="chatWith('${user.name}')"
-                >
-
-                    💬 แชท
-
-                </button>
-
-
-                <button
-                    class="remove-friend"
-                    onclick="toggleFriend(${user.id})"
-                >
-
-                    ลบ
-
-                </button>
-
-            </div>
-
-        `;
-
-    });
-
+function showNotify(msg){
+    const notify = document.getElementById("notification");
+    notify.textContent = msg;
+    notify.style.display = "block";
+    setTimeout(() => notify.style.display = "none", 2500);
 }
 
-
-/* =====================================================
-   SEARCH
-===================================================== */
-
-function searchUsers(){
-
-    const keyword =
-        document
-        .getElementById("searchInput")
-        .value
-        .toLowerCase()
-        .trim();
-
-
-    const result =
-        users.filter(
-            user =>
-                user.name
-                .toLowerCase()
-                .includes(keyword)
-        );
-
-
-    displayUsers(result);
-
-}
-
-
-function searchEnter(event){
-
-    if(event.key === "Enter"){
-        searchUsers();
-    }
-
-}
-
-
-/* =====================================================
-   CHAT WITH FRIEND
-===================================================== */
-
-function chatWith(name){
-
-    showPageByName("chat");
-
-
-    const input =
-        document.getElementById(
-            "messageInput"
-        );
-
-
-    input.placeholder =
-        "ส่งข้อความถึง " + name + "...";
-
-
-    input.focus();
-
-}
-
-
-/* =====================================================
-   NOTIFICATION
-===================================================== */
-
-function showNotification(text){
-
-    const notification =
-        document.getElementById(
-            "notification"
-        );
-
-
-    notification.textContent =
-        text;
-
-
-    notification.style.display =
-        "block";
-
-
-    setTimeout(function(){
-
-        notification.style.display =
-            "none";
-
-    },2000);
-
-}
-
-
-/* =====================================================
-   START
-===================================================== */
-
-displayUsers();
-
-displayFriends();
-
+// เริ่มต้นระบบ
+updateUI();
 </script>
-
 </body>
 </html>
