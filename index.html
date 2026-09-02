@@ -74,6 +74,8 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .msg-row.me .msg-bubble{ background:linear-gradient(135deg, #006f9f, #4c1d95); border-bottom-right-radius:4px; }
 .msg-row.other .msg-bubble{ background:#20256e; border-bottom-left-radius:4px; }
 
+.chat-msg-img{ max-width:200px; max-height:200px; border-radius:10px; display:block; margin-top:4px; object-fit: cover; cursor: pointer; }
+
 .reply-preview-box{ background:rgba(0,0,0,0.25); border-left:3px solid #22c9ff; padding:6px 10px; border-radius:6px; margin-bottom:6px; font-size:12px; color:#ddd; }
 .reply-preview-box .reply-user{ font-weight:bold; color:#22c9ff; margin-bottom:2px; }
 
@@ -97,7 +99,8 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 
 .chat-input{ padding:10px 12px; background:#12154c; display:flex; gap:8px; align-items:center; }
 .chat-input input{ flex:1; border:1px solid #343785; border-radius:25px; padding:12px 16px; background:#080b35; color:white; outline:none; font-size:15px; }
-.chat-input button{ width:46px; height:46px; border:none; border-radius:50%; background:linear-gradient(135deg, #22c9ff, #7c3aed); color:white; font-size:18px; cursor:pointer; flex-shrink:0; }
+.chat-input-btn{ width:42px; height:42px; border:none; border-radius:50%; background:#343785; color:white; font-size:18px; cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+.chat-input button.send-btn{ width:46px; height:46px; background:linear-gradient(135deg, #22c9ff, #7c3aed); border-radius:50%; }
 
 /* ================= FRIENDS PAGE ================= */
 .friends-container{ padding:20px 4%; max-width:800px; margin:0 auto; }
@@ -139,7 +142,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .auth-switch{ text-align:center; margin-top:15px; font-size:13px; color:#aaaed0; }
 .auth-switch button{ background:none; border:none; color:#a855f7; font-weight:bold; cursor:pointer; font-size:13px; }
 
-/* มือถือหน้าจอเล็ก ซ่อนข้อความเมนูเหลือแต่ไอคอนเพื่อไม่ให้ล้น */
 @media (max-width: 767px) {
     .logo span { display: none; }
     nav a span { display: none; }
@@ -239,8 +241,10 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                 </div>
 
                 <div class="chat-input">
+                    <label for="chatImageInput" class="chat-input-btn" title="ส่งรูปภาพ">📷</label>
+                    <input type="file" id="chatImageInput" accept="image/*" style="display:none;" onchange="sendChatImage(event)">
                     <input type="text" id="msgInput" placeholder="พิมพ์ข้อความ..." onkeydown="if(event.key==='Enter') sendPrivateMessage()">
-                    <button onclick="sendPrivateMessage()">➤</button>
+                    <button class="chat-input-btn send-btn" onclick="sendPrivateMessage()">➤</button>
                 </div>
             </div>
         </div>
@@ -580,6 +584,63 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         cancelReply();
     };
 
+    window.sendChatImage = function(event){
+        const file = event.target.files[0];
+        if(!file || !activeChatFriend) return;
+
+        if(!file.type.startsWith('image/')){
+            alert("กรุณาเลือกไฟล์รูปภาพเท่านั้นครับ");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e){
+            const img = new Image();
+            img.onload = function(){
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const maxSize = 600; // ขนาดความกว้างสูงสุดของรูปในแชท
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > maxSize) {
+                        height *= maxSize / width;
+                        width = maxSize;
+                    }
+                } else {
+                    if (height > maxSize) {
+                        width *= maxSize / height;
+                        height = maxSize;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+
+                const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                const roomId = [currentUser, activeChatFriend].sort().join("_");
+
+                const msgData = {
+                    sender: currentUser,
+                    image: resizedDataUrl,
+                    timestamp: Date.now()
+                };
+
+                if(replyData){
+                    msgData.replyTo = replyData;
+                }
+
+                push(ref(db, `private_chats/${roomId}`), msgData);
+                cancelReply();
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+        event.target.value = ""; //รีเซ็ตค่าเพื่อให้เลือกไฟล์เดิมซ้ำได้
+    };
+
     function loadPrivateMessages(){
         const msgArea = document.getElementById("chatMessagesArea");
 
@@ -605,22 +666,31 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 
                 let replyHTML = "";
                 if(msg.replyTo){
+                    let previewContent = msg.replyTo.text || '📷 [รูปภาพ]';
                     replyHTML = `
                         <div class="reply-preview-box">
                             <div class="reply-user">${msg.replyTo.sender}</div>
-                            <div>${msg.replyTo.text}</div>
+                            <div>${previewContent}</div>
                         </div>
                     `;
                 }
 
+                let contentHTML = "";
+                if(msg.image){
+                    contentHTML = `${replyHTML}<img src="${msg.image}" class="chat-msg-img" onclick="window.open('${msg.image}')">`;
+                } else {
+                    contentHTML = `${replyHTML}${msg.text}`;
+                }
+
+                const safeTextForReply = msg.text ? msg.text.replace(/'/g, "\\'") : 'รูปภาพ';
+
                 row.innerHTML = `
                     <button class="msg-menu-btn" onclick="toggleMsgMenu(event, '${msgId}')">⋮</button>
                     <div class="msg-bubble">
-                        ${replyHTML}
-                        ${msg.text}
+                        ${contentHTML}
                     </div>
                     <div class="msg-options-menu" id="menu-${msgId}">
-                        <div class="menu-item" onclick="startReply('${msg.sender}', '${msg.text.replace(/'/g, "\\'")}')">↩ ตอบกลับ</div>
+                        <div class="menu-item" onclick="startReply('${msg.sender}', '${safeTextForReply}')">↩ ตอบกลับ</div>
                         <div class="menu-item" onclick="deleteForMe('${msgId}')">🗑️ ลบเฉพาะฉัน</div>
                         ${isMe ? `<div class="menu-item danger" onclick="unsendMsg('${msgId}')">🚫 ยกเลิกข้อความ</div>` : ''}
                     </div>
