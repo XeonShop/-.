@@ -800,10 +800,10 @@
                         let actionType = "sendRequest";
 
                         if(isFriend){
-                            btnText = "ยกเลิกเพื่อน";
-                            btnClass = "btn-remove";
-                            actionType = "removeFriend";
-                        } else if(hasIncomingRequest){
+                btnText = "💬 คุย";
+                btnClass = "btn-add";
+                actionType = "chat";
+            } else if(hasIncomingRequest){
                             btnText = "✓ ยอมรับ";
                             btnClass = "btn-accept";
                             actionType = "acceptRequest";
@@ -830,7 +830,12 @@
 
                         document.getElementById(`btn-act-${username}`).addEventListener('click', (e) => {
                             e.stopPropagation();
-                            if(actionType === "sendRequest"){
+                            if(actionType === "chat"){
+                    selectFriendToChat(username, userAvatar);
+                    return;
+                }
+
+                if(actionType === "sendRequest"){
                                 set(ref(db, `requests/${username}/${currentUser}`), true);
                                 alert(`ส่งคำขอไปยัง ${username} แล้ว`);
                             } else if(actionType === "acceptRequest"){
@@ -875,12 +880,31 @@
     }
 
     window.selectFriendToChat = function(friendUsername, avatarUrl){
+        if(!currentUser){
+            alert("กรุณาเข้าสู่ระบบก่อนครับ");
+            openAuth("login");
+            return;
+        }
+        if(!friendUsername) return;
+
         activeChatFriend = friendUsername;
-        document.getElementById("chatTargetTitle").innerHTML = `<img src="${avatarUrl}" class="user-avatar-small"> ${friendUsername}`;
+
+        // เปิดหน้าแชทโดยตรง
+        showPage("chat");
+
+        const title = document.getElementById("chatTargetTitle");
+        if(title){
+            title.innerHTML =
+                `<img src="${avatarUrl || DEFAULT_AVATAR}" class="user-avatar-small"> ${friendUsername}`;
+        }
+
         renderSidebarFriends();
         loadPrivateMessages();
-        toggleMobileChatView('main');
-        setTimeout(() => document.getElementById('msgInput')?.focus(), 100);
+        toggleMobileChatView("main");
+
+        setTimeout(() => {
+            document.getElementById("msgInput")?.focus();
+        }, 150);
     };
 
     window.sendPrivateMessage = function(){
