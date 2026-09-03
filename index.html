@@ -774,98 +774,80 @@
         }
     };
 
-    window.renderUsers = async function(){
+    window.renderUsers = function(){
         const grid = document.getElementById("usersListGrid");
-        const searchEl = document.getElementById("searchInput");
-        if(!grid || !currentUser) return;
-
-        const searchText = (searchEl?.value || "").toLowerCase().trim();
-
-        try{
-            const [usersSnap, friendSnap, reqSnap] = await Promise.all([
-                get(ref(db, "users")),
-                get(ref(db, `friends/${currentUser}`)),
-                get(ref(db, `requests/${currentUser}`))
-            ]);
-
-            const usersData = usersSnap.val() || {};
-            const friendsData = friendSnap.val() || {};
-            const requestsData = reqSnap.val() || {};
-
+        const searchText = document.getElementById("searchInput").value.toLowerCase();
+        
+        onValue(ref(db, `users`), (snapshot) => {
             grid.innerHTML = "";
+            const usersData = snapshot.val() || {};
+            
+            onValue(ref(db, `friends/${currentUser}`), (friendSnap) => {
+                const friendsData = friendSnap.val() || {};
 
-            Object.keys(usersData).forEach(username => {
-                if(username === currentUser) return;
-                if(searchText && !username.toLowerCase().includes(searchText)) return;
+                onValue(ref(db, `requests/${currentUser}`), (reqSnap) => {
+                    const requestsData = reqSnap.val() || {};
 
-                const isFriend = !!friendsData[username];
-                const hasIncomingRequest = !!requestsData[username];
+                    Object.keys(usersData).forEach(username => {
+                        if(username === currentUser) return;
+                        if(searchText && !username.toLowerCase().includes(searchText)) return;
 
-                let btnText = "+ ส่งคำขอ";
-                let btnClass = "btn-add";
-                let actionType = "sendRequest";
+                        const isFriend = !!friendsData[username];
+                        const hasIncomingRequest = !!requestsData[username];
 
-                if(isFriend){
-                    btnText = "💬 คุย";
-                    btnClass = "btn-add";
-                    actionType = "chat";
-                } else if(hasIncomingRequest){
-                    btnText = "✓ ยอมรับ";
-                    btnClass = "btn-accept";
-                    actionType = "acceptRequest";
-                }
+                        let btnText = "+ ส่งคำขอ";
+                        let btnClass = "btn-add";
+                        let actionType = "sendRequest";
 
-                const user = usersData[username] || {};
-                const userAvatar = user.avatar || DEFAULT_AVATAR;
-
-                const card = document.createElement("div");
-                card.className = "user-card";
-                card.onclick = (e) => {
-                    if(e.target.tagName !== "BUTTON") openOtherProfile(username);
-                };
-
-                const safeId = "btn-act-" + username.replace(/[^a-zA-Z0-9_-]/g, "_");
-                card.innerHTML = `
-                    <div class="user-info">
-                        <img src="${userAvatar}" class="user-avatar-img">
-                        <div class="user-details">
-                            <h4>${username}</h4>
-                            <p>${user.status || ""}</p>
-                        </div>
-                    </div>
-                    <button type="button" class="btn-friend ${btnClass}" id="${safeId}"
-                            onclick="event.stopPropagation(); selectFriendToChat('${username.replace(/\\/g,"\\\\").replace(/'/g,"\\'")}', '${userAvatar.replace(/\\/g,"\\\\").replace(/'/g,"\\'")}')">${btnText}</button>
-                `;
-                grid.appendChild(card);
-
-                const btn = card.querySelector("button");
-                btn.addEventListener("click", async (e) => {
-                    e.stopPropagation();
-
-                    try{
-                        if(actionType === "sendRequest"){
-                            await set(ref(db, `requests/${username}/${currentUser}`), true);
-                            alert(`ส่งคำขอไปยัง ${username} แล้ว`);
-                        } else if(actionType === "acceptRequest"){
-                            await Promise.all([
-                                set(ref(db, `friends/${currentUser}/${username}`), true),
-                                set(ref(db, `friends/${username}/${currentUser}`), true),
-                                remove(ref(db, `requests/${currentUser}/${username}`))
-                            ]);
-                            alert(`เป็นเพื่อนกับ ${username} แล้ว!`);
+                        if(isFriend){
+                            btnText = "ยกเลิกเพื่อน";
+                            btnClass = "btn-remove";
+                            actionType = "removeFriend";
+                        } else if(hasIncomingRequest){
+                            btnText = "✓ ยอมรับ";
+                            btnClass = "btn-accept";
+                            actionType = "acceptRequest";
                         }
 
-                        await renderUsers();
-                    }catch(err){
-                        console.error(err);
-                        alert("ทำรายการไม่สำเร็จ กรุณาตรวจสอบ Firebase Rules");
-                    }
-                });
-            });
-        }catch(err){
-            console.error("renderUsers:", err);
-            grid.innerHTML = `<div style="padding:20px;text-align:center;color:#fca5a5;">โหลดรายชื่อไม่สำเร็จ</div>`;
-        }
+                        const userAvatar = usersData[username].avatar || DEFAULT_AVATAR;
+                        const card = document.createElement("div");
+                        card.className = "user-card";
+                        // กดที่การ์ดเพื่อดูโปรไฟล์คนอื่นได้ทันที
+                        card.onclick = (e) => {
+                            if(e.target.tagName !== 'BUTTON') openOtherProfile(username);
+                        };
+                        card.innerHTML = `
+                            <div class="user-info">
+                                <img src="${userAvatar}" class="user-avatar-img">
+                                <div class="user-details">
+                                    <h4>${username}</h4>
+                                    <p>${usersData[username].status || ''}</p>
+                                </div>
+                            </div>
+                            <button class="btn-friend ${btnClass}" id="btn-act-${username}">${btnText}</button>
+                        `;
+                        grid.appendChild(card);
+
+                        document.getElementById(`btn-act-${username}`).addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            if(actionType === "sendRequest"){
+                                set(ref(db, `requests/${username}/${currentUser}`), true);
+                                alert(`ส่งคำขอไปยัง ${username} แล้ว`);
+                            } else if(actionType === "acceptRequest"){
+                                set(ref(db, `friends/${currentUser}/${username}`), true);
+                                set(ref(db, `friends/${username}/${currentUser}`), true);
+                                remove(ref(db, `requests/${currentUser}/${username}`));
+                                alert(`เป็นเพื่อนกับ ${username} แล้ว!`);
+                            } else if(actionType === "removeFriend"){
+                                remove(ref(db, `friends/${currentUser}/${username}`));
+                                remove(ref(db, `friends/${username}/${currentUser}`));
+                            }
+                            renderUsers();
+                        });
+                    });
+                }, { onlyOnce: true });
+            }, { onlyOnce: true });
+        });
     };
 
     function renderSidebarFriends(){
@@ -893,46 +875,12 @@
     }
 
     window.selectFriendToChat = function(friendUsername, avatarUrl){
-        if(!currentUser){
-            alert("กรุณาเข้าสู่ระบบก่อนครับ");
-            openAuth("login");
-            return;
-        }
-        if(!friendUsername) return;
-
         activeChatFriend = friendUsername;
-
-        // เปิดหน้า Chat
-        showPage("chat");
-
-        // บังคับให้หน้า Chat แสดงผลทันที
-        document.querySelectorAll(".page-section").forEach(el => el.classList.remove("active"));
-        const chatPage = document.getElementById("pageChat");
-        if(chatPage) chatPage.classList.add("active");
-
-        document.querySelectorAll("nav a").forEach(el => el.classList.remove("active"));
-        const chatNav = document.getElementById("navChat");
-        if(chatNav) chatNav.classList.add("active");
-
-        const title = document.getElementById("chatTargetTitle");
-        if(title){
-            title.innerHTML = `<img src="${avatarUrl || DEFAULT_AVATAR}" class="user-avatar-small"> ${friendUsername}`;
-        }
-
+        document.getElementById("chatTargetTitle").innerHTML = `<img src="${avatarUrl}" class="user-avatar-small"> ${friendUsername}`;
         renderSidebarFriends();
         loadPrivateMessages();
-
-        // มือถือเปิดส่วนข้อความ / คอมพิวเตอร์แสดงห้องแชทตามปกติ
-        if(window.innerWidth < 768){
-            toggleMobileChatView("main");
-        }else{
-            const sidebar = document.getElementById("chatSidebar");
-            const main = document.getElementById("chatMain");
-            if(sidebar) sidebar.style.display = "flex";
-            if(main) main.style.display = "flex";
-        }
-
-        setTimeout(() => document.getElementById("msgInput")?.focus(), 150);
+        toggleMobileChatView('main');
+        setTimeout(() => document.getElementById('msgInput')?.focus(), 100);
     };
 
     window.sendPrivateMessage = function(){
