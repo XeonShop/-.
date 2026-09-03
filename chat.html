@@ -18,6 +18,7 @@ body{
     background:#080b35;
     color:white;
     min-height:100vh;
+    padding-bottom:20px;
 }
 
 /* ================= HEADER ================= */
@@ -42,6 +43,7 @@ header{
     font-size:17px;
     font-weight:bold;
     cursor:pointer;
+    flex-shrink:0;
 }
 
 .logo-icon{
@@ -130,7 +132,7 @@ nav a.active{
     font-weight:bold;
 }
 
-/* ================= PAGE ================= */
+/* ================= PAGES ================= */
 
 .page-section{
     display:none;
@@ -148,17 +150,8 @@ nav a.active{
     position:relative;
     overflow:hidden;
     background:
-    radial-gradient(
-        circle at 50% 30%,
-        rgba(72,40,220,.35),
-        transparent 50%
-    ),
-    linear-gradient(
-        135deg,
-        #080b35,
-        #11136c,
-        #080b35
-    );
+        radial-gradient(circle at 50% 30%,rgba(72,40,220,.35),transparent 50%),
+        linear-gradient(135deg,#080b35,#11136c,#080b35);
 }
 
 .hero-text h1{
@@ -260,6 +253,7 @@ nav a.active{
         rgba(34,201,255,.3),
         rgba(124,58,237,.4)
     );
+    border:1px solid rgba(34,201,255,.5);
 }
 
 .friend-item-img{
@@ -270,17 +264,6 @@ nav a.active{
     background:#343785;
     flex-shrink:0;
 }
-
-.online-dot{
-    width:9px;
-    height:9px;
-    border-radius:50%;
-    background:#22c55e;
-    display:inline-block;
-    box-shadow:0 0 8px #22c55e;
-}
-
-/* ================= CHAT MAIN ================= */
 
 .chat-main{
     flex:1;
@@ -322,10 +305,8 @@ nav a.active{
     cursor:pointer;
 }
 
-/*
-    จุดสำคัญ:
-    overflow-y:auto ทำให้แชทเลื่อนขึ้นลงได้
-*/
+/* ================= MESSAGE AREA ================= */
+
 .chat-messages{
     flex:1;
     padding:15px;
@@ -334,25 +315,28 @@ nav a.active{
     flex-direction:column;
     gap:12px;
 
-    /* ทำให้ scrollbar สวย */
+    /* ทำให้เลื่อนแชทได้ลื่น */
+    scroll-behavior:smooth;
+
+    /* แถบเลื่อน */
     scrollbar-width:thin;
-    scrollbar-color:#6d4aff #11144b;
+    scrollbar-color:#7c3aed #0c0e43;
 }
 
+/* Chrome / Edge */
+
 .chat-messages::-webkit-scrollbar{
-    width:7px;
+    width:8px;
 }
 
 .chat-messages::-webkit-scrollbar-track{
-    background:#11144b;
+    background:#0c0e43;
 }
 
 .chat-messages::-webkit-scrollbar-thumb{
-    background:#6d4aff;
+    background:linear-gradient(#22c9ff,#7c3aed);
     border-radius:20px;
 }
-
-/* ================= MESSAGE ================= */
 
 .msg-row{
     display:flex;
@@ -369,6 +353,7 @@ nav a.active{
 
 .msg-row.other{
     align-self:flex-start;
+    flex-direction:row;
 }
 
 .msg-bubble{
@@ -391,16 +376,11 @@ nav a.active{
     border-bottom-left-radius:4px;
 }
 
-.message-time{
-    font-size:9px;
-    color:#aeb2d3;
-    margin-top:5px;
-    text-align:right;
-}
+/* ================= CHAT IMAGE ================= */
 
 .chat-msg-img{
-    max-width:220px;
-    max-height:220px;
+    max-width:200px;
+    max-height:200px;
     border-radius:10px;
     display:block;
     margin-top:4px;
@@ -411,6 +391,7 @@ nav a.active{
 
 .chat-msg-img:hover{
     transform:scale(1.02);
+    box-shadow:0 5px 20px rgba(0,0,0,.4);
 }
 
 .chat-audio{
@@ -418,6 +399,82 @@ nav a.active{
     height:40px;
     margin-top:4px;
 }
+
+/* ================= IMAGE ZOOM MODAL ================= */
+
+.image-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.94);
+    z-index:9999;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}
+
+.image-modal.active{
+    display:flex;
+}
+
+.zoom-image{
+    max-width:90vw;
+    max-height:80vh;
+    object-fit:contain;
+    cursor:grab;
+    transform:scale(1);
+    transition:transform .15s;
+    user-select:none;
+}
+
+.zoom-image.dragging{
+    cursor:grabbing;
+}
+
+.image-close{
+    position:absolute;
+    top:20px;
+    right:20px;
+    width:45px;
+    height:45px;
+    border:none;
+    border-radius:50%;
+    background:#ef4444;
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+    z-index:5;
+}
+
+.zoom-controls{
+    position:absolute;
+    bottom:25px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:10px;
+    background:rgba(20,20,50,.9);
+    padding:10px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.15);
+}
+
+.zoom-controls button{
+    width:45px;
+    height:45px;
+    border:none;
+    border-radius:12px;
+    background:#343785;
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.zoom-controls button:hover{
+    background:#7c3aed;
+}
+
+/* ================= REPLY ================= */
 
 .reply-preview-box{
     background:rgba(0,0,0,.25);
@@ -434,8 +491,6 @@ nav a.active{
     color:#22c9ff;
 }
 
-/* ================= MESSAGE MENU ================= */
-
 .msg-menu-btn{
     background:none;
     border:none;
@@ -444,9 +499,11 @@ nav a.active{
     padding:4px 8px;
     cursor:pointer;
     border-radius:50%;
+    opacity:.6;
 }
 
 .msg-menu-btn:hover{
+    opacity:1;
     background:rgba(255,255,255,.1);
 }
 
@@ -504,7 +561,6 @@ nav a.active{
     align-items:center;
     justify-content:space-between;
     font-size:13px;
-    flex-shrink:0;
 }
 
 .active-reply-bar.active{
@@ -566,30 +622,38 @@ nav a.active{
     width:46px;
     height:46px;
     background:linear-gradient(135deg,#22c9ff,#7c3aed);
+    border-radius:50%;
 }
 
 .chat-input-btn.recording{
-    background:#ef4444 !important;
+    background:#ef4444!important;
     animation:pulse 1.2s infinite;
 }
 
-@keyframes pulse{
-    0%{
-        transform:scale(1);
-        box-shadow:0 0 0 0 rgba(239,68,68,.7);
-    }
+/* ================= SCROLL BUTTON ================= */
 
-    70%{
-        transform:scale(1.05);
-        box-shadow:0 0 0 10px rgba(239,68,68,0);
-    }
-
-    100%{
-        transform:scale(1);
-    }
+.scroll-bottom-btn{
+    display:none;
+    position:absolute;
+    right:20px;
+    bottom:90px;
+    width:44px;
+    height:44px;
+    border:none;
+    border-radius:50%;
+    background:linear-gradient(135deg,#22c9ff,#7c3aed);
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+    z-index:30;
+    box-shadow:0 5px 20px rgba(0,0,0,.4);
 }
 
-/* ================= FRIENDS ================= */
+.scroll-bottom-btn.show{
+    display:block;
+}
+
+/* ================= FRIEND PAGE ================= */
 
 .friends-container{
     padding:25px;
@@ -610,7 +674,7 @@ nav a.active{
     color:white;
     font-size:15px;
     outline:none;
-    margin:20px 0;
+    margin-bottom:20px;
 }
 
 .users-grid{
@@ -754,7 +818,7 @@ nav a.active{
     display:none;
     position:fixed;
     inset:0;
-    background:rgba(5,6,25,.9);
+    background:rgba(5,6,25,.85);
     z-index:100;
     align-items:center;
     justify-content:center;
@@ -829,6 +893,7 @@ nav a.active{
     font-weight:bold;
     font-size:16px;
     cursor:pointer;
+    margin-top:5px;
 }
 
 .auth-switch{
@@ -846,76 +911,43 @@ nav a.active{
     cursor:pointer;
 }
 
-/* ================= IMAGE ZOOM ================= */
-
-.image-modal{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.92);
-    z-index:999;
-    align-items:center;
-    justify-content:center;
-    flex-direction:column;
-    padding:20px;
+.password-box{
+    position:relative;
 }
 
-.image-modal.active{
-    display:flex;
+.password-box input{
+    padding-right:45px;
 }
 
-.zoom-area{
-    width:100%;
-    height:80vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-}
-
-#zoomImage{
-    max-width:90%;
-    max-height:75vh;
-    object-fit:contain;
-    border-radius:10px;
-    transform:scale(1);
-    transition:transform .2s;
-    user-select:none;
-}
-
-.zoom-controls{
-    display:flex;
-    gap:10px;
-    margin-top:15px;
-}
-
-.zoom-controls button{
-    width:48px;
-    height:48px;
-    border:none;
-    border-radius:50%;
-    background:#343785;
-    color:white;
-    font-size:22px;
-    cursor:pointer;
-}
-
-.zoom-controls button:hover{
-    background:#7c3aed;
-}
-
-.close-image{
+.show-password{
     position:absolute;
-    top:15px;
-    right:20px;
-    width:45px;
-    height:45px;
+    right:10px;
+    top:50%;
+    transform:translateY(-50%);
+    background:none;
     border:none;
-    border-radius:50%;
-    background:#ef4444;
-    color:white;
-    font-size:20px;
+    color:#aaaed0;
     cursor:pointer;
+    font-size:18px;
+}
+
+/* ================= ANIMATION ================= */
+
+@keyframes pulse{
+    0%{
+        transform:scale(1);
+        box-shadow:0 0 0 0 rgba(239,68,68,.7);
+    }
+
+    70%{
+        transform:scale(1.05);
+        box-shadow:0 0 0 10px rgba(239,68,68,0);
+    }
+
+    100%{
+        transform:scale(1);
+        box-shadow:0 0 0 0 rgba(239,68,68,0);
+    }
 }
 
 /* ================= MOBILE ================= */
@@ -936,44 +968,26 @@ nav a.active{
     }
 
     .header-buttons{
-        display:none;
-    }
-
-    .chat-wrapper{
-        height:calc(100vh - 95px);
-    }
-
-    .chat-main{
-        display:none;
-    }
-
-    .chat-main.active{
         display:flex;
     }
 
-    .chat-sidebar{
-        display:flex;
+    .login,
+    .signup{
+        font-size:10px;
+        padding:6px;
     }
 
-    .chat-sidebar.hidden-mobile{
-        display:none;
+    .msg-row{
+        max-width:90%;
     }
 
-    .chat-main.hidden-mobile{
-        display:none;
+    .chat-messages{
+        padding:12px 8px;
     }
 
-    .back-to-list-btn{
-        display:block;
-    }
-
-    .user-card{
-        align-items:flex-start;
-    }
-
-    .btn-friend{
-        min-width:90px;
-        padding:9px 10px;
+    .zoom-image{
+        max-width:95vw;
+        max-height:75vh;
     }
 }
 
@@ -1008,11 +1022,11 @@ nav a.active{
     }
 
     .chat-sidebar{
-        display:flex !important;
+        display:flex!important;
     }
 
     .chat-main{
-        display:flex !important;
+        display:flex!important;
     }
 
     .back-to-list-btn{
@@ -1034,7 +1048,6 @@ nav a.active{
     </div>
 
     <nav>
-
         <a onclick="showPage('home')" id="navHome" class="active">
             🏠 <span>หน้าแรก</span>
         </a>
@@ -1050,7 +1063,6 @@ nav a.active{
         <a onclick="showPage('profile')" id="navProfile">
             👤 <span>โปรไฟล์</span>
         </a>
-
     </nav>
 
     <div class="header-buttons" id="authNavButtons">
@@ -1072,40 +1084,41 @@ nav a.active{
 
 <div id="pageHome" class="page-section active">
 
-    <section class="hero">
+<section class="hero">
 
-        <div class="hero-text">
+<div class="hero-text">
 
-            <h1>
-                ห้องพูดคุย<br>
-                <span class="gradient-text">
-                    สำหรับนักเรียน
-                </span>
-            </h1>
+<h1>
+ห้องพูดคุย<br>
+<span class="gradient-text">
+สำหรับนักเรียน
+</span>
+</h1>
 
-            <h2>
-                ถาม-ตอบ แลกเปลี่ยนความรู้ และเพิ่มเพื่อนพูดคุย
-            </h2>
+<h2>
+ถาม-ตอบ แลกเปลี่ยนความรู้ และเพิ่มเพื่อนพูดคุย
+</h2>
 
-            <p>
-                ไม่ว่าจะเป็นการบ้าน การเรียน หรือเพื่อนคุยแก้เหงา
-                มาร่วมสร้างสังคมการเรียนรู้ไปด้วยกัน
-            </p>
+<p>
+ไม่ว่าจะเป็นการบ้าน การเรียน หรือเพื่อนคุยแก้เหงา
+มาร่วมสร้างสังคมการเรียนรู้ไปด้วยกัน
+</p>
 
-            <div class="hero-buttons">
+<div class="hero-buttons">
 
-                <button
-                    onclick="showPage('chat')"
-                    class="start-btn"
-                >
-                    💬 เริ่มต้นพูดคุยเลย
-                </button>
+<button
+onclick="showPage('chat')"
+class="start-btn">
 
-            </div>
+💬 เริ่มต้นพูดคุยเลย
 
-        </div>
+</button>
 
-    </section>
+</div>
+
+</div>
+
+</section>
 
 </div>
 
@@ -1114,33 +1127,32 @@ nav a.active{
 
 <div id="pageFriends" class="page-section">
 
-    <div class="friends-container">
+<div class="friends-container">
 
-        <h2 style="margin-bottom:5px;">
-            👥 เพื่อน & คำขอ
-        </h2>
+<h2 style="margin-bottom:5px;">
+👥 เพื่อน & คำขอ
+</h2>
 
-        <p style="color:#aaaed0;margin-bottom:15px;font-size:13px;">
-            ค้นหาผู้ใช้เพื่อส่งคำขอ หรือกดรับเพื่อนที่นี่
-        </p>
+<p style="color:#aaaed0;margin-bottom:15px;font-size:13px;">
+ค้นหาผู้ใช้เพื่อส่งคำขอ หรือกดรับเพื่อนที่นี่
+</p>
 
-        <div class="search-box">
+<div class="search-box">
 
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="พิมพ์ชื่อผู้ใช้เพื่อค้นหา..."
-                oninput="renderUsers()"
-            >
+<input
+type="text"
+id="searchInput"
+placeholder="พิมพ์ชื่อผู้ใช้เพื่อค้นหา..."
+onkeyup="renderUsers()">
 
-        </div>
+</div>
 
-        <div
-            class="users-grid"
-            id="usersListGrid"
-        ></div>
+<div
+class="users-grid"
+id="usersListGrid">
+</div>
 
-    </div>
+</div>
 
 </div>
 
@@ -1149,162 +1161,181 @@ nav a.active{
 
 <div id="pageChat" class="page-section">
 
-    <div class="chat-container">
+<div class="chat-container">
 
-        <div class="chat-wrapper">
+<div class="chat-wrapper">
 
-            <div
-                class="chat-sidebar"
-                id="chatSidebar"
-            >
+<!-- SIDEBAR -->
 
-                <div style="
-                    padding:12px 15px;
-                    font-weight:bold;
-                    color:#22c9ff;
-                    border-bottom:1px solid rgba(255,255,255,.05);
-                ">
-                    รายชื่อเพื่อนของคุณ
-                </div>
+<div class="chat-sidebar" id="chatSidebar">
 
-                <div
-                    class="friends-list"
-                    id="sidebarFriendsList"
-                ></div>
+<div style="
+padding:12px 15px;
+font-weight:bold;
+color:#22c9ff;
+border-bottom:1px solid rgba(255,255,255,.05);
+">
 
-            </div>
+รายชื่อเพื่อนของคุณ
 
+</div>
 
-            <div
-                class="chat-main"
-                id="chatMain"
-            >
+<div
+class="friends-list"
+id="sidebarFriendsList">
+</div>
 
-                <div class="chat-header">
-
-                    <button
-                        class="back-to-list-btn"
-                        onclick="toggleMobileChatView('sidebar')"
-                    >
-                        ← กลับไปรายชื่อ
-                    </button>
-
-                    <h3 id="chatTargetTitle">
-                        เลือกเพื่อนเพื่อเริ่มคุย
-                    </h3>
-
-                    <div></div>
-
-                </div>
+</div>
 
 
-                <!-- ข้อความแชท -->
+<!-- CHAT MAIN -->
 
-                <div
-                    class="chat-messages"
-                    id="chatMessagesArea"
-                >
+<div class="chat-main" id="chatMain">
 
-                    <div style="
-                        text-align:center;
-                        color:#8f93b8;
-                        margin-top:80px;
-                        font-size:14px;
-                    ">
-                        💬 เลือกรายชื่อเพื่อนเพื่อเริ่มการสนทนา
-                    </div>
+<div class="chat-header">
 
-                </div>
+<button
+class="back-to-list-btn"
+onclick="toggleMobileChatView('sidebar')">
 
+← กลับไปรายชื่อ
 
-                <!-- Reply -->
+</button>
 
-                <div
-                    class="active-reply-bar"
-                    id="activeReplyBar"
-                >
+<h3 id="chatTargetTitle">
+เลือกเพื่อนเพื่อเริ่มคุย
+</h3>
 
-                    <div class="active-reply-info">
+<div></div>
 
-                        กำลังตอบกลับ
-                        <b
-                            id="replyTargetUser"
-                            style="color:#22c9ff;"
-                        >
-                            ...
-                        </b>
-
-                        :
-                        <span id="replyTargetText">
-                            ...
-                        </span>
-
-                    </div>
-
-                    <button
-                        class="cancel-reply-btn"
-                        onclick="cancelReply()"
-                    >
-                        ✕
-                    </button>
-
-                </div>
+</div>
 
 
-                <!-- Input -->
+<!-- MESSAGES -->
 
-                <div class="chat-input">
+<div
+class="chat-messages"
+id="chatMessagesArea"
+onclick="closeAllMsgMenus()">
 
-                    <label
-                        for="chatImageInput"
-                        class="chat-input-btn"
-                        title="ส่งรูปภาพ"
-                    >
-                        📷
-                    </label>
+<div style="
+text-align:center;
+color:#8f93b8;
+margin-top:80px;
+font-size:14px;
+">
 
-                    <input
-                        type="file"
-                        id="chatImageInput"
-                        accept="image/*"
-                        style="display:none;"
-                        onchange="sendChatImage(event)"
-                    >
+💬 เลือกรายชื่อเพื่อนเพื่อเริ่มการสนทนา
 
-                    <button
-                        class="chat-input-btn"
-                        id="recordAudioBtn"
-                        title="อัดเสียงพูด"
-                        onclick="toggleVoiceRecording()"
-                    >
-                        🎤
-                    </button>
+</div>
 
-                    <input
-                        type="text"
-                        id="msgInput"
-                        placeholder="พิมพ์ข้อความ..."
-                        onkeydown="
-                            if(event.key==='Enter'){
-                                sendPrivateMessage()
-                            }
-                        "
-                    >
+</div>
 
-                    <button
-                        class="chat-input-btn send-btn"
-                        onclick="sendPrivateMessage()"
-                    >
-                        ➤
-                    </button>
 
-                </div>
+<!-- SCROLL BUTTON -->
 
-            </div>
+<button
+id="scrollBottomBtn"
+class="scroll-bottom-btn"
+onclick="scrollToBottom()"
+title="ไปข้อความล่าสุด">
 
-        </div>
+↓
+</button>
 
-    </div>
+
+<!-- REPLY -->
+
+<div
+class="active-reply-bar"
+id="activeReplyBar">
+
+<div class="active-reply-info">
+
+กำลังตอบกลับ
+
+<b
+id="replyTargetUser"
+style="color:#22c9ff;">
+...
+</b>
+
+:
+
+<span id="replyTargetText">
+...
+</span>
+
+</div>
+
+<button
+class="cancel-reply-btn"
+onclick="cancelReply()">
+
+✕
+
+</button>
+
+</div>
+
+
+<!-- INPUT -->
+
+<div class="chat-input">
+
+<label
+for="chatImageInput"
+class="chat-input-btn"
+title="ส่งรูปภาพ">
+
+📷
+
+</label>
+
+<input
+type="file"
+id="chatImageInput"
+accept="image/*"
+style="display:none;"
+onchange="sendChatImage(event)">
+
+
+<button
+class="chat-input-btn"
+id="recordAudioBtn"
+title="อัดเสียงพูด"
+onclick="toggleVoiceRecording()">
+
+🎤
+
+</button>
+
+
+<input
+type="text"
+id="msgInput"
+placeholder="พิมพ์ข้อความ..."
+onkeydown="
+if(event.key==='Enter')
+sendPrivateMessage()
+">
+
+
+<button
+class="chat-input-btn send-btn"
+onclick="sendPrivateMessage()">
+
+➤
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 </div>
 
@@ -1313,318 +1344,368 @@ nav a.active{
 
 <div id="pageProfile" class="page-section">
 
-    <div class="profile-card">
+<div class="profile-card">
 
-        <div class="profile-avatar-container">
+<div class="profile-avatar-container">
 
-            <img
-                id="profileAvatarImg"
-                class="profile-avatar-img"
-                src=""
-                alt="Profile"
-            >
+<img
+id="profileAvatarImg"
+class="profile-avatar-img"
+src=""
+alt="Profile">
 
-            <label
-                for="avatarFileInput"
-                class="upload-btn-label"
-            >
-                📷
-            </label>
+<label
+for="avatarFileInput"
+class="upload-btn-label">
 
-            <input
-                type="file"
-                id="avatarFileInput"
-                accept="image/*"
-                style="display:none;"
-                onchange="handleImageUpload(event)"
-            >
+📷
 
-        </div>
+</label>
 
-        <h3 id="profileUsername">
-            ชื่อผู้ใช้
-        </h3>
-
-        <p id="profileStatusDisplay">
-            "ยังไม่มีสถานะ"
-        </p>
-
-        <input
-            type="text"
-            id="statusInput"
-            class="status-input"
-            placeholder="พิมพ์ข้อความสถานะใหม่..."
-        >
-
-        <button
-            class="start-btn"
-            style="margin-bottom:15px;"
-            onclick="updateStatus()"
-        >
-            บันทึกสถานะ
-        </button>
-
-
-        <div style="
-            border-top:1px solid rgba(255,255,255,.1);
-            padding-top:15px;
-            text-align:left;
-        ">
-
-            <label style="
-                display:block;
-                font-size:12px;
-                color:#aaaed0;
-                margin-bottom:5px;
-            ">
-                เปลี่ยนชื่อผู้ใช้ใหม่
-            </label>
-
-            <input
-                type="text"
-                id="newUsernameInput"
-                class="status-input"
-                placeholder="กรอกชื่อผู้ใช้ใหม่..."
-            >
-
-            <button
-                class="start-btn"
-                style="
-                    background:linear-gradient(90deg,#f59e0b,#ef4444);
-                    max-width:100%;
-                "
-                onclick="handleUpdateUsername()"
-            >
-                เปลี่ยนชื่อ
-            </button>
-
-        </div>
-
-    </div>
+<input
+type="file"
+id="avatarFileInput"
+accept="image/*"
+style="display:none;"
+onchange="handleImageUpload(event)">
 
 </div>
 
 
-<!-- ================= LOGIN / SIGNUP ================= -->
+<h3 id="profileUsername">
+ชื่อผู้ใช้
+</h3>
 
-<div
-    class="auth-overlay"
-    id="authOverlay"
->
-
-    <!-- LOGIN -->
-
-    <div
-        class="auth-box"
-        id="loginBox"
-    >
-
-        <button
-            class="auth-close"
-            onclick="closeAuth()"
-        >
-            ✕
-        </button>
-
-        <h2>
-            🔐 เข้าสู่ระบบ
-        </h2>
-
-        <p class="auth-sub">
-            ยินดีต้อนรับกลับมาที่ Student Chat
-        </p>
-
-        <div class="auth-field">
-
-            <label>
-                ชื่อผู้ใช้
-            </label>
-
-            <input
-                type="text"
-                id="loginUsername"
-                placeholder="กรอกชื่อผู้ใช้"
-            >
-
-        </div>
-
-        <div class="auth-field">
-
-            <label>
-                รหัสผ่าน
-            </label>
-
-            <input
-                type="password"
-                id="loginPassword"
-                placeholder="กรอกรหัสผ่าน"
-            >
-
-        </div>
-
-        <button
-            class="auth-submit"
-            onclick="handleLogin()"
-        >
-            เข้าสู่ระบบ
-        </button>
-
-        <div class="auth-switch">
-
-            ยังไม่มีบัญชี?
-
-            <button
-                onclick="switchAuth('signup')"
-            >
-                สมัครสมาชิก
-            </button>
-
-        </div>
-
-    </div>
+<p id="profileStatusDisplay">
+"ยังไม่มีสถานะ"
+</p>
 
 
-    <!-- SIGNUP -->
+<input
+type="text"
+id="statusInput"
+class="status-input"
+placeholder="พิมพ์ข้อความสถานะใหม่...">
 
-    <div
-        class="auth-box"
-        id="signupBox"
-        style="display:none;"
-    >
 
-        <button
-            class="auth-close"
-            onclick="closeAuth()"
-        >
-            ✕
-        </button>
+<button
+class="start-btn"
+style="margin-bottom:15px;"
+onclick="updateStatus()">
 
-        <h2>
-            📝 สมัครสมาชิก
-        </h2>
+บันทึกสถานะ
 
-        <p class="auth-sub">
-            เข้าร่วมชุมชน Student Chat
-        </p>
+</button>
 
-        <div class="auth-field">
 
-            <label>
-                ชื่อผู้ใช้
-            </label>
+<div style="
+border-top:1px solid rgba(255,255,255,.1);
+padding-top:15px;
+text-align:left;
+">
 
-            <input
-                type="text"
-                id="signupUsername"
-                placeholder="ตั้งชื่อผู้ใช้"
-            >
+<label style="
+display:block;
+font-size:12px;
+color:#aaaed0;
+margin-bottom:5px;
+">
 
-        </div>
+เปลี่ยนชื่อผู้ใช้ใหม่
 
-        <div class="auth-field">
+</label>
 
-            <label>
-                รหัสผ่าน
-            </label>
 
-            <input
-                type="password"
-                id="signupPassword"
-                placeholder="อย่างน้อย 6 ตัวอักษร"
-            >
+<input
+type="text"
+id="newUsernameInput"
+class="status-input"
+placeholder="กรอกชื่อผู้ใช้ใหม่...">
 
-        </div>
 
-        <div class="auth-field">
+<button
+class="start-btn"
+style="
+background:linear-gradient(90deg,#f59e0b,#ef4444);
+max-width:100%;
+"
+onclick="handleUpdateUsername()">
 
-            <label>
-                ยืนยันรหัสผ่าน
-            </label>
+เปลี่ยนชื่อ
 
-            <input
-                type="password"
-                id="signupPassword2"
-                placeholder="กรอกรหัสผ่านอีกครั้ง"
-            >
+</button>
 
-        </div>
+</div>
 
-        <button
-            class="auth-submit"
-            onclick="handleSignup()"
-        >
-            สมัครสมาชิก
-        </button>
-
-        <div class="auth-switch">
-
-            มีบัญชีอยู่แล้ว?
-
-            <button
-                onclick="switchAuth('login')"
-            >
-                เข้าสู่ระบบ
-            </button>
-
-        </div>
-
-    </div>
+</div>
 
 </div>
 
 
-<!-- ================= IMAGE ZOOM MODAL ================= -->
+<!-- ================= AUTH ================= -->
 
 <div
-    class="image-modal"
-    id="imageModal"
->
+class="auth-overlay"
+id="authOverlay">
 
-    <button
-        class="close-image"
-        onclick="closeImageZoom()"
-    >
-        ✕
-    </button>
 
-    <div class="zoom-area">
+<!-- LOGIN -->
 
-        <img
-            id="zoomImage"
-            src=""
-            alt="Zoom Image"
-        >
+<div
+class="auth-box"
+id="loginBox">
 
-    </div>
+<button
+class="auth-close"
+onclick="closeAuth()">
 
-    <div class="zoom-controls">
+✕
 
-        <button onclick="zoomOut()">
-            −
-        </button>
+</button>
 
-        <button onclick="resetZoom()">
-            ⟳
-        </button>
+<h2>
+เข้าสู่ระบบ
+</h2>
 
-        <button onclick="zoomIn()">
-            ＋
-        </button>
+<p class="auth-sub">
+ยินดีต้อนรับกลับมาที่ Student Chat
+</p>
 
-    </div>
+
+<div class="auth-field">
+
+<label>
+ชื่อผู้ใช้
+</label>
+
+<input
+type="text"
+id="loginUsername"
+placeholder="กรอกชื่อผู้ใช้">
+
+</div>
+
+
+<div class="auth-field">
+
+<label>
+รหัสผ่าน
+</label>
+
+<div class="password-box">
+
+<input
+type="password"
+id="loginPassword"
+placeholder="กรอกรหัสผ่าน">
+
+<button
+class="show-password"
+onclick="togglePassword('loginPassword',this)">
+
+👁
+
+</button>
+
+</div>
+
+</div>
+
+
+<button
+class="auth-submit"
+onclick="handleLogin()">
+
+เข้าสู่ระบบ
+
+</button>
+
+
+<div class="auth-switch">
+
+ยังไม่มีบัญชี?
+
+<button onclick="switchAuth('signup')">
+
+สมัครสมาชิก
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- SIGNUP -->
+
+<div
+class="auth-box"
+id="signupBox"
+style="display:none;">
+
+<button
+class="auth-close"
+onclick="closeAuth()">
+
+✕
+
+</button>
+
+<h2>
+สมัครสมาชิก
+</h2>
+
+<p class="auth-sub">
+เข้าร่วมชุมชน Student Chat
+</p>
+
+
+<div class="auth-field">
+
+<label>
+ชื่อผู้ใช้
+</label>
+
+<input
+type="text"
+id="signupUsername"
+placeholder="ตั้งชื่อผู้ใช้">
+
+</div>
+
+
+<div class="auth-field">
+
+<label>
+รหัสผ่าน
+</label>
+
+<div class="password-box">
+
+<input
+type="password"
+id="signupPassword"
+placeholder="ตั้งรหัสผ่าน">
+
+<button
+class="show-password"
+onclick="togglePassword('signupPassword',this)">
+
+👁
+
+</button>
+
+</div>
+
+</div>
+
+
+<div class="auth-field">
+
+<label>
+ยืนยันรหัสผ่าน
+</label>
+
+<div class="password-box">
+
+<input
+type="password"
+id="signupPassword2"
+placeholder="กรอกรหัสผ่านอีกครั้ง">
+
+<button
+class="show-password"
+onclick="togglePassword('signupPassword2',this)">
+
+👁
+
+</button>
+
+</div>
+
+</div>
+
+
+<button
+class="auth-submit"
+onclick="handleSignup()">
+
+สมัครสมาชิก
+
+</button>
+
+
+<div class="auth-switch">
+
+มีบัญชีอยู่แล้ว?
+
+<button onclick="switchAuth('login')">
+
+เข้าสู่ระบบ
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= IMAGE ZOOM ================= -->
+
+<div
+class="image-modal"
+id="imageModal"
+onclick="closeImageModal(event)">
+
+<button
+class="image-close"
+onclick="forceCloseImageModal()">
+
+✕
+
+</button>
+
+
+<img
+id="zoomImage"
+class="zoom-image"
+src=""
+alt="Zoom">
+
+
+<div
+class="zoom-controls"
+onclick="event.stopPropagation()">
+
+<button onclick="zoomOut()">
+−
+</button>
+
+<button onclick="resetZoom()">
+⟳
+</button>
+
+<button onclick="zoomIn()">
++
+</button>
+
+</div>
 
 </div>
 
 
 <script type="module">
 
-/* =========================================================
+/* =====================================================
    FIREBASE
-========================================================= */
+===================================================== */
 
 import {
     initializeApp
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+} from
+"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 
 import {
     getDatabase,
@@ -1632,50 +1713,36 @@ import {
     push,
     set,
     get,
-    child,
-    remove,
     update,
+    remove,
     onValue,
-    off
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    runTransaction
+} from
+"https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged,
-    updateProfile
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-
-/* =========================================================
-   FIREBASE CONFIG
-========================================================= */
 
 const firebaseConfig = {
 
     apiKey:
-        "AIzaSyDaN-eSOQve7qn8MPHcOj4IeYWrt-7SwHk",
+    "AIzaSyDaN-eSOQve7qn8MPHcOj4IeYWrt-7SwHk",
 
     authDomain:
-        "xdhi13.firebaseapp.com",
+    "xdhi13.firebaseapp.com",
 
     databaseURL:
-        "https://mnht-84ae0-default-rtdb.firebaseio.com",
+    "https://mnht-84ae0-default-rtdb.firebaseio.com",
 
     projectId:
-        "xdhi13",
+    "xdhi13",
 
     storageBucket:
-        "xdhi13.firebasestorage.app",
+    "xdhi13.firebasestorage.app",
 
     messagingSenderId:
-        "1094865586143",
+    "1094865586143",
 
     appId:
-        "1:1094865586143:web:6f1a7e79780ae918eba66a"
-
+    "1:1094865586143:web:6f1a7e79780ae918eba66a"
 };
 
 
@@ -1683,22 +1750,16 @@ const app = initializeApp(firebaseConfig);
 
 const db = getDatabase(app);
 
-const auth = getAuth(app);
 
-
-/* =========================================================
-   GLOBAL VARIABLES
-========================================================= */
+/* =====================================================
+   VARIABLES
+===================================================== */
 
 let currentUser = null;
 
-let currentUsername = "";
+let currentChatUser = null;
 
-let selectedFriend = null;
-
-let selectedFriendUsername = "";
-
-let currentChatListener = null;
+let currentChatKey = null;
 
 let replyData = null;
 
@@ -1706,96 +1767,53 @@ let mediaRecorder = null;
 
 let audioChunks = [];
 
-let zoomScale = 1;
+let zoomLevel = 1;
+
+let imageX = 0;
+
+let imageY = 0;
+
+let dragging = false;
+
+let dragStartX = 0;
+
+let dragStartY = 0;
 
 
-/* =========================================================
-   DEFAULT AVATAR
-========================================================= */
+/* =====================================================
+   SHA-256 PASSWORD
+===================================================== */
 
-const defaultAvatar =
-    "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+async function hashPassword(password){
 
+    const encoder =
+        new TextEncoder();
 
-/* =========================================================
-   USERNAME -> EMAIL
-   Firebase Authentication ต้องใช้ email
-   เราจึงสร้าง email ภายในจาก username
-========================================================= */
+    const data =
+        encoder.encode(password);
 
-function usernameToEmail(username){
+    const hashBuffer =
+        await crypto.subtle.digest(
+            "SHA-256",
+            data
+        );
 
-    return (
-        username
-        .trim()
-        .toLowerCase()
-        .replace(/[^a-z0-9_]/g,"")
-        + "@studentchat.local"
-    );
+    const hashArray =
+        Array.from(
+            new Uint8Array(hashBuffer)
+        );
 
+    return hashArray
+        .map(
+            b => b.toString(16).padStart(2,"0")
+        )
+        .join("");
 }
 
 
-/* =========================================================
-   PAGE SYSTEM
-========================================================= */
-
-window.showPage = function(page){
-
-    document
-        .querySelectorAll(".page-section")
-        .forEach(el=>{
-            el.classList.remove("active");
-        });
-
-
-    const target =
-        document.getElementById("page" +
-        page.charAt(0).toUpperCase() +
-        page.slice(1));
-
-    if(target){
-        target.classList.add("active");
-    }
-
-
-    document
-        .querySelectorAll("nav a")
-        .forEach(el=>{
-            el.classList.remove("active");
-        });
-
-
-    const nav =
-        document.getElementById(
-            "nav" +
-            page.charAt(0).toUpperCase() +
-            page.slice(1)
-        );
-
-    if(nav){
-        nav.classList.add("active");
-    }
-
-
-    if(page === "friends"){
-        renderUsers();
-    }
-
-    if(page === "chat"){
-        renderFriendsSidebar();
-    }
-
-    if(page === "profile"){
-        loadProfile();
-    }
-
-};
-
-
-/* =========================================================
-   AUTH MODAL
-========================================================= */
+/* =====================================================
+   AUTH
+===================================================== */
 
 window.openAuth = function(type){
 
@@ -1804,7 +1822,6 @@ window.openAuth = function(type){
         .classList.add("active");
 
     switchAuth(type);
-
 };
 
 
@@ -1813,24 +1830,48 @@ window.closeAuth = function(){
     document
         .getElementById("authOverlay")
         .classList.remove("active");
-
 };
 
 
 window.switchAuth = function(type){
 
     document.getElementById("loginBox").style.display =
-        type === "login" ? "block" : "none";
+        type === "login"
+        ? "block"
+        : "none";
 
     document.getElementById("signupBox").style.display =
-        type === "signup" ? "block" : "none";
-
+        type === "signup"
+        ? "block"
+        : "none";
 };
 
 
-/* =========================================================
+window.togglePassword = function(id,button){
+
+    const input =
+        document.getElementById(id);
+
+    if(input.type === "password"){
+
+        input.type = "text";
+
+        button.textContent = "🙈";
+
+    }else{
+
+        input.type = "password";
+
+        button.textContent = "👁";
+
+    }
+};
+
+
+/* =====================================================
    SIGN UP
-========================================================= */
+   USERNAME UNIQUE
+===================================================== */
 
 window.handleSignup = async function(){
 
@@ -1869,101 +1910,116 @@ window.handleSignup = async function(){
 
     if(password !== password2){
 
-        alert("รหัสผ่านทั้งสองช่องไม่ตรงกัน");
+        alert("รหัสผ่านไม่ตรงกัน");
 
         return;
     }
 
 
+    const usernameKey =
+        username
+        .toLowerCase()
+        .replace(/[.#$[\]/]/g,"_");
+
+
+    const usernameRef =
+        ref(db,"usernames/"+usernameKey);
+
+
     try{
 
-        const usersRef =
-            ref(db,"users");
+        /*
+         * transaction ป้องกันชื่อซ้ำ
+         */
 
-        const snapshot =
-            await get(usersRef);
+        const result =
+            await runTransaction(
+                usernameRef,
+                currentData => {
 
+                    if(currentData !== null){
 
-        let usernameExists = false;
+                        return;
 
+                    }
 
-        if(snapshot.exists()){
-
-            const users = snapshot.val();
-
-            for(const uid in users){
-
-                if(
-                    users[uid].username &&
-                    users[uid].username.toLowerCase()
-                    === username.toLowerCase()
-                ){
-
-                    usernameExists = true;
-                    break;
-
+                    return {
+                        username:username
+                    };
                 }
-
-            }
-
-        }
+            );
 
 
-        if(usernameExists){
+        if(!result.committed){
 
-            alert("ชื่อผู้ใช้นี้มีคนใช้แล้ว");
+            alert(
+                "❌ ชื่อนี้มีคนใช้อยู่แล้ว กรุณาใช้ชื่ออื่น"
+            );
 
             return;
         }
 
 
-        const email =
-            usernameToEmail(username);
+        const passwordHash =
+            await hashPassword(password);
 
 
-        const credential =
-            await createUserWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
-
-
-        const user =
-            credential.user;
-
-
-        await updateProfile(
-            user,
-            {
-                displayName:username
-            }
-        );
+        const userRef =
+            push(ref(db,"users"));
 
 
         await set(
-            ref(db,"users/" + user.uid),
+            userRef,
             {
+
                 username:username,
-                status:"",
-                avatar:defaultAvatar,
-                createdAt:Date.now()
+
+                usernameLower:
+                    username.toLowerCase(),
+
+                password:
+                    passwordHash,
+
+                status:
+                    "",
+
+                avatar:
+                    "",
+
+                createdAt:
+                    Date.now()
+
             }
         );
 
 
-        alert("สมัครสมาชิกสำเร็จ 🎉");
+        alert(
+            "✅ สมัครสมาชิกสำเร็จ!"
+        );
 
-        closeAuth();
 
-    }
-    catch(error){
+        document
+            .getElementById("signupUsername")
+            .value = "";
+
+        document
+            .getElementById("signupPassword")
+            .value = "";
+
+        document
+            .getElementById("signupPassword2")
+            .value = "";
+
+
+        switchAuth("login");
+
+
+    }catch(error){
 
         console.error(error);
 
         alert(
-            "สมัครสมาชิกไม่สำเร็จ\n" +
-            error.message
+            "เกิดข้อผิดพลาดในการสมัครสมาชิก"
         );
 
     }
@@ -1971,9 +2027,9 @@ window.handleSignup = async function(){
 };
 
 
-/* =========================================================
+/* =====================================================
    LOGIN
-========================================================= */
+===================================================== */
 
 window.handleLogin = async function(){
 
@@ -1991,7 +2047,9 @@ window.handleLogin = async function(){
 
     if(!username || !password){
 
-        alert("กรอกชื่อผู้ใช้และรหัสผ่านก่อน");
+        alert(
+            "กรุณากรอกชื่อผู้ใช้และรหัสผ่าน"
+        );
 
         return;
     }
@@ -1999,29 +2057,104 @@ window.handleLogin = async function(){
 
     try{
 
-        const email =
-            usernameToEmail(username);
+        const usersSnapshot =
+            await get(
+                ref(db,"users")
+            );
 
 
-        await signInWithEmailAndPassword(
-            auth,
-            email,
-            password
+        let foundUser = null;
+
+
+        if(usersSnapshot.exists()){
+
+            usersSnapshot.forEach(
+                childSnapshot => {
+
+                    const data =
+                        childSnapshot.val();
+
+                    if(
+                        data.usernameLower ===
+                        username.toLowerCase()
+                    ){
+
+                        foundUser = {
+
+                            id:
+                                childSnapshot.key,
+
+                            ...data
+
+                        };
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        if(!foundUser){
+
+            alert(
+                "❌ ไม่พบชื่อผู้ใช้นี้"
+            );
+
+            return;
+        }
+
+
+        const passwordHash =
+            await hashPassword(password);
+
+
+        if(
+            foundUser.password !==
+            passwordHash
+        ){
+
+            alert(
+                "❌ รหัสผ่านไม่ถูกต้อง"
+            );
+
+            return;
+        }
+
+
+        currentUser =
+            foundUser;
+
+
+        localStorage.setItem(
+            "studentChatUserId",
+            foundUser.id
         );
 
 
-        alert("เข้าสู่ระบบสำเร็จ ✅");
-
         closeAuth();
 
-    }
-    catch(error){
+        updateHeader();
+
+        loadProfile();
+
+        renderUsers();
+
+        loadFriends();
+
+
+        alert(
+            "✅ เข้าสู่ระบบสำเร็จ!"
+        );
+
+
+    }catch(error){
 
         console.error(error);
 
         alert(
-            "เข้าสู่ระบบไม่สำเร็จ\n" +
-            "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
+            "เกิดข้อผิดพลาดในการเข้าสู่ระบบ"
         );
 
     }
@@ -2029,91 +2162,87 @@ window.handleLogin = async function(){
 };
 
 
-/* =========================================================
-   LOGOUT
-========================================================= */
+/* =====================================================
+   AUTO LOGIN
+===================================================== */
 
-window.logout = async function(){
+async function autoLogin(){
+
+    const userId =
+        localStorage.getItem(
+            "studentChatUserId"
+        );
+
+
+    if(!userId)
+        return;
+
 
     try{
 
-        await signOut(auth);
+        const snapshot =
+            await get(
+                ref(db,"users/"+userId)
+            );
 
-        selectedFriend = null;
 
-        selectedFriendUsername = null;
+        if(snapshot.exists()){
 
-        alert("ออกจากระบบแล้ว");
+            currentUser = {
 
-        showPage("home");
+                id:userId,
 
-    }
-    catch(error){
+                ...snapshot.val()
+
+            };
+
+            updateHeader();
+
+            loadProfile();
+
+            renderUsers();
+
+            loadFriends();
+
+        }
+
+    }catch(error){
 
         console.error(error);
 
     }
 
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+window.logout = function(){
+
+    currentUser = null;
+
+    currentChatUser = null;
+
+    currentChatKey = null;
+
+    localStorage.removeItem(
+        "studentChatUserId"
+    );
+
+    updateHeader();
+
+    showPage("home");
+
 };
 
 
-/* =========================================================
-   AUTH STATE
-========================================================= */
+/* =====================================================
+   HEADER
+===================================================== */
 
-onAuthStateChanged(
-    auth,
-    async user => {
-
-        currentUser = user;
-
-
-        if(user){
-
-            const snap =
-                await get(
-                    ref(db,"users/" + user.uid)
-                );
-
-
-            if(snap.exists()){
-
-                const data = snap.val();
-
-                currentUsername =
-                    data.username ||
-                    user.displayName ||
-                    "ผู้ใช้";
-
-            }
-
-
-            updateHeader(true);
-
-            loadProfile();
-
-            renderFriendsSidebar();
-
-        }
-        else{
-
-            currentUsername = "";
-
-            updateHeader(false);
-
-            renderFriendsSidebar();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   HEADER USER
-========================================================= */
-
-async function updateHeader(loggedIn){
+function updateHeader(){
 
     const box =
         document.getElementById(
@@ -2121,22 +2250,24 @@ async function updateHeader(loggedIn){
         );
 
 
-    if(!loggedIn){
+    if(!currentUser){
 
         box.innerHTML = `
 
             <button
-                class="login"
-                onclick="openAuth('login')"
-            >
-                เข้าสู่ระบบ
+            class="login"
+            onclick="openAuth('login')">
+
+            เข้าสู่ระบบ
+
             </button>
 
             <button
-                class="signup"
-                onclick="openAuth('signup')"
-            >
-                สมัคร
+            class="signup"
+            onclick="openAuth('signup')">
+
+            สมัคร
+
             </button>
 
         `;
@@ -2145,39 +2276,22 @@ async function updateHeader(loggedIn){
     }
 
 
-    const snap =
-        await get(
-            ref(db,"users/" + currentUser.uid)
-        );
-
-
-    let avatar = defaultAvatar;
-
-    if(snap.exists()){
-
-        avatar =
-            snap.val().avatar ||
-            defaultAvatar;
-
-    }
-
-
     box.innerHTML = `
 
         <div class="user-profile-badge">
 
-            <img
-                src="${avatar}"
-                class="user-avatar-small"
-            >
+            👤
 
-            <span>${escapeHTML(currentUsername)}</span>
+            <b>
+            ${escapeHtml(currentUser.username)}
+            </b>
 
             <button
-                class="logout-btn"
-                onclick="logout()"
-            >
-                ออก
+            class="logout-btn"
+            onclick="logout()">
+
+            ออก
+
             </button>
 
         </div>
@@ -2187,33 +2301,109 @@ async function updateHeader(loggedIn){
 }
 
 
-/* =========================================================
-   USERS
-========================================================= */
+/* =====================================================
+   PAGE
+===================================================== */
+
+window.showPage = function(page){
+
+    if(
+        (page === "chat" ||
+        page === "friends" ||
+        page === "profile")
+        &&
+        !currentUser
+    ){
+
+        openAuth("login");
+
+        return;
+    }
+
+
+    document
+        .querySelectorAll(".page-section")
+        .forEach(
+            el => el.classList.remove("active")
+        );
+
+
+    document
+        .getElementById(
+            "page"+page.charAt(0).toUpperCase()+page.slice(1)
+        )
+        .classList.add("active");
+
+
+    document
+        .querySelectorAll("nav a")
+        .forEach(
+            el => el.classList.remove("active")
+        );
+
+
+    const nav =
+        document.getElementById(
+            "nav"+
+            page.charAt(0).toUpperCase()+
+            page.slice(1)
+        );
+
+
+    if(nav)
+        nav.classList.add("active");
+
+
+    if(page === "friends")
+        renderUsers();
+
+    if(page === "chat")
+        loadFriends();
+
+};
+
+
+/* =====================================================
+   FRIENDS
+===================================================== */
 
 async function getAllUsers(){
 
-    const snap =
+    const snapshot =
         await get(
             ref(db,"users")
         );
 
-    if(!snap.exists()){
+    const users = [];
 
-        return {};
+    if(snapshot.exists()){
+
+        snapshot.forEach(
+            child => {
+
+                users.push({
+
+                    id:child.key,
+
+                    ...child.val()
+
+                });
+
+            }
+        );
 
     }
 
-    return snap.val();
+    return users;
 
 }
 
 
-/* =========================================================
-   FRIEND SYSTEM
-========================================================= */
-
 window.renderUsers = async function(){
+
+    if(!currentUser)
+        return;
+
 
     const grid =
         document.getElementById(
@@ -2221,357 +2411,164 @@ window.renderUsers = async function(){
         );
 
 
-    if(!currentUser){
-
-        grid.innerHTML = `
-
-            <div style="
-                grid-column:1/-1;
-                text-align:center;
-                padding:30px;
-                color:#aaaed0;
-            ">
-                🔐 กรุณาเข้าสู่ระบบก่อนค้นหาเพื่อน
-            </div>
-
-        `;
-
-        return;
-    }
+    grid.innerHTML =
+        "<p style='color:#aaaed0'>กำลังโหลด...</p>";
 
 
     const users =
         await getAllUsers();
 
 
-    const query =
+    const search =
         document
         .getElementById("searchInput")
         .value
-        .trim()
-        .toLowerCase();
-
-
-    const meSnap =
-        await get(
-            ref(
-                db,
-                "users/" + currentUser.uid
-            )
-        );
-
-
-    const me =
-        meSnap.exists()
-        ? meSnap.val()
-        : {};
-
-
-    const friends =
-        me.friends || {};
-
-    const requests =
-        me.friendRequests || {};
+        .toLowerCase()
+        .trim();
 
 
     grid.innerHTML = "";
 
 
-    for(const uid in users){
-
-        if(uid === currentUser.uid){
-
-            continue;
-
-        }
-
-
-        const user =
-            users[uid];
-
-
-        if(
-            query &&
-            !(
-                user.username ||
-                ""
-            )
+    users
+    .filter(
+        user =>
+            user.id !== currentUser.id &&
+            user.username
             .toLowerCase()
-            .includes(query)
-        ){
+            .includes(search)
+    )
+    .forEach(
+        user => {
 
-            continue;
+            const card =
+                document.createElement("div");
 
-        }
-
-
-        const isFriend =
-            friends[uid] === true;
-
-        const hasRequest =
-            requests[uid] === true;
+            card.className =
+                "user-card";
 
 
-        let button = "";
+            card.innerHTML = `
 
+                <div class="user-info">
 
-        if(isFriend){
-
-            button = `
-
-                <button
-                    class="btn-friend btn-remove"
-                    onclick="removeFriend('${uid}')"
-                >
-                    ลบเพื่อน
-                </button>
-
-            `;
-
-        }
-        else if(hasRequest){
-
-            button = `
-
-                <button
-                    class="btn-friend btn-accept"
-                    onclick="acceptFriend('${uid}')"
-                >
-                    รับเพื่อน
-                </button>
-
-            `;
-
-        }
-        else{
-
-            const otherSnap =
-                await get(
-                    ref(
-                        db,
-                        "users/" +
-                        uid +
-                        "/friendRequests"
-                    )
-                );
-
-
-            const otherRequests =
-                otherSnap.exists()
-                ? otherSnap.val()
-                : {};
-
-
-            if(otherRequests[currentUser.uid]){
-
-                button = `
-
-                    <button
-                        class="btn-friend"
-                        style="background:#343785;color:white;"
-                        disabled
-                    >
-                        รอการตอบรับ
-                    </button>
-
-                `;
-
-            }
-            else{
-
-                button = `
-
-                    <button
-                        class="btn-friend btn-add"
-                        onclick="sendFriendRequest('${uid}')"
-                    >
-                        ➕ เพิ่มเพื่อน
-                    </button>
-
-                `;
-
-            }
-
-        }
-
-
-        const card =
-            document.createElement("div");
-
-        card.className = "user-card";
-
-
-        card.innerHTML = `
-
-            <div class="user-info">
-
-                <img
+                    <img
                     class="user-avatar-img"
-                    src="${user.avatar || defaultAvatar}"
-                >
+                    src="${user.avatar || avatarDefault()}">
 
-                <div class="user-details">
+                    <div class="user-details">
 
-                    <h4>
-                        ${escapeHTML(user.username || "ผู้ใช้")}
-                    </h4>
+                        <h4>
+                        ${escapeHtml(user.username)}
+                        </h4>
 
-                    <p>
-                        ${escapeHTML(user.status || "ยังไม่มีสถานะ")}
-                    </p>
+                        <p>
+                        ${escapeHtml(
+                            user.status || "ยังไม่มีสถานะ"
+                        )}
+                        </p>
+
+                    </div>
 
                 </div>
 
-            </div>
+                <button
+                class="btn-friend btn-add"
+                onclick="openChatWith('${user.id}')">
 
-            ${button}
+                💬 แชท
 
-        `;
+                </button>
 
-
-        grid.appendChild(card);
-
-    }
-
-};
+            `;
 
 
-/* =========================================================
-   SEND FRIEND REQUEST
-========================================================= */
+            grid.appendChild(card);
 
-window.sendFriendRequest = async function(uid){
-
-    if(!currentUser){
-
-        alert("กรุณาเข้าสู่ระบบก่อน");
-
-        return;
-    }
-
-
-    await set(
-        ref(
-            db,
-            "users/" +
-            uid +
-            "/friendRequests/" +
-            currentUser.uid
-        ),
-        true
+        }
     );
 
-
-    alert("ส่งคำขอเป็นเพื่อนแล้ว 👥");
-
-    renderUsers();
-
 };
 
 
-/* =========================================================
-   ACCEPT FRIEND
-========================================================= */
+/* =====================================================
+   OPEN CHAT
+===================================================== */
 
-window.acceptFriend = async function(uid){
+window.openChatWith = async function(userId){
 
-    if(!currentUser){
-
+    if(!currentUser)
         return;
-    }
 
 
-    const updates = {};
+    const snapshot =
+        await get(
+            ref(db,"users/"+userId)
+        );
 
 
-    updates[
-        "users/" +
-        currentUser.uid +
-        "/friends/" +
-        uid
-    ] = true;
-
-
-    updates[
-        "users/" +
-        uid +
-        "/friends/" +
-        currentUser.uid
-    ] = true;
-
-
-    updates[
-        "users/" +
-        currentUser.uid +
-        "/friendRequests/" +
-        uid
-    ] = null;
-
-
-    await update(
-        ref(db),
-        updates
-    );
-
-
-    alert("เพิ่มเพื่อนสำเร็จ 🎉");
-
-    renderUsers();
-
-    renderFriendsSidebar();
-
-};
-
-
-/* =========================================================
-   REMOVE FRIEND
-========================================================= */
-
-window.removeFriend = async function(uid){
-
-    if(!confirm("ต้องการลบเพื่อนคนนี้หรือไม่?")){
-
+    if(!snapshot.exists())
         return;
-    }
 
 
-    const updates = {};
+    currentChatUser = {
+
+        id:userId,
+
+        ...snapshot.val()
+
+    };
 
 
-    updates[
-        "users/" +
-        currentUser.uid +
-        "/friends/" +
-        uid
-    ] = null;
+    currentChatKey =
+        createChatKey(
+            currentUser.id,
+            userId
+        );
 
 
-    updates[
-        "users/" +
-        uid +
-        "/friends/" +
-        currentUser.uid
-    ] = null;
+    document
+        .getElementById(
+            "chatTargetTitle"
+        )
+        .innerHTML =
+        "💬 "+
+        escapeHtml(
+            currentChatUser.username
+        );
 
 
-    await update(
-        ref(db),
-        updates
-    );
+    showPage("chat");
 
+    loadMessages();
 
-    renderUsers();
-
-    renderFriendsSidebar();
+    toggleMobileChatView("chat");
 
 };
 
 
-/* =========================================================
-   FRIEND SIDEBAR
-========================================================= */
+/* =====================================================
+   CHAT KEY
+===================================================== */
 
-async function renderFriendsSidebar(){
+function createChatKey(a,b){
+
+    return [a,b]
+        .sort()
+        .join("_");
+
+}
+
+
+/* =====================================================
+   FRIEND LIST
+===================================================== */
+
+async function loadFriends(){
+
+    if(!currentUser)
+        return;
+
 
     const list =
         document.getElementById(
@@ -2579,235 +2576,87 @@ async function renderFriendsSidebar(){
         );
 
 
-    if(!currentUser){
-
-        list.innerHTML = `
-
-            <div style="
-                padding:25px 10px;
-                color:#aaaed0;
-                text-align:center;
-                font-size:13px;
-            ">
-                🔐 เข้าสู่ระบบก่อน
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    const snap =
-        await get(
-            ref(
-                db,
-                "users/" +
-                currentUser.uid +
-                "/friends"
-            )
-        );
+    const users =
+        await getAllUsers();
 
 
     list.innerHTML = "";
 
 
-    if(!snap.exists()){
+    users
+    .filter(
+        u => u.id !== currentUser.id
+    )
+    .forEach(
+        user => {
 
-        list.innerHTML = `
+            const item =
+                document.createElement("div");
 
-            <div style="
-                padding:25px 10px;
-                color:#aaaed0;
-                text-align:center;
-                font-size:13px;
-            ">
-                ยังไม่มีเพื่อน<br><br>
-                ไปที่ 👥 เพื่อน เพื่อเพิ่มเพื่อน
-            </div>
-
-        `;
-
-        return;
-
-    }
+            item.className =
+                "friend-item";
 
 
-    const friends =
-        snap.val();
+            item.onclick =
+                () => openChatWith(user.id);
 
 
-    const users =
-        await getAllUsers();
+            item.innerHTML = `
+
+                <img
+                class="friend-item-img"
+                src="${user.avatar || avatarDefault()}">
+
+                <div>
+
+                    <b>
+                    ${escapeHtml(user.username)}
+                    </b>
+
+                    <div style="
+                    color:#8f93b8;
+                    font-size:11px;
+                    margin-top:2px;
+                    ">
+
+                    ${escapeHtml(
+                        user.status || "ออนไลน์"
+                    )}
+
+                    </div>
+
+                </div>
+
+            `;
 
 
-    for(const uid in friends){
-
-        if(!users[uid]){
-
-            continue;
+            list.appendChild(item);
 
         }
-
-
-        const user =
-            users[uid];
-
-
-        const item =
-            document.createElement("div");
-
-        item.className =
-            "friend-item";
-
-
-        item.onclick = () =>
-            openPrivateChat(
-                uid,
-                user.username
-            );
-
-
-        item.innerHTML = `
-
-            <img
-                src="${user.avatar || defaultAvatar}"
-                class="friend-item-img"
-            >
-
-            <div style="flex:1;">
-
-                <div style="font-weight:bold;">
-                    ${escapeHTML(user.username)}
-                </div>
-
-                <div style="
-                    font-size:11px;
-                    color:#aaaed0;
-                ">
-                    ${escapeHTML(user.status || "ออนไลน์")}
-                </div>
-
-            </div>
-
-            <span class="online-dot"></span>
-
-        `;
-
-
-        list.appendChild(item);
-
-    }
+    );
 
 }
 
 
-/* =========================================================
-   OPEN PRIVATE CHAT
-========================================================= */
+/* =====================================================
+   LOAD MESSAGES
+===================================================== */
 
-window.openPrivateChat = async function(
-    uid,
-    username
-){
+function loadMessages(){
 
-    if(!currentUser){
-
-        alert("กรุณาเข้าสู่ระบบก่อน");
-
-        return;
-    }
-
-
-    selectedFriend = uid;
-
-    selectedFriendUsername = username;
-
-
-    document.getElementById(
-        "chatTargetTitle"
-    ).innerHTML =
-        "💬 " +
-        escapeHTML(username);
-
-
-    document
-        .getElementById("chatMain")
-        .classList.add("active");
-
-
-    document
-        .getElementById("chatSidebar")
-        .classList.add("hidden-mobile");
-
-
-    document
-        .getElementById("chatMain")
-        .classList.remove("hidden-mobile");
-
-
-    cancelReply();
-
-
-    listenToMessages();
-
-};
-
-
-/* =========================================================
-   CHAT ID
-========================================================= */
-
-function getChatId(uid1,uid2){
-
-    return [
-        uid1,
-        uid2
-    ]
-    .sort()
-    .join("_");
-
-}
-
-
-/* =========================================================
-   LISTEN MESSAGES
-========================================================= */
-
-function listenToMessages(){
-
-    if(currentChatListener){
-
-        off(currentChatListener);
-
-    }
-
-
-    if(!selectedFriend){
-
+    if(!currentChatKey)
         return;
 
-    }
 
-
-    const chatId =
-        getChatId(
-            currentUser.uid,
-            selectedFriend
-        );
-
-
-    currentChatListener =
+    const messagesRef =
         ref(
             db,
-            "chats/" +
-            chatId
+            "messages/"+currentChatKey
         );
 
 
     onValue(
-        currentChatListener,
+        messagesRef,
         snapshot => {
 
             const area =
@@ -2824,46 +2673,37 @@ function listenToMessages(){
                 area.innerHTML = `
 
                     <div style="
-                        text-align:center;
-                        color:#8f93b8;
-                        margin-top:80px;
+                    text-align:center;
+                    color:#8f93b8;
+                    margin-top:80px;
                     ">
-                        💬 เริ่มส่งข้อความแรกได้เลย
+
+                    💬 เริ่มการสนทนาได้เลย
+
                     </div>
 
                 `;
 
                 return;
-
             }
 
 
-            const messages =
-                snapshot.val();
+            snapshot.forEach(
+                child => {
+
+                    renderMessage(
+                        child.key,
+                        child.val()
+                    );
+
+                }
+            );
 
 
-            Object.entries(messages)
-                .forEach(
-                    ([messageId,message]) => {
-
-                        renderMessage(
-                            messageId,
-                            message
-                        );
-
-                    }
-                );
-
-
-            /*
-                เลื่อนไปข้อความล่าสุด
-                เฉพาะตอนโหลดข้อความ
-            */
-
-            setTimeout(()=>{
-                area.scrollTop =
-                    area.scrollHeight;
-            },50);
+            setTimeout(
+                scrollToBottom,
+                100
+            );
 
         }
     );
@@ -2871,14 +2711,11 @@ function listenToMessages(){
 }
 
 
-/* =========================================================
+/* =====================================================
    RENDER MESSAGE
-========================================================= */
+===================================================== */
 
-function renderMessage(
-    messageId,
-    message
-){
+function renderMessage(id,msg){
 
     const area =
         document.getElementById(
@@ -2886,36 +2723,79 @@ function renderMessage(
         );
 
 
-    const isMe =
-        message.senderId ===
-        currentUser.uid;
-
-
     const row =
         document.createElement("div");
 
 
+    const isMe =
+        msg.senderId === currentUser.id;
+
+
     row.className =
-        "msg-row " +
+        "msg-row "+
         (isMe ? "me" : "other");
 
 
     let content = "";
 
 
-    if(message.reply){
+    if(msg.text){
+
+        content +=
+            `<div>${escapeHtml(msg.text)}</div>`;
+
+    }
+
+
+    if(msg.image){
 
         content += `
+
+            <img
+            class="chat-msg-img"
+            src="${msg.image}"
+            onclick="openImageModal('${msg.image}')">
+
+        `;
+
+    }
+
+
+    if(msg.audio){
+
+        content += `
+
+            <audio
+            class="chat-audio"
+            controls
+            src="${msg.audio}">
+            </audio>
+
+        `;
+
+    }
+
+
+    let replyHtml = "";
+
+
+    if(msg.reply){
+
+        replyHtml = `
 
             <div class="reply-preview-box">
 
                 <div class="reply-user">
-                    ↩️ ${escapeHTML(message.reply.username)}
+
+                ↩ ${escapeHtml(
+                    msg.reply.username
+                )}
+
                 </div>
 
-                <div>
-                    ${escapeHTML(message.reply.text)}
-                </div>
+                ${escapeHtml(
+                    msg.reply.text || "รูปภาพ"
+                )}
 
             </div>
 
@@ -2924,75 +2804,43 @@ function renderMessage(
     }
 
 
-    if(message.type === "image"){
-
-        content += `
-
-            <img
-                src="${message.data}"
-                class="chat-msg-img"
-                onclick="openImageZoom('${message.data}')"
-            >
-
-        `;
-
-    }
-    else if(message.type === "audio"){
-
-        content += `
-
-            <audio
-                class="chat-audio"
-                controls
-                src="${message.data}"
-            ></audio>
-
-        `;
-
-    }
-    else{
-
-        content +=
-            escapeHTML(message.text || "");
-
-    }
-
-
-    content += `
-
-        <div class="message-time">
-            ${formatTime(message.timestamp)}
-        </div>
-
-    `;
-
-
     row.innerHTML = `
 
         <div class="msg-bubble">
 
+            ${replyHtml}
+
             ${content}
+
+            <div style="
+            font-size:9px;
+            color:#aab0d0;
+            margin-top:5px;
+            text-align:right;
+            ">
+
+            ${formatTime(msg.time)}
+
+            </div>
 
         </div>
 
         <button
-            class="msg-menu-btn"
-            onclick="toggleMsgMenu(event,this)"
-        >
-            ⋮
+        class="msg-menu-btn"
+        onclick="event.stopPropagation();toggleMsgMenu(this)">
+
+        ⋮
+
         </button>
 
         <div class="msg-options-menu">
 
             <div
-                class="menu-item"
-                onclick="replyToMessage(
-                    '${messageId}',
-                    '${escapeJS(message.text || "รูปภาพ")}',
-                    '${escapeJS(message.senderName || "ผู้ใช้")}'
-                )"
-            >
-                ↩️ ตอบกลับ
+            class="menu-item"
+            onclick="startReply('${id}')">
+
+            ↩ ตอบกลับ
+
             </div>
 
             ${
@@ -3000,10 +2848,11 @@ function renderMessage(
                 ?
                 `
                 <div
-                    class="menu-item danger"
-                    onclick="deleteMessage('${messageId}')"
-                >
-                    🗑️ ลบข้อความ
+                class="menu-item danger"
+                onclick="deleteMessage('${id}')">
+
+                🗑 ลบข้อความ
+
                 </div>
                 `
                 :
@@ -3020,23 +2869,25 @@ function renderMessage(
 }
 
 
-/* =========================================================
-   SEND TEXT
-========================================================= */
+/* =====================================================
+   SEND MESSAGE
+===================================================== */
 
 window.sendPrivateMessage = async function(){
 
     if(!currentUser){
 
-        alert("กรุณาเข้าสู่ระบบก่อน");
+        openAuth("login");
 
         return;
     }
 
 
-    if(!selectedFriend){
+    if(!currentChatKey){
 
-        alert("เลือกเพื่อนก่อน");
+        alert(
+            "กรุณาเลือกเพื่อนก่อน"
+        );
 
         return;
     }
@@ -3052,26 +2903,15 @@ window.sendPrivateMessage = async function(){
         input.value.trim();
 
 
-    if(!text){
-
+    if(!text)
         return;
-
-    }
-
-
-    const chatId =
-        getChatId(
-            currentUser.uid,
-            selectedFriend
-        );
 
 
     const messageRef =
         push(
             ref(
                 db,
-                "chats/" +
-                chatId
+                "messages/"+currentChatKey
             )
         );
 
@@ -3079,16 +2919,15 @@ window.sendPrivateMessage = async function(){
     const data = {
 
         senderId:
-            currentUser.uid,
+            currentUser.id,
 
         senderName:
-            currentUsername,
+            currentUser.username,
 
         text:text,
 
-        type:"text",
-
-        timestamp:Date.now()
+        time:
+            Date.now()
 
     };
 
@@ -3114,57 +2953,32 @@ window.sendPrivateMessage = async function(){
 };
 
 
-/* =========================================================
-   SEND IMAGE
-========================================================= */
+/* =====================================================
+   IMAGE SEND
+===================================================== */
 
 window.sendChatImage = function(event){
+
+    if(!currentUser ||
+       !currentChatKey)
+        return;
+
 
     const file =
         event.target.files[0];
 
 
-    if(!file){
-
+    if(!file)
         return;
 
-    }
 
-
-    if(!currentUser || !selectedFriend){
-
-        alert("กรุณาเลือกเพื่อนก่อน");
-
-        return;
-
-    }
-
-
-    if(!file.type.startsWith("image/")){
-
-        alert("เลือกไฟล์รูปภาพเท่านั้น");
-
-        return;
-
-    }
-
-
-    /*
-       จำกัดรูปไว้ประมาณ 1.5MB
-       เพราะเราเก็บเป็น Base64 ใน Realtime Database
-    */
-
-    if(file.size > 1.5 * 1024 * 1024){
+    if(file.size > 2 * 1024 * 1024){
 
         alert(
-            "รูปใหญ่เกินไป\n" +
-            "กรุณาเลือกรูปไม่เกิน 1.5MB"
+            "รูปใหญ่เกินไป กรุณาใช้รูปไม่เกิน 2MB"
         );
 
-        event.target.value = "";
-
         return;
-
     }
 
 
@@ -3174,57 +2988,33 @@ window.sendChatImage = function(event){
 
     reader.onload = async function(){
 
-        const chatId =
-            getChatId(
-                currentUser.uid,
-                selectedFriend
-            );
-
-
         const messageRef =
             push(
                 ref(
                     db,
-                    "chats/" +
-                    chatId
+                    "messages/"+currentChatKey
                 )
             );
 
 
-        const data = {
-
-            senderId:
-                currentUser.uid,
-
-            senderName:
-                currentUsername,
-
-            type:"image",
-
-            data:
-                reader.result,
-
-            timestamp:
-                Date.now()
-
-        };
-
-
-        if(replyData){
-
-            data.reply =
-                replyData;
-
-        }
-
-
         await set(
             messageRef,
-            data
+            {
+
+                senderId:
+                    currentUser.id,
+
+                senderName:
+                    currentUser.username,
+
+                image:
+                    reader.result,
+
+                time:
+                    Date.now()
+
+            }
         );
-
-
-        cancelReply();
 
     };
 
@@ -3236,214 +3026,96 @@ window.sendChatImage = function(event){
 };
 
 
-/* =========================================================
-   IMAGE ZOOM
-========================================================= */
+/* =====================================================
+   DELETE MESSAGE
+===================================================== */
 
-window.openImageZoom = function(src){
+window.deleteMessage = async function(id){
 
-    zoomScale = 1;
+    if(!currentChatKey)
+        return;
 
 
-    const img =
-        document.getElementById(
-            "zoomImage"
-        );
-
-
-    img.src = src;
-
-    img.style.transform =
-        "scale(1)";
-
-
-    document
-        .getElementById("imageModal")
-        .classList.add("active");
-
-};
-
-
-window.closeImageZoom = function(){
-
-    document
-        .getElementById("imageModal")
-        .classList.remove("active");
-
-};
-
-
-window.zoomIn = function(){
-
-    zoomScale += .25;
-
-
-    if(zoomScale > 4){
-
-        zoomScale = 4;
-
-    }
-
-
-    document
-        .getElementById("zoomImage")
-        .style.transform =
-        `scale(${zoomScale})`;
-
-};
-
-
-window.zoomOut = function(){
-
-    zoomScale -= .25;
-
-
-    if(zoomScale < .5){
-
-        zoomScale = .5;
-
-    }
-
-
-    document
-        .getElementById("zoomImage")
-        .style.transform =
-        `scale(${zoomScale})`;
-
-};
-
-
-window.resetZoom = function(){
-
-    zoomScale = 1;
-
-
-    document
-        .getElementById("zoomImage")
-        .style.transform =
-        "scale(1)";
-
-};
-
-
-/* =========================================================
-   MOUSE WHEEL ZOOM
-========================================================= */
-
-document
-.getElementById("zoomImage")
-.addEventListener(
-    "wheel",
-    function(event){
-
-        event.preventDefault();
-
-
-        if(event.deltaY < 0){
-
-            zoomIn();
-
-        }
-        else{
-
-            zoomOut();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   MESSAGE MENU
-========================================================= */
-
-window.toggleMsgMenu = function(
-    event,
-    button
-){
-
-    event.stopPropagation();
-
-
-    closeAllMsgMenus();
-
-
-    const menu =
-        button
-        .parentElement
-        .querySelector(
-            ".msg-options-menu"
-        );
-
-
-    menu.classList.add("active");
-
-};
-
-
-window.closeAllMsgMenus = function(){
-
-    document
-        .querySelectorAll(
-            ".msg-options-menu"
+    if(
+        !confirm(
+            "ต้องการลบข้อความนี้หรือไม่?"
         )
-        .forEach(menu=>{
-            menu.classList.remove("active");
-        });
+    )
+        return;
+
+
+    await remove(
+        ref(
+            db,
+            "messages/"+currentChatKey+"/"+id
+        )
+    );
 
 };
 
 
-document.addEventListener(
-    "click",
-    closeAllMsgMenus
-);
-
-
-/* =========================================================
+/* =====================================================
    REPLY
-========================================================= */
+===================================================== */
 
-window.replyToMessage = function(
-    messageId,
-    text,
-    username
-){
+window.startReply = async function(id){
+
+    const snapshot =
+        await get(
+            ref(
+                db,
+                "messages/"+currentChatKey+"/"+id
+            )
+        );
+
+
+    if(!snapshot.exists())
+        return;
+
+
+    const msg =
+        snapshot.val();
+
 
     replyData = {
 
-        messageId:
-            messageId,
+        username:
+            msg.senderName || "ผู้ใช้",
 
         text:
-            text,
-
-        username:
-            username
+            msg.text ||
+            (msg.image ? "📷 รูปภาพ" : "")
 
     };
 
 
-    document.getElementById(
-        "replyTargetUser"
-    ).textContent =
-        username;
-
-
-    document.getElementById(
-        "replyTargetText"
-    ).textContent =
-        text;
+    document
+        .getElementById(
+            "replyTargetUser"
+        )
+        .textContent =
+        replyData.username;
 
 
     document
-        .getElementById("activeReplyBar")
+        .getElementById(
+            "replyTargetText"
+        )
+        .textContent =
+        replyData.text;
+
+
+    document
+        .getElementById(
+            "activeReplyBar"
+        )
         .classList.add("active");
 
 
     document
-        .getElementById("msgInput")
+        .getElementById(
+            "msgInput"
+        )
         .focus();
 
 
@@ -3456,64 +3128,121 @@ window.cancelReply = function(){
 
     replyData = null;
 
-
     document
-        .getElementById("activeReplyBar")
+        .getElementById(
+            "activeReplyBar"
+        )
         .classList.remove("active");
 
 };
 
 
-/* =========================================================
-   DELETE MESSAGE
-========================================================= */
+/* =====================================================
+   MESSAGE MENU
+===================================================== */
 
-window.deleteMessage = async function(
-    messageId
-){
+window.toggleMsgMenu = function(button){
 
-    if(!selectedFriend){
+    closeAllMsgMenus();
 
-        return;
-
-    }
-
-
-    if(!confirm("ลบข้อความนี้หรือไม่?")){
-
-        return;
-
-    }
-
-
-    const chatId =
-        getChatId(
-            currentUser.uid,
-            selectedFriend
+    const menu =
+        button
+        .parentElement
+        .querySelector(
+            ".msg-options-menu"
         );
 
 
-    await remove(
-        ref(
-            db,
-            "chats/" +
-            chatId +
-            "/" +
-            messageId
-        )
-    );
-
-
-    closeAllMsgMenus();
+    if(menu)
+        menu.classList.add("active");
 
 };
 
 
-/* =========================================================
+window.closeAllMsgMenus = function(){
+
+    document
+        .querySelectorAll(
+            ".msg-options-menu"
+        )
+        .forEach(
+            menu =>
+                menu.classList.remove("active")
+        );
+
+};
+
+
+/* =====================================================
+   SCROLL CHAT
+===================================================== */
+
+const chatArea =
+    document.getElementById(
+        "chatMessagesArea"
+    );
+
+
+chatArea.addEventListener(
+    "scroll",
+    function(){
+
+        const distance =
+            chatArea.scrollHeight -
+            chatArea.scrollTop -
+            chatArea.clientHeight;
+
+
+        const button =
+            document.getElementById(
+                "scrollBottomBtn"
+            );
+
+
+        if(distance > 150){
+
+            button.classList.add("show");
+
+        }else{
+
+            button.classList.remove("show");
+
+        }
+
+    }
+);
+
+
+window.scrollToBottom = function(){
+
+    const area =
+        document.getElementById(
+            "chatMessagesArea"
+        );
+
+
+    area.scrollTo({
+
+        top:
+            area.scrollHeight,
+
+        behavior:
+            "smooth"
+
+    });
+
+};
+
+
+/* =====================================================
    MOBILE CHAT
-========================================================= */
+===================================================== */
 
 window.toggleMobileChatView = function(view){
+
+    if(window.innerWidth >= 768)
+        return;
+
 
     const sidebar =
         document.getElementById(
@@ -3528,12 +3257,20 @@ window.toggleMobileChatView = function(view){
 
     if(view === "sidebar"){
 
-        sidebar.classList.remove(
-            "hidden-mobile"
+        sidebar.style.display =
+            "flex";
+
+        main.classList.remove(
+            "active"
         );
 
+    }else{
+
+        sidebar.style.display =
+            "none";
+
         main.classList.add(
-            "hidden-mobile"
+            "active"
         );
 
     }
@@ -3541,19 +3278,552 @@ window.toggleMobileChatView = function(view){
 };
 
 
-/* =========================================================
-   VOICE RECORDING
-========================================================= */
+/* =====================================================
+   IMAGE ZOOM
+===================================================== */
+
+window.openImageModal = function(src){
+
+    const modal =
+        document.getElementById(
+            "imageModal"
+        );
+
+    const image =
+        document.getElementById(
+            "zoomImage"
+        );
+
+
+    image.src = src;
+
+
+    zoomLevel = 1;
+
+    imageX = 0;
+
+    imageY = 0;
+
+
+    updateZoom();
+
+
+    modal.classList.add("active");
+
+};
+
+
+window.forceCloseImageModal = function(){
+
+    document
+        .getElementById(
+            "imageModal"
+        )
+        .classList.remove("active");
+
+};
+
+
+window.closeImageModal = function(event){
+
+    if(
+        event.target.id ===
+        "imageModal"
+    ){
+
+        forceCloseImageModal();
+
+    }
+
+};
+
+
+window.zoomIn = function(){
+
+    zoomLevel += .25;
+
+
+    if(zoomLevel > 4)
+        zoomLevel = 4;
+
+
+    updateZoom();
+
+};
+
+
+window.zoomOut = function(){
+
+    zoomLevel -= .25;
+
+
+    if(zoomLevel < .5)
+        zoomLevel = .5;
+
+
+    updateZoom();
+
+};
+
+
+window.resetZoom = function(){
+
+    zoomLevel = 1;
+
+    imageX = 0;
+
+    imageY = 0;
+
+    updateZoom();
+
+};
+
+
+function updateZoom(){
+
+    const image =
+        document.getElementById(
+            "zoomImage"
+        );
+
+
+    image.style.transform =
+        `
+        translate(${imageX}px,${imageY}px)
+        scale(${zoomLevel})
+        `;
+
+}
+
+
+/* =====================================================
+   DRAG IMAGE
+===================================================== */
+
+const zoomImage =
+    document.getElementById(
+        "zoomImage"
+    );
+
+
+zoomImage.addEventListener(
+    "mousedown",
+    e => {
+
+        if(zoomLevel <= 1)
+            return;
+
+
+        dragging = true;
+
+        zoomImage.classList.add(
+            "dragging"
+        );
+
+
+        dragStartX =
+            e.clientX - imageX;
+
+        dragStartY =
+            e.clientY - imageY;
+
+    }
+);
+
+
+document.addEventListener(
+    "mousemove",
+    e => {
+
+        if(!dragging)
+            return;
+
+
+        imageX =
+            e.clientX - dragStartX;
+
+        imageY =
+            e.clientY - dragStartY;
+
+
+        updateZoom();
+
+    }
+);
+
+
+document.addEventListener(
+    "mouseup",
+    () => {
+
+        dragging = false;
+
+        zoomImage.classList.remove(
+            "dragging"
+        );
+
+    }
+);
+
+
+/* ================= TOUCH DRAG ================= */
+
+let touchStartX = 0;
+
+let touchStartY = 0;
+
+
+zoomImage.addEventListener(
+    "touchstart",
+    e => {
+
+        if(zoomLevel <= 1)
+            return;
+
+
+        const touch =
+            e.touches[0];
+
+
+        dragging = true;
+
+        touchStartX =
+            touch.clientX - imageX;
+
+        touchStartY =
+            touch.clientY - imageY;
+
+    },
+    {passive:true}
+);
+
+
+zoomImage.addEventListener(
+    "touchmove",
+    e => {
+
+        if(!dragging)
+            return;
+
+
+        const touch =
+            e.touches[0];
+
+
+        imageX =
+            touch.clientX - touchStartX;
+
+        imageY =
+            touch.clientY - touchStartY;
+
+
+        updateZoom();
+
+    },
+    {passive:true}
+);
+
+
+zoomImage.addEventListener(
+    "touchend",
+    () => {
+
+        dragging = false;
+
+    }
+);
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+function loadProfile(){
+
+    if(!currentUser)
+        return;
+
+
+    document
+        .getElementById(
+            "profileUsername"
+        )
+        .textContent =
+        currentUser.username;
+
+
+    document
+        .getElementById(
+            "profileStatusDisplay"
+        )
+        .textContent =
+        currentUser.status
+        ?
+        `"${currentUser.status}"`
+        :
+        `"ยังไม่มีสถานะ"`;
+
+
+    document
+        .getElementById(
+            "profileAvatarImg"
+        )
+        .src =
+        currentUser.avatar ||
+        avatarDefault();
+
+}
+
+
+window.updateStatus = async function(){
+
+    if(!currentUser)
+        return;
+
+
+    const input =
+        document
+        .getElementById(
+            "statusInput"
+        );
+
+
+    const status =
+        input.value.trim();
+
+
+    await update(
+        ref(
+            db,
+            "users/"+currentUser.id
+        ),
+        {
+            status:status
+        }
+    );
+
+
+    currentUser.status =
+        status;
+
+
+    loadProfile();
+
+    alert(
+        "✅ บันทึกสถานะแล้ว"
+    );
+
+};
+
+
+/* =====================================================
+   UPDATE USERNAME
+===================================================== */
+
+window.handleUpdateUsername = async function(){
+
+    if(!currentUser)
+        return;
+
+
+    const input =
+        document
+        .getElementById(
+            "newUsernameInput"
+        );
+
+
+    const newUsername =
+        input.value.trim();
+
+
+    if(newUsername.length < 3){
+
+        alert(
+            "ชื่อใหม่ต้องมีอย่างน้อย 3 ตัวอักษร"
+        );
+
+        return;
+    }
+
+
+    const key =
+        newUsername
+        .toLowerCase()
+        .replace(/[.#$[\]/]/g,"_");
+
+
+    try{
+
+        const usernameRef =
+            ref(
+                db,
+                "usernames/"+key
+            );
+
+
+        const result =
+            await runTransaction(
+                usernameRef,
+                data => {
+
+                    if(data !== null)
+                        return;
+
+                    return {
+                        username:newUsername
+                    };
+
+                }
+            );
+
+
+        if(!result.committed){
+
+            alert(
+                "❌ ชื่อนี้มีคนใช้อยู่แล้ว"
+            );
+
+            return;
+        }
+
+
+        const oldKey =
+            currentUser.username
+            .toLowerCase()
+            .replace(/[.#$[\]/]/g,"_");
+
+
+        await remove(
+            ref(
+                db,
+                "usernames/"+oldKey
+            )
+        );
+
+
+        await update(
+            ref(
+                db,
+                "users/"+currentUser.id
+            ),
+            {
+
+                username:newUsername,
+
+                usernameLower:
+                    newUsername.toLowerCase()
+
+            }
+        );
+
+
+        currentUser.username =
+            newUsername;
+
+
+        input.value = "";
+
+        updateHeader();
+
+        loadProfile();
+
+        alert(
+            "✅ เปลี่ยนชื่อสำเร็จ"
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "ไม่สามารถเปลี่ยนชื่อได้"
+        );
+
+    }
+
+};
+
+
+/* =====================================================
+   AVATAR
+===================================================== */
+
+window.handleImageUpload = function(event){
+
+    if(!currentUser)
+        return;
+
+
+    const file =
+        event.target.files[0];
+
+
+    if(!file)
+        return;
+
+
+    if(file.size > 1.5 * 1024 * 1024){
+
+        alert(
+            "รูปโปรไฟล์ต้องไม่เกิน 1.5MB"
+        );
+
+        return;
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload = async function(){
+
+        const avatar =
+            reader.result;
+
+
+        await update(
+            ref(
+                db,
+                "users/"+currentUser.id
+            ),
+            {
+                avatar:avatar
+            }
+        );
+
+
+        currentUser.avatar =
+            avatar;
+
+
+        loadProfile();
+
+        updateHeader();
+
+        renderUsers();
+
+        loadFriends();
+
+    };
+
+
+    reader.readAsDataURL(file);
+
+};
+
+
+/* =====================================================
+   VOICE RECORD
+===================================================== */
 
 window.toggleVoiceRecording = async function(){
 
-    if(!currentUser || !selectedFriend){
-
-        alert("เลือกเพื่อนก่อน");
-
+    if(!currentUser ||
+       !currentChatKey)
         return;
-
-    }
 
 
     const button =
@@ -3574,14 +3844,14 @@ window.toggleVoiceRecording = async function(){
         button.textContent = "🎤";
 
         return;
-
     }
 
 
     try{
 
         const stream =
-            await navigator.mediaDevices
+            await navigator
+            .mediaDevices
             .getUserMedia({
                 audio:true
             });
@@ -3591,7 +3861,9 @@ window.toggleVoiceRecording = async function(){
 
 
         mediaRecorder =
-            new MediaRecorder(stream);
+            new MediaRecorder(
+                stream
+            );
 
 
         mediaRecorder.ondataavailable =
@@ -3611,37 +3883,14 @@ window.toggleVoiceRecording = async function(){
         mediaRecorder.onstop =
             async () => {
 
-                stream
-                .getTracks()
-                .forEach(
-                    track =>
-                        track.stop()
-                );
-
-
                 const blob =
                     new Blob(
                         audioChunks,
                         {
                             type:
-                                "audio/webm"
+                            "audio/webm"
                         }
                     );
-
-
-                /*
-                   จำกัดเสียงไม่เกินประมาณ 500KB
-                */
-
-                if(blob.size > 500 * 1024){
-
-                    alert(
-                        "ไฟล์เสียงใหญ่เกินไป"
-                    );
-
-                    return;
-
-                }
 
 
                 const reader =
@@ -3649,21 +3898,13 @@ window.toggleVoiceRecording = async function(){
 
 
                 reader.onload =
-                    async function(){
-
-                        const chatId =
-                            getChatId(
-                                currentUser.uid,
-                                selectedFriend
-                            );
-
+                    async () => {
 
                         const messageRef =
                             push(
                                 ref(
                                     db,
-                                    "chats/" +
-                                    chatId
+                                    "messages/"+currentChatKey
                                 )
                             );
 
@@ -3673,18 +3914,15 @@ window.toggleVoiceRecording = async function(){
                             {
 
                                 senderId:
-                                    currentUser.uid,
+                                    currentUser.id,
 
                                 senderName:
-                                    currentUsername,
+                                    currentUser.username,
 
-                                type:
-                                    "audio",
-
-                                data:
+                                audio:
                                     reader.result,
 
-                                timestamp:
+                                time:
                                     Date.now()
 
                             }
@@ -3693,7 +3931,17 @@ window.toggleVoiceRecording = async function(){
                     };
 
 
-                reader.readAsDataURL(blob);
+                reader.readAsDataURL(
+                    blob
+                );
+
+
+                stream
+                    .getTracks()
+                    .forEach(
+                        track =>
+                            track.stop()
+                    );
 
             };
 
@@ -3705,317 +3953,48 @@ window.toggleVoiceRecording = async function(){
             "recording"
         );
 
-        button.textContent = "⏹️";
+        button.textContent = "⏹";
 
 
-    }
-    catch(error){
-
-        console.error(error);
+    }catch(error){
 
         alert(
-            "ไม่สามารถใช้ไมโครโฟนได้\n" +
-            "กรุณาอนุญาตการใช้ไมโครโฟน"
+            "ไม่สามารถเปิดไมโครโฟนได้"
         );
+
+        console.error(error);
 
     }
 
 };
 
 
-/* =========================================================
-   PROFILE
-========================================================= */
+/* =====================================================
+   HELPERS
+===================================================== */
 
-async function loadProfile(){
+function escapeHtml(text){
 
-    if(!currentUser){
+    if(!text)
+        return "";
 
-        return;
-
-    }
-
-
-    const snap =
-        await get(
-            ref(
-                db,
-                "users/" +
-                currentUser.uid
-            )
-        );
-
-
-    if(!snap.exists()){
-
-        return;
-
-    }
-
-
-    const data =
-        snap.val();
-
-
-    document.getElementById(
-        "profileUsername"
-    ).textContent =
-        data.username || "ผู้ใช้";
-
-
-    document.getElementById(
-        "profileStatusDisplay"
-    ).textContent =
-        data.status
-        ? `"${data.status}"`
-        : `"ยังไม่มีสถานะ"`;
-
-
-    document.getElementById(
-        "profileAvatarImg"
-    ).src =
-        data.avatar ||
-        defaultAvatar;
+    return text
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
 
 }
 
 
-/* =========================================================
-   UPDATE STATUS
-========================================================= */
+function formatTime(time){
 
-window.updateStatus = async function(){
-
-    if(!currentUser){
-
-        alert("กรุณาเข้าสู่ระบบ");
-
-        return;
-
-    }
-
-
-    const status =
-        document
-        .getElementById("statusInput")
-        .value
-        .trim();
-
-
-    await set(
-        ref(
-            db,
-            "users/" +
-            currentUser.uid +
-            "/status"
-        ),
-        status
-    );
-
-
-    document.getElementById(
-        "statusInput"
-    ).value = "";
-
-
-    loadProfile();
-
-    updateHeader(true);
-
-    renderFriendsSidebar();
-
-
-    alert("บันทึกสถานะแล้ว ✅");
-
-};
-
-
-/* =========================================================
-   PROFILE IMAGE
-========================================================= */
-
-window.handleImageUpload = function(event){
-
-    const file =
-        event.target.files[0];
-
-
-    if(!file){
-
-        return;
-
-    }
-
-
-    if(!file.type.startsWith("image/")){
-
-        alert("เลือกไฟล์รูปภาพเท่านั้น");
-
-        return;
-
-    }
-
-
-    if(file.size > 1.5 * 1024 * 1024){
-
-        alert(
-            "รูปใหญ่เกินไป\n" +
-            "กรุณาเลือกรูปไม่เกิน 1.5MB"
-        );
-
-        return;
-
-    }
-
-
-    const reader =
-        new FileReader();
-
-
-    reader.onload =
-        async function(){
-
-            await set(
-                ref(
-                    db,
-                    "users/" +
-                    currentUser.uid +
-                    "/avatar"
-                ),
-                reader.result
-            );
-
-
-            loadProfile();
-
-            updateHeader(true);
-
-            renderFriendsSidebar();
-
-
-            alert("เปลี่ยนรูปโปรไฟล์แล้ว 📷");
-
-        };
-
-
-    reader.readAsDataURL(file);
-
-};
-
-
-/* =========================================================
-   CHANGE USERNAME
-========================================================= */
-
-window.handleUpdateUsername = async function(){
-
-    if(!currentUser){
-
-        alert("กรุณาเข้าสู่ระบบ");
-
-        return;
-
-    }
-
-
-    const newUsername =
-        document
-        .getElementById(
-            "newUsernameInput"
-        )
-        .value
-        .trim();
-
-
-    if(newUsername.length < 3){
-
-        alert(
-            "ชื่อผู้ใช้ต้องมีอย่างน้อย 3 ตัวอักษร"
-        );
-
-        return;
-
-    }
-
-
-    const users =
-        await getAllUsers();
-
-
-    for(const uid in users){
-
-        if(
-            uid !== currentUser.uid &&
-            users[uid].username &&
-            users[uid].username.toLowerCase()
-            === newUsername.toLowerCase()
-        ){
-
-            alert("ชื่อผู้ใช้นี้มีคนใช้แล้ว");
-
-            return;
-
-        }
-
-    }
-
-
-    await update(
-        ref(
-            db,
-            "users/" +
-            currentUser.uid
-        ),
-        {
-            username:newUsername
-        }
-    );
-
-
-    await updateProfile(
-        currentUser,
-        {
-            displayName:newUsername
-        }
-    );
-
-
-    currentUsername =
-        newUsername;
-
-
-    document.getElementById(
-        "newUsernameInput"
-    ).value = "";
-
-
-    loadProfile();
-
-    updateHeader(true);
-
-    renderFriendsSidebar();
-
-
-    alert("เปลี่ยนชื่อสำเร็จ ✅");
-
-};
-
-
-/* =========================================================
-   TIME
-========================================================= */
-
-function formatTime(timestamp){
-
-    if(!timestamp){
-
+    if(!time)
         return "";
 
-    }
-
-
     const date =
-        new Date(timestamp);
+        new Date(time);
 
 
     return date.toLocaleTimeString(
@@ -4029,64 +4008,44 @@ function formatTime(timestamp){
 }
 
 
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
+function avatarDefault(){
 
-function escapeHTML(text){
+    return "data:image/svg+xml;charset=UTF-8," +
+    encodeURIComponent(`
 
-    return String(text)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+        <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="100"
+        height="100">
+
+        <rect
+        width="100"
+        height="100"
+        rx="50"
+        fill="#343785"/>
+
+        <text
+        x="50"
+        y="58"
+        text-anchor="middle"
+        font-size="45">
+
+        👤
+
+        </text>
+
+        </svg>
+
+    `);
 
 }
 
 
-/* =========================================================
-   ESCAPE JS
-========================================================= */
+/* =====================================================
+   START
+===================================================== */
 
-function escapeJS(text){
-
-    return String(text)
-        .replace(/\\/g,"\\\\")
-        .replace(/'/g,"\\'")
-        .replace(/\n/g,"\\n")
-        .replace(/\r/g,"");
-
-}
-
-
-/* =========================================================
-   CLOSE IMAGE WITH ESC
-========================================================= */
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if(
-            event.key === "Escape"
-        ){
-
-            closeImageZoom();
-
-            closeAuth();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   INITIAL
-========================================================= */
-
-showPage("home");
+autoLogin();
 
 </script>
 
