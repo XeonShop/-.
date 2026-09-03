@@ -833,7 +833,8 @@
                             <p>${user.status || ""}</p>
                         </div>
                     </div>
-                    <button type="button" class="btn-friend ${btnClass}" id="${safeId}">${btnText}</button>
+                    <button type="button" class="btn-friend ${btnClass}" id="${safeId}"
+                            onclick="event.stopPropagation(); selectFriendToChat('${username.replace(/\\/g,"\\\\").replace(/'/g,"\\'")}', '${userAvatar.replace(/\\/g,"\\\\").replace(/'/g,"\\'")}')">${btnText}</button>
                 `;
                 grid.appendChild(card);
 
@@ -842,11 +843,6 @@
                     e.stopPropagation();
 
                     try{
-                        if(actionType === "chat"){
-                            selectFriendToChat(username, userAvatar);
-                            return;
-                        }
-
                         if(actionType === "sendRequest"){
                             await set(ref(db, `requests/${username}/${currentUser}`), true);
                             alert(`ส่งคำขอไปยัง ${username} แล้ว`);
@@ -897,12 +893,26 @@
     }
 
     window.selectFriendToChat = function(friendUsername, avatarUrl){
-        if(!currentUser || !friendUsername) return;
+        if(!currentUser){
+            alert("กรุณาเข้าสู่ระบบก่อนครับ");
+            openAuth("login");
+            return;
+        }
+        if(!friendUsername) return;
 
         activeChatFriend = friendUsername;
 
-        // เปิดหน้าแชททันที
+        // เปิดหน้า Chat
         showPage("chat");
+
+        // บังคับให้หน้า Chat แสดงผลทันที
+        document.querySelectorAll(".page-section").forEach(el => el.classList.remove("active"));
+        const chatPage = document.getElementById("pageChat");
+        if(chatPage) chatPage.classList.add("active");
+
+        document.querySelectorAll("nav a").forEach(el => el.classList.remove("active"));
+        const chatNav = document.getElementById("navChat");
+        if(chatNav) chatNav.classList.add("active");
 
         const title = document.getElementById("chatTargetTitle");
         if(title){
@@ -911,7 +921,16 @@
 
         renderSidebarFriends();
         loadPrivateMessages();
-        toggleMobileChatView("main");
+
+        // มือถือเปิดส่วนข้อความ / คอมพิวเตอร์แสดงห้องแชทตามปกติ
+        if(window.innerWidth < 768){
+            toggleMobileChatView("main");
+        }else{
+            const sidebar = document.getElementById("chatSidebar");
+            const main = document.getElementById("chatMain");
+            if(sidebar) sidebar.style.display = "flex";
+            if(main) main.style.display = "flex";
+        }
 
         setTimeout(() => document.getElementById("msgInput")?.focus(), 150);
     };
