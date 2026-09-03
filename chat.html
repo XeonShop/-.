@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Chat - โรงเรียนมหรรณพาราม</title>
+    <!-- โหลดไลบรารี Html5Qrcode สำหรับสแกน QR Code กล้อง -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: Arial, "Tahoma", sans-serif; background: #080b35; color: white; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
@@ -68,10 +70,11 @@
         .chat-main { display: none; flex: 1; flex-direction: column; background: #171a62; position: relative; overflow: hidden; height: 100%; }
         .chat-main.active { display: flex; }
         .chat-header { height: 50px; padding: 0 15px; background: rgba(10,13,58,.8); border-bottom: 1px solid rgba(255,255,255,.1); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
-        .chat-header h3 { font-size: 15px; display: flex; align-items: center; gap: 8px; }
+        .chat-header h3 { font-size: 15px; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .chat-header h3:hover { color: #22c9ff; }
         .back-to-list-btn { background: #343785; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; }
 
-        /* แก้ไขปัญหาเลื่อนข้อความแชท */
+        /* แก้ไขปัญหาเลื่อนข้อความแชทให้อยู่กรอบพอดี */
         .chat-messages-container {
             flex: 1;
             position: relative;
@@ -141,28 +144,36 @@
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
         }
 
-        /* MODAL */
+        /* MODALS & QR SCANNER */
         .image-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
         .image-modal.active { display: flex; }
         .image-modal img { max-width: 90%; max-height: 90vh; border-radius: 12px; object-fit: contain; }
         .close-modal-btn { position: absolute; top: 20px; right: 25px; background: none; border: none; color: white; font-size: 32px; cursor: pointer; }
 
+        .scanner-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .scanner-modal.active { display: flex; }
+        .scanner-box { background: #12154c; border: 1px solid rgba(133,95,255,.5); border-radius: 20px; padding: 20px; width: 100%; max-width: 400px; text-align: center; position: relative; }
+
         /* FRIENDS & PROFILE */
         .friends-container { padding: 20px; max-width: 850px; margin: 20px auto; background: #12154c; border: 1px solid rgba(133,95,255,.4); border-radius: 24px; width: 95%; }
-        .search-box input { width: 100%; padding: 14px 18px; border-radius: 14px; border: 1px solid #343785; background: #080b35; color: white; font-size: 15px; outline: none; margin-bottom: 20px; }
+        .search-box { display: flex; gap: 10px; margin-bottom: 20px; }
+        .search-box input { flex: 1; padding: 14px 18px; border-radius: 14px; border: 1px solid #343785; background: #080b35; color: white; font-size: 15px; outline: none; }
+        .scan-camera-btn { background: linear-gradient(135deg, #7c3aed, #22c9ff); border: none; border-radius: 14px; color: white; padding: 0 16px; font-size: 18px; cursor: pointer; }
+        
         .users-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-
-        .user-card { background: #171a62; border: 1px solid rgba(133,95,255,.4); border-radius: 16px; padding: 15px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-        .user-info { display: flex; align-items: center; gap: 12px; }
-        .user-avatar-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; background: #343785; }
+        .user-card { background: #171a62; border: 1px solid rgba(133,95,255,.4); border-radius: 16px; padding: 15px; display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; transition: 0.2s; }
+        .user-card:hover { border-color: #22c9ff; }
+        .user-info { display: flex; align-items: center; gap: 12px; flex: 1; }
+        .user-avatar-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; background: #343785; flex-shrink: 0; }
         .user-details h4 { font-size: 16px; margin-bottom: 2px; }
         .user-details p { font-size: 12px; color: #aaaed0; }
 
-        .btn-friend { padding: 10px 16px; border-radius: 12px; border: none; font-weight: bold; font-size: 13px; cursor: pointer; min-width: 110px; text-align: center; }
+        .btn-friend { padding: 10px 16px; border-radius: 12px; border: none; font-weight: bold; font-size: 13px; cursor: pointer; min-width: 110px; text-align: center; z-index: 2; }
         .btn-add { background: linear-gradient(90deg, #22c9ff, #7c3aed); color: white; }
         .btn-accept { background: #22c55e; color: white; }
         .btn-remove { background: #ef4444; color: white; }
 
+        /* USER PROFILE POPUP / VIEW */
         .profile-card { max-width: 450px; margin: 20px auto; background: #171a62; border: 1px solid rgba(133,95,255,.5); border-radius: 22px; padding: 25px 20px; text-align: center; width: 95%; }
         .profile-avatar-container { position: relative; width: 100px; height: 100px; margin: 0 auto 15px; }
         .profile-avatar-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #22c9ff; background: #080b35; }
@@ -239,10 +250,11 @@
 
 <div id="pageFriends" class="page-section">
     <div class="friends-container">
-        <h2 style="margin-bottom:5px;">👥 เพื่อน & คำขอ</h2>
-        <p style="color:#aaaed0; margin-bottom:15px; font-size:13px;">ค้นหาเพื่อนนักเรียนเพื่อส่งคำขอ หรือกดรับเพื่อนที่นี่</p>
+        <h2 style="margin-bottom:5px;">👥 เพื่อน & สแกนกล้องเพิ่มเพื่อน</h2>
+        <p style="color:#aaaed0; margin-bottom:15px; font-size:13px;">ค้นหาชื่อ หรือเปิดกล้องสแกน QR Code เพื่อเพิ่มเพื่อนด่วน</p>
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="พิมพ์ชื่อผู้ใช้เพื่อค้นหา..." onkeyup="renderUsers()">
+            <button class="scan-camera-btn" onclick="openCameraScanner()" title="สแกนกล้องรับเพื่อน">📷</button>
         </div>
         <div class="users-grid" id="usersListGrid"></div>
     </div>
@@ -261,7 +273,7 @@
             <div class="chat-main" id="chatMain">
                 <div class="chat-header">
                     <button class="back-to-list-btn" onclick="toggleMobileChatView('sidebar')">← กลับไปรายชื่อ</button>
-                    <h3 id="chatTargetTitle">เลือกเพื่อนเพื่อเริ่มคุย</h3>
+                    <h3 id="chatTargetTitle" onclick="viewChatFriendProfile()">เลือกเพื่อนเพื่อเริ่มคุย</h3>
                     <div></div>
                 </div>
                 
@@ -316,6 +328,29 @@
             <input type="text" id="newUsernameInput" class="status-input" placeholder="กรอกชื่อผู้ใช้ใหม่...">
             <button class="start-btn" style="background:linear-gradient(90deg, #f59e0b, #ef4444); max-width:100%;" onclick="handleUpdateUsername()">เปลี่ยนชื่อ</button>
         </div>
+    </div>
+</div>
+
+<!-- หน้าต่างดูโปรไฟล์คนอื่น -->
+<div class="auth-overlay" id="otherProfileModal" onclick="closeOtherProfile(event)">
+    <div class="auth-box" style="text-align:center;" onclick="event.stopPropagation()">
+        <button class="auth-close" onclick="document.getElementById('otherProfileModal').classList.remove('active')">✕</button>
+        <div class="profile-avatar-container" style="margin-top: 15px;">
+            <img id="otherProfileAvatar" class="profile-avatar-img" src="" alt="User Profile">
+        </div>
+        <h3 id="otherProfileName" style="font-size:18px; margin-bottom:5px;">ชื่อเพื่อน</h3>
+        <p id="otherProfileStatus" style="color:#aaaed0; font-size:13px; margin-bottom:20px;">สถานะ...</p>
+        <button class="start-btn" style="max-width:100%;" id="otherProfileAddBtn" onclick="sendRequestFromModal()">เพิ่มเพื่อน</button>
+    </div>
+</div>
+
+<!-- หน้าต่างกล้องสแกน QR เพิ่มเพื่อน -->
+<div class="scanner-modal" id="scannerModal">
+    <div class="scanner-box">
+        <button class="auth-close" onclick="closeCameraScanner()">✕</button>
+        <h3 style="margin-bottom: 15px; font-size: 16px;">สแกน QR Code เพื่อเพิ่มเพื่อน</h3>
+        <div id="reader" style="width: 100%; border-radius: 12px; overflow: hidden;"></div>
+        <p style="font-size: 12px; color: #aaaed0; margin-top: 12px;">เล็งกล้องไปที่ QR Code ชื่อเพื่อนของคุณ</p>
     </div>
 </div>
 
@@ -389,6 +424,8 @@
     let mediaRecorder = null;
     let audioChunks = [];
     let isRecording = false;
+    let html5QrCode = null;
+    let viewingProfileUsername = null;
 
     window.showPage = function(pageId){
         if((pageId === 'friends' || pageId === 'chat' || pageId === 'profile') && !currentUser){
@@ -528,6 +565,89 @@
         }
     }
 
+    // ฟังก์ชันดูโปรไฟล์คนอื่น
+    window.openOtherProfile = function(username){
+        if(username === currentUser) {
+            showPage('profile');
+            return;
+        }
+        viewingProfileUsername = username;
+        get(child(ref(db), `users/${username}`)).then((snapshot) => {
+            if(snapshot.exists()){
+                const data = snapshot.val();
+                document.getElementById("otherProfileName").innerText = username;
+                document.getElementById("otherProfileStatus").innerText = `"${data.status || 'ไม่มีสถานะ'}"`;
+                document.getElementById("otherProfileAvatar").src = data.avatar || DEFAULT_AVATAR;
+                
+                // เช็คสถานะเพื่อนเพื่อปรับปุ่มใน modal
+                get(child(ref(db), `friends/${currentUser}/${username}`)).then((fSnap) => {
+                    const btn = document.getElementById("otherProfileAddBtn");
+                    if(fSnap.exists()){
+                        btn.innerText = "เป็นเพื่อนกันแล้ว (ลบเพื่อน)";
+                        btn.style.background = "#ef4444";
+                    } else {
+                        btn.innerText = "ส่งคำขอเป็นเพื่อน";
+                        btn.style.background = "linear-gradient(90deg, #22c9ff, #7c3aed)";
+                    }
+                });
+
+                document.getElementById("otherProfileModal").classList.add("active");
+            }
+        });
+    };
+
+    window.closeOtherProfile = function(e){
+        document.getElementById("otherProfileModal").classList.remove("active");
+    };
+
+    window.viewChatFriendProfile = function(){
+        if(activeChatFriend) openOtherProfile(activeChatFriend);
+    };
+
+    window.sendRequestFromModal = function(){
+        if(!viewingProfileUsername) return;
+        get(child(ref(db), `friends/${currentUser}/${viewingProfileUsername}`)).then((fSnap) => {
+            if(fSnap.exists()){
+                remove(ref(db, `friends/${currentUser}/${viewingProfileUsername}`));
+                remove(ref(db, `friends/${viewingProfileUsername}/${currentUser}`));
+                alert("ลบเพื่อนเรียบร้อย");
+            } else {
+                set(ref(db, `requests/${viewingProfileUsername}/${currentUser}`), true);
+                alert(`ส่งคำขอไปยัง ${viewingProfileUsername} แล้ว`);
+            }
+            document.getElementById("otherProfileModal").classList.remove("active");
+            renderUsers();
+        });
+    };
+
+    // ระบบสแกน QR ด้วยกล้อง
+    window.openCameraScanner = function(){
+        document.getElementById("scannerModal").classList.add("active");
+        html5QrCode = new Html5Qrcode("reader");
+        html5QrCode.start(
+            { facingMode: "environment" },
+            { fps: 10, qrbox: { width: 250, height: 250 } },
+            (decodedText) => {
+                closeCameraScanner();
+                // ถ้าสแกนเจอชื่อผู้ใช้ ให้เปิดดูโปรไฟล์ทันที
+                openOtherProfile(decodedText.trim());
+            },
+            (errorMessage) => {}
+        ).catch(err => {
+            alert("ไม่สามารถเปิดใช้งานกล้องได้ กรุณาอนุญาตการใช้งานกล้องในเบราว์เซอร์");
+            closeCameraScanner();
+        });
+    };
+
+    window.closeCameraScanner = function(){
+        document.getElementById("scannerModal").classList.remove("active");
+        if(html5QrCode) {
+            html5QrCode.stop().then(() => {
+                html5QrCode.clear();
+            }).catch(err => {});
+        }
+    };
+
     window.renderUsers = function(){
         const grid = document.getElementById("usersListGrid");
         const searchText = document.getElementById("searchInput").value.toLowerCase();
@@ -566,6 +686,10 @@
                         const userAvatar = usersData[username].avatar || DEFAULT_AVATAR;
                         const card = document.createElement("div");
                         card.className = "user-card";
+                        // กดที่การ์ดเพื่อดูโปรไฟล์คนอื่นได้ทันที
+                        card.onclick = (e) => {
+                            if(e.target.tagName !== 'BUTTON') openOtherProfile(username);
+                        };
                         card.innerHTML = `
                             <div class="user-info">
                                 <img src="${userAvatar}" class="user-avatar-img">
@@ -578,7 +702,8 @@
                         `;
                         grid.appendChild(card);
 
-                        document.getElementById(`btn-act-${username}`).addEventListener('click', () => {
+                        document.getElementById(`btn-act-${username}`).addEventListener('click', (e) => {
+                            e.stopPropagation();
                             if(actionType === "sendRequest"){
                                 set(ref(db, `requests/${username}/${currentUser}`), true);
                                 alert(`ส่งคำขอไปยัง ${username} แล้ว`);
