@@ -148,4 +148,758 @@
         .close-modal-btn { position: absolute; top: 20px; right: 25px; background: none; border: none; color: white; font-size: 32px; cursor: pointer; }
 
         /* FRIENDS & PROFILE */
-        .friends-container { padding: 20px; max-width: 850px
+        .friends-container { padding: 20px; max-width: 850px; margin: 20px auto; background: #12154c; border: 1px solid rgba(133,95,255,.4); border-radius: 24px; width: 95%; }
+        .search-box input { width: 100%; padding: 14px 18px; border-radius: 14px; border: 1px solid #343785; background: #080b35; color: white; font-size: 15px; outline: none; margin-bottom: 20px; }
+        .users-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+
+        .user-card { background: #171a62; border: 1px solid rgba(133,95,255,.4); border-radius: 16px; padding: 15px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .user-info { display: flex; align-items: center; gap: 12px; }
+        .user-avatar-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; background: #343785; }
+        .user-details h4 { font-size: 16px; margin-bottom: 2px; }
+        .user-details p { font-size: 12px; color: #aaaed0; }
+
+        .btn-friend { padding: 10px 16px; border-radius: 12px; border: none; font-weight: bold; font-size: 13px; cursor: pointer; min-width: 110px; text-align: center; }
+        .btn-add { background: linear-gradient(90deg, #22c9ff, #7c3aed); color: white; }
+        .btn-accept { background: #22c55e; color: white; }
+        .btn-remove { background: #ef4444; color: white; }
+
+        .profile-card { max-width: 450px; margin: 20px auto; background: #171a62; border: 1px solid rgba(133,95,255,.5); border-radius: 22px; padding: 25px 20px; text-align: center; width: 95%; }
+        .profile-avatar-container { position: relative; width: 100px; height: 100px; margin: 0 auto 15px; }
+        .profile-avatar-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #22c9ff; background: #080b35; }
+        .upload-btn-label { position: absolute; bottom: 0; right: 0; background: #7c3aed; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; border: 2px solid #171a62; }
+        .status-input { width: 100%; padding: 14px; border-radius: 14px; border: 1px solid #343785; background: #080b35; color: white; outline: none; font-size: 15px; margin-bottom: 15px; }
+
+        /* AUTH OVERLAY */
+        .auth-overlay { display: none; position: fixed; inset: 0; background: rgba(5,6,25,.85); z-index: 100; align-items: center; justify-content: center; padding: 15px; }
+        .auth-overlay.active { display: flex; }
+        .auth-box { width: 100%; max-width: 360px; background: linear-gradient(160deg, #171a62, #0c0e43); border: 1px solid rgba(133,95,255,.5); border-radius: 20px; padding: 25px 20px; position: relative; }
+        .auth-close { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #aaaed0; font-size: 22px; cursor: pointer; }
+        .auth-field { margin-bottom: 14px; }
+        .auth-field label { display: block; font-size: 12px; color: #c4c6e6; margin-bottom: 5px; }
+        .auth-field input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #343785; background: #0e1044; color: white; font-size: 15px; outline: none; }
+        .auth-submit { width: 100%; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(90deg, #22c9ff, #7c3aed); color: white; font-weight: bold; font-size: 16px; cursor: pointer; }
+        .auth-switch { text-align: center; margin-top: 15px; font-size: 13px; color: #aaaed0; }
+        .auth-switch button { background: none; border: none; color: #a855f7; font-weight: bold; cursor: pointer; font-size: 13px; }
+
+        @media (max-width: 767px) {
+            .logo span { display: none; }
+            nav a span { display: none; }
+            nav a { padding: 8px 10px; font-size: 18px; }
+        }
+
+        @media (min-width: 768px) {
+            .hero { padding: 70px 7% 90px; text-align: left; }
+            .school-badge-container { display: inline-block; margin-bottom: 15px; }
+            .hero-text h1 { font-size: 48px; }
+            .hero-buttons { justify-content: flex-start; }
+            .users-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+            .chat-wrapper { display: grid; grid-template-columns: 280px 1fr; }
+            .chat-sidebar { display: flex !important; }
+            .chat-main { display: flex !important; }
+            .back-to-list-btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo" onclick="showPage('home')">
+        <img src="https://i.ibb.co/3ykL8w4/school-logo.png" id="headerLogoImg" class="logo-img" alt="Logo">
+        Student <span>Chat</span>
+    </div>
+
+    <nav>
+        <a onclick="showPage('home')" id="navHome" class="active">🏠 <span>หน้าแรก</span></a>
+        <a onclick="showPage('friends')" id="navFriends">👥 <span>เพื่อน</span></a>
+        <a onclick="showPage('chat')" id="navChat">💬 <span>แชท</span></a>
+        <a onclick="showPage('profile')" id="navProfile">👤 <span>โปรไฟล์</span></a>
+    </nav>
+
+    <div class="header-buttons" id="authNavButtons">
+        <button class="login" onclick="openAuth('login')">เข้าสู่ระบบ</button>
+        <button class="signup" onclick="openAuth('signup')">สมัคร</button>
+    </div>
+</header>
+
+<div id="pageHome" class="page-section active">
+    <section class="hero">
+        <div class="school-badge-container">
+            <img src="https://i.ibb.co/3ykL8w4/school-logo.png" class="school-hero-logo" alt="ตราโรงเรียนมหรรณพาราม">
+        </div>
+        <div class="hero-text">
+            <h1>ห้องพูดคุย<br><span class="gradient-text">โรงเรียนมหรรณพาราม</span></h1>
+            <h2>ถาม-ตอบ แลกเปลี่ยนความรู้ และเพิ่มเพื่อนพูดคุย</h2>
+            <p>ไม่ว่าจะเป็นการบ้าน การเรียน หรือเพื่อนคุยแก้เหงา มาร่วมสร้างสังคมการเรียนรู้ไปด้วยกันสำหรับชาวมหรรณพาราม</p>
+            <div class="hero-buttons">
+                <button onclick="showPage('chat')" class="start-btn">💬 เริ่มต้นพูดคุยเลย</button>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div id="pageFriends" class="page-section">
+    <div class="friends-container">
+        <h2 style="margin-bottom:5px;">👥 เพื่อน & คำขอ</h2>
+        <p style="color:#aaaed0; margin-bottom:15px; font-size:13px;">ค้นหาเพื่อนนักเรียนเพื่อส่งคำขอ หรือกดรับเพื่อนที่นี่</p>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="พิมพ์ชื่อผู้ใช้เพื่อค้นหา..." onkeyup="renderUsers()">
+        </div>
+        <div class="users-grid" id="usersListGrid"></div>
+    </div>
+</div>
+
+<div id="pageChat" class="page-section">
+    <div class="chat-container">
+        <div class="chat-wrapper">
+            <div class="chat-sidebar" id="chatSidebar">
+                <div style="padding:12px 15px; font-weight:bold; color:#22c9ff; border-bottom:1px solid rgba(255,255,255,.05);">
+                    รายชื่อเพื่อนของคุณ
+                </div>
+                <div class="friends-list" id="sidebarFriendsList"></div>
+            </div>
+
+            <div class="chat-main" id="chatMain">
+                <div class="chat-header">
+                    <button class="back-to-list-btn" onclick="toggleMobileChatView('sidebar')">← กลับไปรายชื่อ</button>
+                    <h3 id="chatTargetTitle">เลือกเพื่อนเพื่อเริ่มคุย</h3>
+                    <div></div>
+                </div>
+                
+                <div class="chat-messages-container">
+                    <div class="chat-messages" id="chatMessagesArea" onclick="closeAllMsgMenus()">
+                        <div style="text-align:center; color:#8f93b8; margin-top:80px; font-size:14px;">
+                            💬 เลือกรายชื่อเพื่อนเพื่อเริ่มการสนทนา
+                        </div>
+                    </div>
+                    <div class="scroll-quick-btns">
+                        <button class="scroll-btn" onclick="scrollToTopChat()" title="เลื่อนไปข้อความบนสุด">🔼</button>
+                        <button class="scroll-btn" onclick="scrollToBottomChat()" title="เลื่อนไปข้อความล่างสุด">🔽</button>
+                    </div>
+                </div>
+
+                <div class="active-reply-bar" id="activeReplyBar">
+                    <div class="active-reply-info">
+                        กำลังตอบกลับ <b id="replyTargetUser" style="color:#22c9ff;">...</b>: <span id="replyTargetText">...</span>
+                    </div>
+                    <button class="cancel-reply-btn" onclick="cancelReply()">✕</button>
+                </div>
+
+                <div class="chat-input">
+                    <label for="chatImageInput" class="chat-input-btn" title="ส่งรูปภาพ">📷</label>
+                    <input type="file" id="chatImageInput" accept="image/*" style="display:none;" onchange="sendChatImage(event)">
+                    
+                    <button class="chat-input-btn" id="recordAudioBtn" title="อัดเสียงพูด" onclick="toggleVoiceRecording()">🎤</button>
+                    
+                    <input type="text" id="msgInput" placeholder="พิมพ์ข้อความ..." onkeydown="if(event.key==='Enter') sendPrivateMessage()">
+                    <button class="chat-input-btn send-btn" onclick="sendPrivateMessage()">➤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pageProfile" class="page-section">
+    <div class="profile-card">
+        <div class="profile-avatar-container">
+            <img id="profileAvatarImg" class="profile-avatar-img" src="" alt="Profile">
+            <label for="avatarFileInput" class="upload-btn-label">📷</label>
+            <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
+        </div>
+        <h3 id="profileUsername">ชื่อผู้ใช้</h3>
+        <p id="profileStatusDisplay" style="color:#aaaed0; margin-bottom:15px; font-size:14px;">"ยังไม่มีสถานะ"</p>
+        
+        <input type="text" id="statusInput" class="status-input" placeholder="พิมพ์ข้อความสถานะใหม่...">
+        <button class="start-btn" style="margin-bottom: 15px;" onclick="updateStatus()">บันทึกสถานะ</button>
+
+        <div style="border-top: 1px solid rgba(255,255,255,.1); padding-top: 15px; text-align: left;">
+            <label style="display:block; font-size:12px; color:#aaaed0; margin-bottom:5px;">เปลี่ยนชื่อผู้ใช้ใหม่</label>
+            <input type="text" id="newUsernameInput" class="status-input" placeholder="กรอกชื่อผู้ใช้ใหม่...">
+            <button class="start-btn" style="background:linear-gradient(90deg, #f59e0b, #ef4444); max-width:100%;" onclick="handleUpdateUsername()">เปลี่ยนชื่อ</button>
+        </div>
+    </div>
+</div>
+
+<div class="auth-overlay" id="authOverlay">
+    <div class="auth-box" id="loginBox">
+        <button class="auth-close" onclick="closeAuth()">✕</button>
+        <h2>เข้าสู่ระบบ</h2>
+        <p style="color:#aaaed0; font-size:13px; margin-bottom:20px;">ยินดีต้อนรับกลับมาที่ Student Chat</p>
+        <div class="auth-field">
+            <label>ชื่อผู้ใช้</label>
+            <input type="text" id="loginUsername" placeholder="กรอกชื่อผู้ใช้">
+        </div>
+        <div class="auth-field">
+            <label>รหัสผ่าน</label>
+            <input type="password" id="loginPassword" placeholder="กรอกรหัสผ่าน">
+        </div>
+        <button class="auth-submit" onclick="handleLogin()">เข้าสู่ระบบ</button>
+        <div class="auth-switch">
+            ยังไม่มีบัญชี? <button onclick="switchAuth('signup')">สมัครสมาชิก</button>
+        </div>
+    </div>
+
+    <div class="auth-box" id="signupBox" style="display:none;">
+        <button class="auth-close" onclick="closeAuth()">✕</button>
+        <h2>สมัครสมาชิก</h2>
+        <p style="color:#aaaed0; font-size:13px; margin-bottom:20px;">เข้าร่วมชุมชน Student Chat</p>
+        <div class="auth-field">
+            <label>ชื่อผู้ใช้</label>
+            <input type="text" id="signupUsername" placeholder="ตั้งชื่อผู้ใช้">
+        </div>
+        <div class="auth-field">
+            <label>รหัสผ่าน</label>
+            <input type="password" id="signupPassword" placeholder="ตั้งรหัสผ่าน">
+        </div>
+        <button class="auth-submit" onclick="handleSignup()">สมัครสมาชิก</button>
+        <div class="auth-switch">
+            มีบัญชีอยู่แล้ว? <button onclick="switchAuth('login')">เข้าสู่ระบบ</button>
+        </div>
+    </div>
+</div>
+
+<div class="image-modal" id="imageModal" onclick="closeImageModal()">
+    <button class="close-modal-btn">✕</button>
+    <img id="modalZoomImg" src="" alt="Zoomed Image">
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, push, set, get, child, remove, off, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDaN-eSOQve7qn8MPHcOj4IeYWrt-7SwHk",
+        authDomain: "xdhi13.firebaseapp.com",
+        databaseURL: "https://mnht-84ae0-default-rtdb.firebaseio.com",
+        projectId: "xdhi13",
+        storageBucket: "xdhi13.firebasestorage.app",
+        messagingSenderId: "1094865586143",
+        appId: "1:1094865586143:web:6f1a7e79780ae918eba66a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const DEFAULT_AVATAR = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2322c9ff'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>";
+    const SCHOOL_LOGO_URL = "https://i.ibb.co/3ykL8w4/school-logo.png";
+
+    let currentUser = localStorage.getItem("activeUser") || null;
+    let activeChatFriend = null;
+    let currentChatListener = null;
+    let replyData = null;
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let isRecording = false;
+
+    window.showPage = function(pageId){
+        if((pageId === 'friends' || pageId === 'chat' || pageId === 'profile') && !currentUser){
+            alert("กรุณาเข้าสู่ระบบก่อนใช้งานครับ");
+            openAuth('login');
+            return;
+        }
+
+        document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('nav a').forEach(el => el.classList.remove('active'));
+
+        if(pageId === 'home'){
+            document.getElementById('pageHome').classList.add('active');
+            document.getElementById('navHome').classList.add('active');
+        } else if(pageId === 'friends'){
+            document.getElementById('pageFriends').classList.add('active');
+            document.getElementById('navFriends').classList.add('active');
+            renderUsers();
+        } else if(pageId === 'chat'){
+            document.getElementById('pageChat').classList.add('active');
+            document.getElementById('navChat').classList.add('active');
+            renderSidebarFriends();
+            toggleMobileChatView('sidebar');
+        } else if(pageId === 'profile'){
+            document.getElementById('pageProfile').classList.add('active');
+            document.getElementById('navProfile').classList.add('active');
+            loadProfile();
+        }
+    };
+
+    window.toggleMobileChatView = function(view){
+        if(window.innerWidth < 768){
+            if(view === 'main'){
+                document.getElementById('chatSidebar').style.display = 'none';
+                document.getElementById('chatMain').style.display = 'flex';
+            } else {
+                document.getElementById('chatSidebar').style.display = 'flex';
+                document.getElementById('chatMain').style.display = 'none';
+            }
+        }
+    }
+
+    window.openAuth = function(type){
+        document.getElementById("authOverlay").classList.add("active");
+        switchAuth(type);
+    };
+
+    window.closeAuth = function(){
+        document.getElementById("authOverlay").classList.remove("active");
+    };
+
+    window.switchAuth = function(type){
+        if(type === 'signup'){
+            document.getElementById("loginBox").style.display = "none";
+            document.getElementById("signupBox").style.display = "block";
+        }else{
+            document.getElementById("signupBox").style.display = "none";
+            document.getElementById("loginBox").style.display = "block";
+        }
+    };
+
+    window.handleSignup = function(){
+        const u = document.getElementById("signupUsername").value.trim();
+        const p = document.getElementById("signupPassword").value;
+        if(!u || !p){ alert("กรุณากรอกชื่อผู้ใช้และรหัสผ่านให้ครบถ้วน"); return; }
+
+        get(child(ref(db), `users/${u}`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                alert("❌ ชื่อผู้ใช้นี้มีคนใช้แล้ว กรุณาเปลี่ยนชื่ออื่นครับ");
+            } else {
+                set(ref(db, `users/${u}`), { 
+                    username: u, password: p,
+                    status: "นักเรียนโรงเรียนมหรรณพาราม",
+                    avatar: DEFAULT_AVATAR
+                });
+                currentUser = u;
+                localStorage.setItem("activeUser", currentUser);
+                updateHeader();
+                closeAuth();
+                showPage('friends');
+                alert("สมัครสมาชิกสำเร็จเรียบร้อย!");
+            }
+        });
+    };
+
+    window.handleLogin = function(){
+        const u = document.getElementById("loginUsername").value.trim();
+        const p = document.getElementById("loginPassword").value;
+        if(!u || !p){ alert("กรุณากรอกชื่อผู้ใช้และรหัสผ่าน"); return; }
+
+        get(child(ref(db), `users/${u}`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                const userData = snapshot.val();
+                if(userData.password === p) {
+                    currentUser = u;
+                    localStorage.setItem("activeUser", currentUser);
+                    updateHeader();
+                    closeAuth();
+                    showPage('chat');
+                } else {
+                    alert("❌ รหัสผ่านไม่ถูกต้อง");
+                }
+            } else {
+                alert("❌ ไม่พบชื่อผู้ใช้นี้ในระบบ");
+            }
+        });
+    };
+
+    window.handleLogout = function(){
+        currentUser = null;
+        activeChatFriend = null;
+        localStorage.removeItem("activeUser");
+        updateHeader();
+        showPage('home');
+    };
+
+    function updateHeader(){
+        const btnContainer = document.getElementById("authNavButtons");
+        document.getElementById("headerLogoImg").src = SCHOOL_LOGO_URL;
+        
+        if(currentUser){
+            get(child(ref(db), `users/${currentUser}/avatar`)).then((snapshot) => {
+                const avatarUrl = snapshot.exists() ? snapshot.val() : DEFAULT_AVATAR;
+                btnContainer.innerHTML = `
+                    <div class="user-profile-badge">
+                        <img src="${avatarUrl}" class="user-avatar-small">
+                        <span style="max-width:70px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${currentUser}</span>
+                        <button class="logout-btn" onclick="handleLogout()">ออก</button>
+                    </div>
+                `;
+            });
+        }else{
+            btnContainer.innerHTML = `
+                <button class="login" onclick="openAuth('login')">เข้าสู่ระบบ</button>
+                <button class="signup" onclick="openAuth('signup')">สมัคร</button>
+            `;
+        }
+    }
+
+    window.renderUsers = function(){
+        const grid = document.getElementById("usersListGrid");
+        const searchText = document.getElementById("searchInput").value.toLowerCase();
+        
+        onValue(ref(db, `users`), (snapshot) => {
+            grid.innerHTML = "";
+            const usersData = snapshot.val() || {};
+            
+            onValue(ref(db, `friends/${currentUser}`), (friendSnap) => {
+                const friendsData = friendSnap.val() || {};
+
+                onValue(ref(db, `requests/${currentUser}`), (reqSnap) => {
+                    const requestsData = reqSnap.val() || {};
+
+                    Object.keys(usersData).forEach(username => {
+                        if(username === currentUser) return;
+                        if(searchText && !username.toLowerCase().includes(searchText)) return;
+
+                        const isFriend = !!friendsData[username];
+                        const hasIncomingRequest = !!requestsData[username];
+
+                        let btnText = "+ ส่งคำขอ";
+                        let btnClass = "btn-add";
+                        let actionType = "sendRequest";
+
+                        if(isFriend){
+                            btnText = "ยกเลิกเพื่อน";
+                            btnClass = "btn-remove";
+                            actionType = "removeFriend";
+                        } else if(hasIncomingRequest){
+                            btnText = "✓ ยอมรับ";
+                            btnClass = "btn-accept";
+                            actionType = "acceptRequest";
+                        }
+
+                        const userAvatar = usersData[username].avatar || DEFAULT_AVATAR;
+                        const card = document.createElement("div");
+                        card.className = "user-card";
+                        card.innerHTML = `
+                            <div class="user-info">
+                                <img src="${userAvatar}" class="user-avatar-img">
+                                <div class="user-details">
+                                    <h4>${username}</h4>
+                                    <p>${usersData[username].status || ''}</p>
+                                </div>
+                            </div>
+                            <button class="btn-friend ${btnClass}" id="btn-act-${username}">${btnText}</button>
+                        `;
+                        grid.appendChild(card);
+
+                        document.getElementById(`btn-act-${username}`).addEventListener('click', () => {
+                            if(actionType === "sendRequest"){
+                                set(ref(db, `requests/${username}/${currentUser}`), true);
+                                alert(`ส่งคำขอไปยัง ${username} แล้ว`);
+                            } else if(actionType === "acceptRequest"){
+                                set(ref(db, `friends/${currentUser}/${username}`), true);
+                                set(ref(db, `friends/${username}/${currentUser}`), true);
+                                remove(ref(db, `requests/${currentUser}/${username}`));
+                                alert(`เป็นเพื่อนกับ ${username} แล้ว!`);
+                            } else if(actionType === "removeFriend"){
+                                remove(ref(db, `friends/${currentUser}/${username}`));
+                                remove(ref(db, `friends/${username}/${currentUser}`));
+                            }
+                            renderUsers();
+                        });
+                    });
+                }, { onlyOnce: true });
+            }, { onlyOnce: true });
+        });
+    };
+
+    function renderSidebarFriends(){
+        const list = document.getElementById("sidebarFriendsList");
+        onValue(ref(db, `friends/${currentUser}`), (snapshot) => {
+            list.innerHTML = "";
+            const friendsData = snapshot.val();
+
+            if(!friendsData){
+                list.innerHTML = `<div style="text-align:center; color:#aaa; font-size:13px; padding:20px;">ยังไม่มีเพื่อน</div>`;
+                return;
+            }
+
+            Object.keys(friendsData).forEach(friendName => {
+                get(child(ref(db), `users/${friendName}/avatar`)).then((avatarSnap) => {
+                    const avatarUrl = avatarSnap.exists() ? avatarSnap.val() : DEFAULT_AVATAR;
+                    const item = document.createElement("div");
+                    item.className = `friend-item ${activeChatFriend === friendName ? 'active' : ''}`;
+                    item.innerHTML = `<img src="${avatarUrl}" class="friend-item-img"><span>${friendName}</span>`;
+                    item.onclick = () => selectFriendToChat(friendName, avatarUrl);
+                    list.appendChild(item);
+                });
+            });
+        });
+    }
+
+    function selectFriendToChat(friendUsername, avatarUrl){
+        activeChatFriend = friendUsername;
+        document.getElementById("chatTargetTitle").innerHTML = `<img src="${avatarUrl}" class="user-avatar-small"> ${friendUsername}`;
+        renderSidebarFriends();
+        loadPrivateMessages();
+        toggleMobileChatView('main');
+    }
+
+    window.sendPrivateMessage = function(){
+        const input = document.getElementById("msgInput");
+        const text = input.value.trim();
+        if(!text || !activeChatFriend) return;
+
+        const roomId = [currentUser, activeChatFriend].sort().join("_");
+        const msgData = { sender: currentUser, text: text, timestamp: Date.now() };
+        if(replyData) msgData.replyTo = replyData;
+
+        push(ref(db, `private_chats/${roomId}`), msgData);
+        input.value = "";
+        cancelRefocus();
+    };
+
+    window.sendChatImage = function(event){
+        const file = event.target.files[0];
+        if(!file || !activeChatFriend) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e){
+            const img = new Image();
+            img.onload = function(){
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                let w = img.width, h = img.height, max = 800;
+                if(w > h && w > max){ h *= max/w; w = max; }
+                else if(h > max){ w *= max/h; h = max; }
+                canvas.width = w; canvas.height = h;
+                ctx.drawImage(img, 0, 0, w, h);
+
+                const roomId = [currentUser, activeChatFriend].sort().join("_");
+                const msgData = { sender: currentUser, image: canvas.toDataURL('image/jpeg', 0.8), timestamp: Date.now() };
+                if(replyData) msgData.replyTo = replyData;
+
+                push(ref(db, `private_chats/${roomId}`), msgData);
+                cancelRefocus();
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+        event.target.value = "";
+    };
+
+    window.toggleVoiceRecording = async function(){
+        const btn = document.getElementById("recordAudioBtn");
+        if (!isRecording) {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(audioChunks, { type: 'audio/webm' });
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const roomId = [currentUser, activeChatFriend].sort().join("_");
+                        const msgData = { sender: currentUser, audio: e.target.result, timestamp: Date.now() };
+                        if(replyData) msgData.replyTo = replyData;
+                        push(ref(db, `private_chats/${roomId}`), msgData);
+                        cancelRefocus();
+                    };
+                    reader.readAsDataURL(blob);
+                    stream.getTracks().forEach(t => t.stop());
+                };
+                mediaRecorder.start();
+                isRecording = true;
+                btn.classList.add("recording");
+            } catch (err) { alert("ไม่สามารถเปิดไมโครโฟนได้"); }
+        } else {
+            mediaRecorder.stop();
+            isRecording = false;
+            btn.classList.remove("recording");
+        }
+    };
+
+    function loadPrivateMessages(){
+        const msgArea = document.getElementById("chatMessagesArea");
+        if(!activeChatFriend) return;
+
+        const roomId = [currentUser, activeChatFriend].sort().join("_");
+        if (currentChatListener) off(currentChatListener);
+        currentChatListener = ref(db, `private_chats/${roomId}`);
+
+        onValue(currentChatListener, (snapshot) => {
+            msgArea.innerHTML = "";
+            const messages = snapshot.val() || {};
+
+            Object.keys(messages).forEach(msgId => {
+                const msg = messages[msgId];
+                if(msg.deletedFor && msg.deletedFor[currentUser]) return;
+
+                const isMe = msg.sender === currentUser;
+                const row = document.createElement("div");
+                row.className = `msg-row ${isMe ? 'me' : 'other'}`;
+
+                let replyHTML = "";
+                if(msg.replyTo){
+                    let prev = msg.replyTo.text || (msg.replyTo.image ? '📷 [รูปภาพ]' : '🎤 [เสียง]');
+                    replyHTML = `<div class="reply-preview-box"><div class="reply-user">${msg.replyTo.sender}</div><div>${prev}</div></div>`;
+                }
+
+                let contentHTML = "";
+                if(msg.image){
+                    contentHTML = `${replyHTML}<img src="${msg.image}" class="chat-msg-img" onclick="openImageModal('${msg.image}')">`;
+                } else if(msg.audio){
+                    contentHTML = `${replyHTML}<audio controls src="${msg.audio}" class="chat-audio"></audio>`;
+                } else {
+                    contentHTML = `${replyHTML}${msg.text}`;
+                }
+
+                const safeText = msg.text ? msg.text.replace(/'/g, "\\'") : 'สื่อ';
+                row.innerHTML = `
+                    <button class="msg-menu-btn" onclick="toggleMsgMenu(event, '${msgId}')">⋮</button>
+                    <div class="msg-bubble">${contentHTML}</div>
+                    <div class="msg-options-menu" id="menu-${msgId}">
+                        <div class="menu-item" onclick="startReply('${msg.sender}', '${safeText}')">↩ ตอบกลับ</div>
+                        <div class="menu-item" onclick="deleteForMe('${msgId}')">🗑️ ลบเฉพาะฉัน</div>
+                        ${isMe ? `<div class="menu-item danger" onclick="unsendMsg('${msgId}')">🚫 ยกเลิก</div>` : ''}
+                    </div>
+                `;
+                msgArea.appendChild(row);
+            });
+            msgArea.scrollTop = msgArea.scrollHeight;
+        });
+    }
+
+    window.scrollToTopChat = function(){
+        document.getElementById("chatMessagesArea").scrollTop = 0;
+    };
+
+    window.scrollToBottomChat = function(){
+        const area = document.getElementById("chatMessagesArea");
+        area.scrollTop = area.scrollHeight;
+    };
+
+    window.openImageModal = (src) => { document.getElementById("modalZoomImg").src = src; document.getElementById("imageModal").classList.add("active"); };
+    window.closeImageModal = () => document.getElementById("imageModal").classList.remove("active");
+
+    window.toggleMsgMenu = function(e, msgId){
+        e.stopPropagation();
+        const menu = document.getElementById(`menu-${msgId}`);
+        const isActive = menu.classList.contains('active');
+        closeAllMsgMenus();
+        if(!isActive) menu.classList.add('active');
+    };
+
+    window.closeAllMsgMenus = () => document.querySelectorAll('.msg-options-menu').forEach(el => el.classList.remove('active'));
+
+    window.startReply = function(sender, text){
+        replyData = { sender, text };
+        document.getElementById("replyTargetUser").innerText = sender;
+        document.getElementById("replyTargetText").innerText = text;
+        document.getElementById("activeReplyBar").classList.add('active');
+        closeAllMsgMenus();
+        document.getElementById("msgInput").focus();
+    };
+
+    window.cancelReply = () => { replyData = null; document.getElementById("activeReplyBar").classList.remove('active'); };
+    window.cancelRefocus = () => cancelReply();
+
+    window.unsendMsg = function(msgId){
+        if(!activeChatFriend) return;
+        remove(ref(db, `private_chats/${[currentUser, activeChatFriend].sort().join("_")}/${msgId}`));
+        closeAllMsgMenus();
+    };
+
+    window.deleteForMe = function(msgId){
+        if(!activeChatFriend) return;
+        set(ref(db, `private_chats/${[currentUser, activeChatFriend].sort().join("_")}/${msgId}/deletedFor/${currentUser}`), true);
+        closeAllMsgMenus();
+    };
+
+    function loadProfile(){
+        document.getElementById("profileUsername").innerText = currentUser;
+        get(child(ref(db), `users/${currentUser}`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                document.getElementById("profileStatusDisplay").innerText = `"${data.status || 'ไม่มีสถานะ'}"`;
+                document.getElementById("profileAvatarImg").src = data.avatar || DEFAULT_AVATAR;
+            }
+        });
+    }
+
+    window.handleImageUpload = function(event){
+        const file = event.target.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e){
+            const img = new Image();
+            img.onload = function(){
+                const canvas = document.createElement('canvas');
+                let w = img.width, h = img.height, max = 200;
+                if(w > h && w > max){ h *= max/w; w = max; } else if(h > max){ w *= max/h; h = max; }
+                canvas.width = w; canvas.height = h;
+                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                const url = canvas.toDataURL('image/jpeg', 0.8);
+                set(ref(db, `users/${currentUser}/avatar`), url);
+                document.getElementById("profileAvatarImg").src = url;
+                updateHeader();
+                alert("เปลี่ยนรูปโปรไฟล์สำเร็จ!");
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    };
+
+    window.updateStatus = function(){
+        const txt = document.getElementById("statusInput").value.trim();
+        if(!txt) return;
+        set(ref(db, `users/${currentUser}/status`), txt);
+        document.getElementById("profileStatusDisplay").innerText = `"${txt}"`;
+        document.getElementById("statusInput").value = "";
+        alert("อัปเดตสถานะแล้ว!");
+    };
+
+    window.handleUpdateUsername = async function(){
+        const newU = document.getElementById("newUsernameInput").value.trim();
+        if(!newU || newU === currentUser) return alert("กรุณาใส่ชื่อใหม่ที่ไม่ซ้ำเดิม");
+        try {
+            const snap = await get(child(ref(db), `users/${newU}`));
+            if(snap.exists()) return alert("❌ ชื่อนี้มีคนใช้แล้ว");
+
+            const oldU = currentUser;
+            const uData = (await get(child(ref(db), `users/${oldU}`))).val();
+            uData.username = newU;
+            await set(ref(db, `users/${newU}`), uData);
+
+            const fSnap = await get(child(ref(db), `friends/${oldU}`));
+            if(fSnap.exists()){
+                await set(ref(db, `friends/${newU}`), fSnap.val());
+                for(let f of Object.keys(fSnap.val())){
+                    await set(ref(db, `friends/${f}/${newU}`), true);
+                    await remove(ref(db, `friends/${f}/${oldU}`));
+                }
+            }
+
+            const rSnap = await get(child(ref(db), `requests/${oldU}`));
+            if(rSnap.exists()) await set(ref(db, `requests/${newU}`), rSnap.val());
+
+            const cSnap = await get(child(ref(db), `private_chats`));
+            if(cSnap.exists()){
+                for(let roomId of Object.keys(cSnap.val())){
+                    if(roomId.includes(oldU)){
+                        const newId = roomId.split('_').map(n => n === oldU ? newU : n).sort().join('_');
+                        await set(ref(db, `private_chats/${newId}`), cSnap.val()[roomId]);
+                        for(let mId of Object.keys(cSnap.val()[roomId])){
+                            if(cSnap.val()[roomId][mId].sender === oldU){
+                                await set(ref(db, `private_chats/${newId}/${mId}/sender`), newU);
+                            }
+                        }
+                        await remove(ref(db, `private_chats/${roomId}`));
+                    }
+                }
+            }
+
+            await remove(ref(db, `users/${oldU}`));
+            await remove(ref(db, `friends/${oldU}`));
+            await remove(ref(db, `requests/${oldU}`));
+
+            currentUser = newU;
+            localStorage.setItem("activeUser", currentUser);
+            updateHeader();
+            loadProfile();
+            document.getElementById("newUsernameInput").value = "";
+            alert("เปลี่ยนชื่อสำเร็จ!");
+        } catch(e) { alert("เกิดข้อผิดพลาด"); }
+    };
+
+    updateHeader();
+</script>
+</body>
+</html>
