@@ -315,6 +315,16 @@
         @media(min-width:768px){.chat-sidebar{width:320px;flex:0 0 320px;border-right:1px solid rgba(255,255,255,.08)}.chat-main{display:flex}.back-to-list-btn{display:none}}
         @media(max-width:767px){.chat-container{padding:0}.chat-wrapper{border-radius:0;border-left:0;border-right:0}.chat-sidebar{width:100%}.chat-main{width:100%}.chat-header{height:58px}.back-to-list-btn{display:block}}
 
+
+.incoming-request-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:14px;background:rgba(255,255,255,.05);margin-bottom:8px}
+.incoming-request-item img{width:44px;height:44px;border-radius:50%;object-fit:cover;cursor:pointer}
+.incoming-request-info{flex:1;min-width:0;cursor:pointer}
+.incoming-request-info b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.incoming-request-info small{color:#9da2ca}
+.incoming-actions{display:flex;gap:6px}
+.incoming-actions button{border:0;border-radius:10px;padding:8px 10px;color:#fff;cursor:pointer}
+.incoming-accept{background:#16a34a}.incoming-profile{background:#2563eb}.incoming-reject{background:#ef4444}
+
 </style>
 
 <style id="chat-style-like-reference">
@@ -403,7 +413,16 @@
             <input type="text" id="searchInput" placeholder="พิมพ์ชื่อผู้ใช้เพื่อค้นหา..." onkeyup="renderUsers()">
             <button class="scan-camera-btn" onclick="openCameraScanner()" title="สแกนกล้องรับเพื่อน">📷</button>
         </div>
-        <div class="users-grid" id="usersListGrid"></div>
+        
+<div id="incomingRequestsBox" class="card" style="margin-bottom:15px;display:none;">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;">
+    <h3 style="margin:0;">👋 คนที่กดแอดคุณ</h3>
+    <span id="incomingRequestCount" style="background:#ef4444;color:#fff;border-radius:999px;padding:3px 9px;font-size:12px;">0</span>
+  </div>
+  <div id="incomingRequestsList"></div>
+</div>
+
+<div class="users-grid" id="usersListGrid"></div>
     </div>
 </div>
 
@@ -801,7 +820,67 @@
         }
     };
 
+
+    window.renderIncomingRequests = function(){
+        const box = document.getElementById("incomingRequestsBox");
+        const list = document.getElementById("incomingRequestsList");
+        const count = document.getElementById("incomingRequestCount");
+        if(!currentUser || !box || !list) return;
+
+        onValue(ref(db, `requests/${currentUser}`), async snap => {
+            const req = snap.val() || {};
+            const names = Object.keys(req);
+            if(count) count.textContent = names.length;
+            box.style.display = names.length ? "block" : "none";
+            list.innerHTML = "";
+            if(!names.length) return;
+
+            const rows = await Promise.all(names.map(async username => {
+                const us = await get(child(ref(db), `users/${username}`));
+                const u = us.exists() ? us.val() : {};
+                return {username, avatar:u.avatar || DEFAULT_AVATAR, status:u.status || "ต้องการเป็นเพื่อนกับคุณ"};
+            }));
+
+            rows.forEach(row => {
+                const el = document.createElement("div");
+                el.className = "incoming-request-item";
+                el.innerHTML = `
+                  <img src="${row.avatar}" alt="" title="ดูโปรไฟล์">
+                  <div class="incoming-request-info"><b>${row.username}</b><small>${row.status}</small></div>
+                  <div class="incoming-actions">
+                    <button class="incoming-profile">👤</button>
+                    <button class="incoming-accept">✓ รับ</button>
+                    <button class="incoming-reject">✕</button>
+                  </div>`;
+                el.querySelector("img").onclick = () => openOtherProfile(row.username);
+                el.querySelector(".incoming-request-info").onclick = () => openOtherProfile(row.username);
+                el.querySelector(".incoming-profile").onclick = () => openOtherProfile(row.username);
+
+                el.querySelector(".incoming-accept").onclick = async () => {
+                    try{
+                        await Promise.all([
+                          set(ref(db, `friends/${currentUser}/${row.username}`), true),
+                          set(ref(db, `friends/${row.username}/${currentUser}`), true),
+                          remove(ref(db, `requests/${currentUser}/${row.username}`))
+                        ]);
+                        renderUsers();
+                        renderSidebarFriends();
+                    }catch(e){
+                        console.error(e);
+                        alert("รับเพื่อนไม่สำเร็จ กรุณาตรวจสอบ Firebase Rules");
+                    }
+                };
+                el.querySelector(".incoming-reject").onclick = async () => {
+                    try{ await remove(ref(db, `requests/${currentUser}/${row.username}`)); }
+                    catch(e){ console.error(e); alert("ปฏิเสธคำขอไม่สำเร็จ"); }
+                };
+                list.appendChild(el);
+            });
+        });
+    };
+
     window.renderUsers = function(){
+        renderIncomingRequests();
         const grid = document.getElementById("usersListGrid");
         const q = (document.getElementById("searchInput")?.value || "").trim().toLowerCase();
 
