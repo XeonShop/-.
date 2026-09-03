@@ -75,21 +75,19 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .chat-header h3{ font-size:15px; display:flex; align-items:center; gap:8px; }
 .back-to-list-btn{ background:#343785; color:white; border:none; padding:6px 12px; border-radius:8px; font-size:12px; cursor:pointer; }
 
-/* กล่องข้อความแชทแก้ไขปัญหาเลื่อน */
+/* แก้ไขโครงสร้างเลื่อนแชทให้อยู่ในกรอบอย่างถูกต้อง */
 .chat-messages-container {
     flex: 1;
     position: relative;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    min-height: 0;
 }
 
 .chat-messages{ 
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    flex: 1;
+    width: 100%;
     padding: 15px; 
     overflow-y: auto !important; 
     -webkit-overflow-scrolling: touch;
@@ -256,7 +254,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 <div id="pageHome" class="page-section active">
     <section class="hero">
         <div class="school-badge-container">
-            <img src="https://i.ibb.co/3ykL8w4/school-logo.png" class="school-hero-logo" alt="ตราโรงเรียนมหรรณพาราม">
+            <img src="https://i.ibb.co/3ykL8w4/school-hero-logo.png" class="school-hero-logo" alt="ตราโรงเรียนมหรรณพาราม">
         </div>
         <div class="hero-text">
             <h1>ห้องพูดคุย<br><span class="gradient-text">โรงเรียนมหรรณพาราม</span></h1>
