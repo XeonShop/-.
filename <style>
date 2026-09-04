@@ -1,47 +1,22 @@
-/* ระบบเลื่อนข้อความแชท */
-.chat-messages-container {
-    flex: 1;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    min-height: 0;
-}
-
-.chat-messages {
-    flex: 1;
-    width: 100%;
-    padding: 15px;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    -webkit-overflow-scrolling: touch;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.msg-row {
-    flex-shrink: 0;
-}
-
-/* ปุ่มเลื่อนขึ้นลง */
-.scroll-quick-btns {
-    position: absolute;
-    right: 15px;
-    bottom: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    z-index: 10;
-}
-
-.scroll-btn {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: rgba(124,58,237,.9);
+/* สไตล์ปุ่มโพสต์สำเร็จรูป */
+.chat-input .post-btn {
+    width: auto !important;
+    padding: 0 14px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #22c9ff, #7c3aed);
     color: white;
-    border: 1px solid rgba(255,255,255,.4);
-    font-size: 16px;
+    font-weight: bold;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
     cursor: pointer;
+    border: none;
+    transition: transform 0.2s, opacity 0.2s;
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+}
+
+.chat-input .post-btn:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
 }
