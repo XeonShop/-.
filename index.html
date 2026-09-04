@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ห้องพูดคุยเพื่อนช่วยเพื่อน</title>
+<title>ห้องพูดคุยเพื่อนช่วยเพื่อน - โรงเรียนมหรรณพาราม</title>
 <style>
 *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
 body{ font-family:Arial,"Tahoma",sans-serif; background:#080b35; color:white; height:100vh; overflow:hidden; }
@@ -59,7 +59,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .gradient-text{ background:linear-gradient(90deg, #9b5cff, #24b8ff); -webkit-background-clip:text; color:transparent; }
 .hero-text h2{ font-size:15px; margin-bottom:12px; color:#22c9ff; }
 .hero-text p{ color:#b8b9d0; font-size:13px; line-height:1.6; max-width:600px; margin:0 auto; }
-.hero-buttons{ margin-top:25px; display:flex; justify-content:center; gap: 10px; flex-wrap: wrap; }
+.hero-buttons{ margin-top:25px; display:flex; justify-content:center; gap: 10px; }
 
 .start-btn{ display:block; width:100%; max-width:220px; padding:14px 20px; border-radius:16px; background:linear-gradient(90deg, #22c9ff, #7c3aed); color:white; text-decoration:none; font-weight:bold; font-size:15px; text-align:center; box-shadow:0 8px 25px rgba(67,56,202,.4); border:none; cursor:pointer; }
 
@@ -98,6 +98,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .msg-row.me .msg-bubble{ background:linear-gradient(135deg, #006f9f, #4c1d95); border-bottom-right-radius:4px; }
 .msg-row.other .msg-bubble{ background:#20256e; border-bottom-left-radius:4px; }
 .chat-msg-img{ max-width:200px; max-height:200px; border-radius:10px; display:block; margin-top:4px; object-fit: cover; cursor: pointer; }
+.chat-audio{ width: 220px; height: 40px; margin-top: 4px; }
 .reply-preview-box{ background:rgba(0,0,0,0.25); border-left:3px solid #22c9ff; padding:6px 10px; border-radius:6px; margin-bottom:6px; font-size:12px; color:#ddd; }
 .reply-preview-box .reply-user{ font-weight:bold; color:#22c9ff; margin-bottom:2px; }
 .msg-menu-btn{ background:none; border:none; color:#a3a8d1; font-size:18px; padding:4px 8px; cursor:pointer; border-radius:50%; opacity:0.6; transition:.2s; }
@@ -186,7 +187,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 <header>
     <div class="logo" onclick="showPage('home')">
         <img src="https://i.ibb.co/3ykL8w4/school-logo.png" id="headerLogoImg" class="logo-img" alt="Logo">
-        เพื่อน <span>ช่วยเพื่อน</span>
+        Student <span>Chat</span>
     </div>
 
     <nav>
@@ -206,12 +207,12 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 <div id="pageHome" class="page-section active">
     <section class="hero">
         <div class="school-badge-container">
-            <img src="https://i.ibb.co/3ykL8w4/school-logo.png" class="school-hero-logo" alt="โลโก้เพื่อนช่วยเพื่อน">
+            <img src="https://i.ibb.co/3ykL8w4/school-logo.png" class="school-hero-logo" alt="ตราโรงเรียนมหรรณพาราม">
         </div>
         <div class="hero-text">
-            <h1>ห้องพูดคุยเพื่อนช่วยเพื่อน<br><span class="gradient-text">คอมมูนิตี้สำหรับทุกคน</span></h1>
+            <h1>ห้องพูดคุยเพื่อนช่วยเพื่อน<br><span class="gradient-text">โรงเรียนมหรรณพาราม</span></h1>
             <h2>ถาม-ตอบ แลกเปลี่ยนความรู้ และเพิ่มเพื่อนพูดคุย</h2>
-            <p>ไม่ว่าจะเป็นการบ้าน การเรียน หรือเพื่อนคุยแก้เหงา มาร่วมสร้างสังคมการเรียนรู้และช่วยเหลือกันได้ที่นี่</p>
+            <p>ไม่ว่าจะเป็นการบ้าน การเรียน หรือเพื่อนคุยแก้เหงา มาร่วมสร้างสังคมการเรียนรู้ไปด้วยกันสำหรับชาวมหรรณพาราม</p>
             <div class="hero-buttons">
                 <button onclick="requestNotificationPermission()" class="start-btn" style="background:linear-gradient(90deg, #f59e0b, #ef4444); max-width:240px;">🔔 เปิดรับแจ้งเตือน</button>
                 <button onclick="showPage('chat')" class="start-btn">💬 เริ่มต้นพูดคุยเลย</button>
@@ -224,7 +225,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 <div id="pageFriends" class="page-section">
     <div class="friends-container">
         <h2 style="margin-bottom:5px;">👥 เพื่อน & คำขอ</h2>
-        <p style="color:#aaaed0; margin-bottom:15px; font-size:13px;">ค้นหาเพื่อนเพื่อส่งคำขอ หรือกดรับเพื่อนที่นี่</p>
+        <p style="color:#aaaed0; margin-bottom:15px; font-size:13px;">ค้นหาเพื่อนนักเรียนเพื่อส่งคำขอ หรือกดรับเพื่อนที่นี่</p>
         
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="พิมพ์ชื่อผู้ใช้เพื่อค้นหา..." onkeyup="renderUsers()">
@@ -464,7 +465,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                 set(ref(db, `users/${u}`), { 
                     username: u, 
                     password: p,
-                    status: "สมาชิกเพื่อนช่วยเพื่อน",
+                    status: "นักเรียนโรงเรียนมหรรณพาราม",
                     avatar: DEFAULT_AVATAR
                 });
                 currentUser = u;
@@ -557,7 +558,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         }
     }
 
-    // ระบบกล้องรับเพื่อน (แจ้งเตือนคำขอเพิ่มเพื่อนเข้ามาแบบเรียลไทม์)
+    // ระบบกล้องรับเพื่อน (แจ้งเตือน/จัดการคำขอเพิ่มเพื่อนเข้ามาแบบเรียลไทม์)
     function initGlobalListeners(){
         if(!currentUser) return;
         
