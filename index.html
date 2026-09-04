@@ -74,10 +74,19 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .post-user-info h4:hover{ color:#22c9ff; }
 .post-user-info span{ font-size:11px; color:#aaaed0; }
 .post-content{ font-size:14px; line-height:1.5; color:#ddd; margin-bottom:12px; word-break:break-word; }
-.post-img{ max-width:100%; border-radius:10px; margin-bottom:10px; max-height:300px; object-fit:cover; display:block; cursor:pointer; }
+.post-img-wrapper{ position:relative; display:inline-block; max-width:100%; margin-bottom:10px; }
+.post-img{ max-width:100%; border-radius:10px; max-height:300px; object-fit:cover; display:block; cursor:pointer; }
 .post-actions{ display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(255,255,255,.08); padding-top:10px; font-size:13px; color:#aaaed0; }
 .post-action-btn{ background:none; border:none; color:#aaaed0; cursor:pointer; display:flex; align-items:center; gap:5px; font-size:13px; }
 .post-action-btn:hover{ color:#22c9ff; }
+
+/* ปุ่มดาวน์โหลดภาพทับบนรูป */
+.download-img-btn{
+    position: absolute; bottom: 10px; right: 10px; background: rgba(0, 0, 0, 0.75); color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3); padding: 6px 10px; border-radius: 8px; font-size: 12px;
+    cursor: pointer; display: flex; align-items: center; gap: 4px; transition: 0.2s;
+}
+.download-img-btn:hover{ background: #22c9ff; color: #080b35; border-color: #22c9ff; }
 
 /* ส่วนคอมเมนต์ใต้โพสต์ */
 .post-comments-section{ margin-top: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px; }
@@ -124,7 +133,8 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .msg-bubble{ padding:12px 16px; border-radius:18px; font-size:15px; line-height:1.4; word-break:break-word; position:relative; width:100%; }
 .msg-row.me .msg-bubble{ background:linear-gradient(135deg, #006f9f, #4c1d95); border-bottom-right-radius:4px; }
 .msg-row.other .msg-bubble{ background:#20256e; border-bottom-left-radius:4px; }
-.chat-msg-img{ max-width:200px; max-height:200px; border-radius:10px; display:block; margin-top:4px; object-fit: cover; cursor: pointer; }
+.chat-msg-img-container{ position:relative; display:inline-block; margin-top:4px; }
+.chat-msg-img{ max-width:200px; max-height:200px; border-radius:10px; display:block; object-fit: cover; cursor: pointer; }
 .reply-preview-box{ background:rgba(0,0,0,0.25); border-left:3px solid #22c9ff; padding:6px 10px; border-radius:6px; margin-bottom:6px; font-size:12px; color:#ddd; }
 .reply-preview-box .reply-user{ font-weight:bold; color:#22c9ff; margin-bottom:2px; }
 .msg-menu-btn{ background:none; border:none; color:#a3a8d1; font-size:18px; padding:4px 8px; cursor:pointer; border-radius:50%; opacity:0.6; transition:.2s; }
@@ -190,7 +200,17 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 @media (max-width: 767px) {
     .logo span { display: none; }
     nav a span { display: none; }
-    nav a { padding: 8px 10px; font-size: 18px; }
+    nav a { padding: 8px 10px; font-size: 16px; }
+    
+    .chat-wrapper {
+        height: calc(100vh - 80px);
+        border-radius: 12px;
+    }
+    
+    .chat-input input[type="text"] {
+        padding: 10px 14px;
+        font-size: 14px;
+    }
 }
 
 @media (min-width: 768px) {
@@ -617,6 +637,26 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         });
     }
 
+    // ฟังก์ชันช่วยดาวน์โหลดรูปภาพ
+    window.downloadImage = function(url, filename = 'downloaded-image.jpg') {
+        fetch(url)
+            .then(response => response.blob())
+            .then(blob => {
+                const blobUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(blobUrl);
+            })
+            .catch(() => {
+                // กรณีติดปัญหา CORS ให้เปิดรูปในแท็บใหม่แทนเพื่อให้ผู้ใช้กด Save ได้
+                window.open(url, '_blank');
+            });
+    };
+
     // ระบบโพสต์สาธารณะ
     window.previewPostImage = function(event){
         const file = event.target.files[0];
@@ -657,7 +697,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 
         const newPostRef = push(ref(db, "posts"), newPostData);
         
-        // ฟีเจอร์ AI ตอบกลับอัตโนมัติ (จำลองช่วยตอบคำถาม/ให้ข้อมูลที่ถูกต้อง)
         setTimeout(() => {
             let aiReplyText = "สวัสดีครับ AI_Assistant ยินดีช่วยเหลือครับ จากเรื่องที่คุณโพสต์ ลองตรวจสอบข้อมูลเบื้องต้นหรือปรึกษาคุณครูเพิ่มเติมดูได้นะครับ!";
             if(text.includes("การบ้าน") || text.includes("โจทย์") || text.includes("วิชา")){
@@ -699,7 +738,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
             feedArea.innerHTML = "";
             const posts = snapshot.val() || {};
             const postKeys = Object.keys(posts).reverse();
-            const twoDaysMs = 2 * 24 * 60 * 60 * 1000; // ระบบลบหลังผ่านไป 2 วัน (48 ชั่วโมง)
+            const twoDaysMs = 2 * 24 * 60 * 60 * 1000; 
             const currentTime = Date.now();
 
             let activePostsCount = 0;
@@ -707,7 +746,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
             postKeys.forEach(postId => {
                 const post = posts[postId];
                 
-                // ตรวจสอบอายุโพสต์ หากเกิน 2 วัน ให้ทำการลบออกจากระบบอัตโนมัติ
                 if(currentTime - post.timestamp > twoDaysMs){
                     remove(ref(db, `posts/${postId}`));
                     return;
@@ -736,6 +774,16 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                         `;
                     });
 
+                    let imageHTML = "";
+                    if(post.image){
+                        imageHTML = `
+                            <div class="post-img-wrapper">
+                                <img src="${post.image}" class="post-img" onclick="openImageModal('${post.image}')">
+                                <button class="download-img-btn" onclick="downloadImage('${post.image}', 'post-image_${postId}.jpg')">⬇️ ดาวน์โหลด</button>
+                            </div>
+                        `;
+                    }
+
                     card.innerHTML = `
                         <div class="post-header">
                             <img src="${avatar}" class="post-avatar" onclick="viewUserProfile('${post.author}')">
@@ -745,7 +793,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                             </div>
                         </div>
                         ${post.text ? `<div class="post-content">${post.text}</div>` : ''}
-                        ${post.image ? `<img src="${post.image}" class="post-img" onclick="openImageModal('${post.image}')">` : ''}
+                        ${imageHTML}
                         <div class="post-actions">
                             ${post.author === currentUser ? `<button class="post-action-btn" onclick="deletePost('${postId}')">🗑️ ลบโพสต์</button>` : '<div></div>'}
                         </div>
@@ -1058,7 +1106,19 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                     `;
                 }
 
-                let contentHTML = msg.image ? `${replyHTML}<img src="${msg.image}" class="chat-msg-img" onclick="openImageModal('${msg.image}')">` : `${replyHTML}${msg.text}`;
+                let contentHTML = "";
+                if(msg.image){
+                    contentHTML = `
+                        ${replyHTML}
+                        <div class="chat-msg-img-container">
+                            <img src="${msg.image}" class="chat-msg-img" onclick="openImageModal('${msg.image}')">
+                            <button class="download-img-btn" onclick="downloadImage('${msg.image}', 'chat-image_${msgId}.jpg')">⬇️ ดาวน์โหลด</button>
+                        </div>
+                    `;
+                } else {
+                    contentHTML = `${replyHTML}${msg.text}`;
+                }
+
                 const safeTextForReply = msg.text ? msg.text.replace(/'/g, "\\'") : 'รูปภาพ';
 
                 row.innerHTML = `
