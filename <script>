@@ -1,114 +1,88 @@
-// ฟังก์ชันสร้างโพสต์ใหม่
-function createNewPost() {
-    const input = document.getElementById("postContentInput");
-    const text = input.value.trim();
-
-    if (!text) {
-        alert("กรุณากรอกข้อความก่อนโพสต์ครับ");
-        return;
-    }
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <title>ทดสอบไมโครโฟน</title>
+    <title>ระบบบันทึกเสียงไมโครโฟน</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+        button { padding: 10px 20px; font-size: 16px; margin: 5px; cursor: pointer; }
+        audio { display: block; margin: 20px auto; }
+    </style>
 </head>
 <body>
 
-    <!-- สร้างปุ่มสำหรับกดใช้งานไมค์ -->
-    <button id="micButton">เปิดใช้งานไมโครโฟน</button>
+    <h2>ระบบบันทึกเสียงผ่านไมโครโฟน</h2>
+    
+    <!-- ปุ่มควบคุมระบบอัดเสียง -->
+    <button id="recordButton">เริ่มอัดเสียง</button>
+    <button id="stopButton" disabled>หยุดอัดเสียง</button>
+    
+    <!-- ส่วนเล่นเสียงและดาวน์โหลด -->
+    <audio id="audioPlayback" controls></audio>
+    <br>
+    <a id="downloadLink" style="display:none;">ดาวน์โหลดไฟล์เสียง</a>
 
-    <!-- 📍 นำโค้ด JavaScript มาใส่ไว้ตรงนี้ (ก่อนปิดแท็ก body หรือใส่ในไฟล์ .js แยกต่างหาก) -->
     <script>
-        // 1. ฟังก์ชันตรวจสอบว่าเบราว์เซอร์รองรับไหม
-        function checkMicrophoneSupport() {
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                console.log("เบราว์เซอร์นี้รองรับการใช้งานไมโครโฟน");
-                return true;
-            } else {
-                console.warn("เบราว์เซอร์นี้ไม่รองรับการใช้งานไมโครโฟน");
-                return false;
-            }
-        }
+        let mediaRecorder;
+        let audioChunks = [];
 
-        // 2. ฟังก์ชันขอเปิดใช้งานไมค์
-        async function requestMicrophoneAccess() {
-            // เช็กก่อนว่ารองรับไหม
-            if (!checkMicrophoneSupport()) {
-                alert("เบราว์เซอร์ของคุณไม่รองรับการใช้งานไมโครโฟน");
-                return;
-            }
+        const recordButton = document.getElementById("recordButton");
+        const stopButton = document.getElementById("stopButton");
+        const audioPlayback = document.getElementById("audioPlayback");
+        const downloadLink = document.getElementById("downloadLink");
 
+        // 1. กดปุ่ม "เริ่มอัดเสียง"
+        recordButton.addEventListener("click", async () => {
             try {
-                // ขอสิทธิ์ใช้งานไมค์
+                // ขอสิทธิ์ใช้ไมค์
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                console.log("เปิดไมโครโฟนสำเร็จ!", stream);
-                alert("เปิดไมโครโฟนสำเร็จแล้ว!");
                 
-            } catch (error) {
-                console.error("เกิดข้อผิดพลาด:", error);
-                if (error.name === "NotAllowedError") {
-                    alert("คุณปฏิเสธการอนุญาต กรุณาไปเปิดสิทธิ์ที่การตั้งค่าเบราว์เซอร์");
-                } else {
-                    alert("ไม่สามารถเข้าถึงไมโครโฟนได้: " + error.message);
-                }
-            }
-        }
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
 
-        // 3. ผูกฟังก์ชันเข้ากับปุ่มบนหน้าเว็บ
-        document.getElementById("micButton").addEventListener("click", requestMicrophoneAccess);
+                // เมื่อมีข้อมูลเสียงเข้ามา ให้เก็บใส่ array
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+
+                // เมื่อกดหยุดอัด ให้รวมข้อมูลเสียงเป็นไฟล์เดียว
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    
+                    // แสดงเสียงที่อัดในตัวเล่นเสียง (Audio Player)
+                    audioPlayback.src = audioUrl;
+
+                    // สร้างลิงก์สำหรับดาวน์โหลดไฟล์
+                    downloadLink.href = audioUrl;
+                    downloadLink.download = "my-recording.webm";
+                    downloadLink.style.display = "block";
+                    downloadLink.textContent = "คลิกเพื่อดาวน์โหลดไฟล์เสียง";
+                };
+
+                // เริ่มต้นอัดเสียง
+                mediaRecorder.start();
+                recordButton.disabled = true;
+                stopButton.disabled = false;
+                console.log("กำลังอัดเสียง...");
+
+            } catch (error) {
+                alert("ไม่สามารถเข้าถึงไมโครโฟนได้: " + error.message);
+            }
+        });
+
+        // 2. กดปุ่ม "หยุดอัดเสียง"
+        stopButton.addEventListener("click", () => {
+            mediaRecorder.stop();
+            
+            // หยุดการทำงานของฮาร์ดแวร์ไมค์ (ปิดไฟสีส้ม/เขียวที่แสดงว่าไมค์กำลังทำงาน)
+            mediaRecorder.stream.getTracks().forEach(track => track.stop());
+
+            recordButton.disabled = false;
+            stopButton.disabled = true;
+            console.log("หยุดอัดเสียงแล้ว");
+        });
     </script>
 
 </body>
 </html>
-    const feedList = document.getElementById("feedList");
-    const postId = "post_" + Date.now(); // สร้างไอดีไม่ซ้ำกัน
-
-    const newCard = document.createElement("div");
-    newCard.className = "post-card";
-    newCard.innerHTML = `
-        <div class="post-header">
-            <strong>${typeof currentUser !== 'undefined' ? currentUser : 'คุณ'}</strong> 
-            <span style="font-size: 12px; color: gray;">เมื่อสักครู่</span>
-        </div>
-        <div class="post-body">${escapeHtml(text)}</div>
-        
-        <div class="comment-section">
-            <div class="comment-list" id="commentList_${postId}"></div>
-            <div class="comment-input-box">
-                <input type="text" id="commentInput_${postId}" placeholder="พิมพ์คอมเมนต์ตอบกลับ...">
-                <button class="comment-btn" onclick="addComment('${postId}')">ส่ง</button>
-            </div>
-        </div>
-    `;
-
-    feedList.prepend(newCard); // นำโพสต์ใหม่ไว้บนสุด
-    input.value = "";
-}
-
-// ฟังก์ชันกดส่งคอมเมนต์ใต้โพสต์
-function addComment(postId) {
-    const input = document.getElementById(`commentInput_${postId}`);
-    const text = input.value.trim();
-
-    if (!text) return;
-
-    const commentList = document.getElementById(`commentList_${postId}`);
-    const commentItem = document.createElement("div");
-    commentItem.className = "comment-item";
-    commentItem.innerHTML = `<strong>${typeof currentUser !== 'undefined' ? currentUser : 'เพื่อน'} :</strong> ${escapeHtml(text)}`;
-
-    commentList.appendChild(commentItem);
-    commentList.scrollTop = commentList.scrollHeight; // เลื่อนลงล่างสุดอัตโนมัติเมื่อมีคนคอมเมนต์
-    input.value = "";
-}
-
-// ฟังก์ชันป้องกัน HTML Injection (ความปลอดภัยเบื้องต้น)
-function escapeHtml(text) {
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
