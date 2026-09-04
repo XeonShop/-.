@@ -1,22 +1,64 @@
-/* สไตล์ปุ่มโพสต์สำเร็จรูป */
-.chat-input .post-btn {
-    width: auto !important;
-    padding: 0 14px;
-    border-radius: 20px;
-    background: linear-gradient(135deg, #22c9ff, #7c3aed);
+/* สไตล์สำหรับหน้าโพสต์ */
+.post-container {
+    padding: 15px;
+    max-width: 600px;
+    margin: 0 auto;
     color: white;
-    font-weight: bold;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    cursor: pointer;
-    border: none;
-    transition: transform 0.2s, opacity 0.2s;
-    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
 }
 
-.chat-input .post-btn:hover {
-    transform: scale(1.05);
-    opacity: 0.9;
+.create-post-box {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.create-post-box textarea {
+    width: 100%;
+    height: 80px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    padding: 10px;
+    resize: none;
+    font-size: 14px;
+    outline: none;
+}
+
+.submit-post-btn {
+    margin-top: 10px;
+    background: linear-gradient(135deg, #22c9ff, #7c3aed);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    float: right;
+}
+
+.feed-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.post-card {
+    background: rgba(255, 255, 255, 0.07);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.post-header {
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.post-body {
+    font-size: 14px;
+    word-break: break-word;
 }
