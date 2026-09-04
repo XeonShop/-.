@@ -7,7 +7,60 @@ function createNewPost() {
         alert("กรุณากรอกข้อความก่อนโพสต์ครับ");
         return;
     }
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>ทดสอบไมโครโฟน</title>
+</head>
+<body>
 
+    <!-- สร้างปุ่มสำหรับกดใช้งานไมค์ -->
+    <button id="micButton">เปิดใช้งานไมโครโฟน</button>
+
+    <!-- 📍 นำโค้ด JavaScript มาใส่ไว้ตรงนี้ (ก่อนปิดแท็ก body หรือใส่ในไฟล์ .js แยกต่างหาก) -->
+    <script>
+        // 1. ฟังก์ชันตรวจสอบว่าเบราว์เซอร์รองรับไหม
+        function checkMicrophoneSupport() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                console.log("เบราว์เซอร์นี้รองรับการใช้งานไมโครโฟน");
+                return true;
+            } else {
+                console.warn("เบราว์เซอร์นี้ไม่รองรับการใช้งานไมโครโฟน");
+                return false;
+            }
+        }
+
+        // 2. ฟังก์ชันขอเปิดใช้งานไมค์
+        async function requestMicrophoneAccess() {
+            // เช็กก่อนว่ารองรับไหม
+            if (!checkMicrophoneSupport()) {
+                alert("เบราว์เซอร์ของคุณไม่รองรับการใช้งานไมโครโฟน");
+                return;
+            }
+
+            try {
+                // ขอสิทธิ์ใช้งานไมค์
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                console.log("เปิดไมโครโฟนสำเร็จ!", stream);
+                alert("เปิดไมโครโฟนสำเร็จแล้ว!");
+                
+            } catch (error) {
+                console.error("เกิดข้อผิดพลาด:", error);
+                if (error.name === "NotAllowedError") {
+                    alert("คุณปฏิเสธการอนุญาต กรุณาไปเปิดสิทธิ์ที่การตั้งค่าเบราว์เซอร์");
+                } else {
+                    alert("ไม่สามารถเข้าถึงไมโครโฟนได้: " + error.message);
+                }
+            }
+        }
+
+        // 3. ผูกฟังก์ชันเข้ากับปุ่มบนหน้าเว็บ
+        document.getElementById("micButton").addEventListener("click", requestMicrophoneAccess);
+    </script>
+
+</body>
+</html>
     const feedList = document.getElementById("feedList");
     const postId = "post_" + Date.now(); // สร้างไอดีไม่ซ้ำกัน
 
