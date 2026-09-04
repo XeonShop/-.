@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Chat - โรงเรียนมหรรณพาราม</title>
+<title>ห้องพูดคุยเพื่อนช่วยเพื่อน</title>
 <style>
 *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
 body{ font-family:Arial,"Tahoma",sans-serif; background:#080b35; color:white; height:100vh; overflow:hidden; }
@@ -44,14 +44,9 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 
 .school-badge-container{ margin-bottom: 20px; }
 .school-hero-logo{
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    object-fit: contain;
-    background: rgba(255, 255, 255, 0.95);
-    padding: 6px;
-    box-shadow: 0 0 25px rgba(34, 201, 255, 0.4);
-    border: 2px solid rgba(133, 95, 255, 0.8);
+    width: 90px; height: 90px; border-radius: 50%; object-fit: contain;
+    background: rgba(255, 255, 255, 0.95); padding: 6px;
+    box-shadow: 0 0 25px rgba(34, 201, 255, 0.4); border: 2px solid rgba(133, 95, 255, 0.8);
     animation: floatLogo 3s ease-in-out infinite;
 }
 
@@ -64,42 +59,9 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .gradient-text{ background:linear-gradient(90deg, #9b5cff, #24b8ff); -webkit-background-clip:text; color:transparent; }
 .hero-text h2{ font-size:15px; margin-bottom:12px; color:#22c9ff; }
 .hero-text p{ color:#b8b9d0; font-size:13px; line-height:1.6; max-width:600px; margin:0 auto; }
-.hero-buttons{ margin-top:25px; display:flex; justify-content:center; gap: 10px; }
+.hero-buttons{ margin-top:25px; display:flex; justify-content:center; gap: 10px; flex-wrap: wrap; }
 
 .start-btn{ display:block; width:100%; max-width:220px; padding:14px 20px; border-radius:16px; background:linear-gradient(90deg, #22c9ff, #7c3aed); color:white; text-decoration:none; font-weight:bold; font-size:15px; text-align:center; box-shadow:0 8px 25px rgba(67,56,202,.4); border:none; cursor:pointer; }
-
-/* ================= FEED / POSTS SYSTEM ================= */
-.feed-container{ max-width: 680px; margin: 25px auto; padding: 0 15px 50px; }
-.create-post-card{ background: #12154c; border: 1px solid rgba(133,95,255,.4); border-radius: 20px; padding: 18px; margin-bottom: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
-.create-post-header{ display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
-.create-post-header img{ width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
-.create-post-input{ width: 100%; background: #080b35; border: 1px solid #343785; border-radius: 14px; padding: 12px 16px; color: white; font-size: 14px; outline: none; resize: none; min-height: 80px; }
-.create-post-footer{ display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
-.post-tools{ display: flex; gap: 10px; align-items: center; }
-.tool-btn{ background: rgba(255,255,255,0.08); border: none; color: #22c9ff; padding: 8px 12px; border-radius: 10px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: .2s; }
-.tool-btn:hover{ background: rgba(34,201,255,0.2); }
-.submit-post-btn{ background: linear-gradient(135deg, #22c9ff, #7c3aed); color: white; border: none; padding: 8px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; }
-
-.post-card{ background: #12154c; border: 1px solid rgba(133,95,255,.3); border-radius: 20px; padding: 18px; margin-bottom: 18px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-.post-user-info{ display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
-.post-user-info img{ width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
-.post-user-info h4{ font-size: 15px; color: white; }
-.post-user-info span{ font-size: 11px; color: #aaaed0; }
-.post-text{ font-size: 14px; line-height: 1.5; color: #e2e8f0; margin-bottom: 12px; word-break: break-word; }
-.post-img{ width: 100%; max-height: 380px; border-radius: 12px; object-fit: cover; margin-bottom: 12px; cursor: pointer; }
-
-.post-actions{ display: flex; gap: 15px; border-top: 1px solid rgba(255,255,255,.08); padding-top: 10px; font-size: 13px; color: #aaaed0; }
-.action-btn{ background: none; border: none; color: #aaaed0; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 13px; transition: .2s; }
-.action-btn:hover{ color: #22c9ff; }
-
-.comments-section{ margin-top: 12px; border-top: 1px solid rgba(255,255,255,.05); padding-top: 10px; display: none; }
-.comments-section.active{ display: block; }
-.comment-item{ display: flex; gap: 8px; margin-bottom: 8px; font-size: 13px; background: rgba(0,0,0,0.2); padding: 8px 12px; border-radius: 10px; }
-.comment-item img{ width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
-.comment-content b{ color: #22c9ff; margin-right: 5px; }
-.comment-input-box{ display: flex; gap: 6px; margin-top: 8px; }
-.comment-input-box input{ flex: 1; background: #080b35; border: 1px solid #343785; border-radius: 10px; padding: 8px 12px; color: white; font-size: 13px; outline: none; }
-.comment-send-btn{ background: #7c3aed; color: white; border: none; padding: 6px 14px; border-radius: 10px; font-size: 12px; cursor: pointer; font-weight: bold; }
 
 /* ================= CHAT CONTAINER ================= */
 .chat-container{ padding:15px 3%; max-width:1200px; margin:0 auto; height: 100%; }
@@ -112,11 +74,21 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .chat-main{ flex:1; display:none; flex-direction:column; background:#171a62; position:relative; height: 100%; overflow: hidden; }
 .chat-main.active{ display:flex; }
 .chat-header{ height:55px; padding:0 15px; background:rgba(10,13,58,.6); border-bottom:1px solid rgba(255,255,255,.1); display:flex; align-items:center; justify-content:space-between; flex-shrink: 0; }
-.chat-header h3{ font-size:15px; display:flex; align-items:center; gap:8px; }
+.chat-header h3{ font-size:15px; display:flex; align-items:center; gap:8px; cursor: pointer; }
+.chat-header h3:hover { color: #22c9ff; }
 .back-to-list-btn{ background:#343785; color:white; border:none; padding:6px 12px; border-radius:8px; font-size:12px; cursor:pointer; }
 .chat-messages{ flex: 1; padding: 15px; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth; min-height: 0; }
-.chat-messages::-webkit-scrollbar{ width:8px; }
-.chat-messages::-webkit-scrollbar-thumb{ background:rgba(255,255,255,.25); border-radius:20px; }
+
+/* ================= TYPING INDICATOR (จุด 3 จุดเหมือนเฟส) ================= */
+.typing-indicator { display: none; align-items: center; gap: 4px; padding: 10px 14px; background: #20256e; border-radius: 18px; border-bottom-left-radius: 4px; width: fit-content; margin-bottom: 5px; }
+.typing-indicator.active { display: flex; }
+.typing-dot { width: 7px; height: 7px; background: #a3a8d1; border-radius: 50%; animation: typingBounce 1.4s infinite ease-in-out both; }
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+@keyframes typingBounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1.0); }
+}
 
 /* ================= MESSAGE BUBBLE & MENU ================= */
 .msg-row{ display:flex; align-items:center; gap:6px; position:relative; max-width:85%; }
@@ -126,7 +98,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .msg-row.me .msg-bubble{ background:linear-gradient(135deg, #006f9f, #4c1d95); border-bottom-right-radius:4px; }
 .msg-row.other .msg-bubble{ background:#20256e; border-bottom-left-radius:4px; }
 .chat-msg-img{ max-width:200px; max-height:200px; border-radius:10px; display:block; margin-top:4px; object-fit: cover; cursor: pointer; }
-.chat-audio{ width: 220px; height: 40px; margin-top: 4px; }
 .reply-preview-box{ background:rgba(0,0,0,0.25); border-left:3px solid #22c9ff; padding:6px 10px; border-radius:6px; margin-bottom:6px; font-size:12px; color:#ddd; }
 .reply-preview-box .reply-user{ font-weight:bold; color:#22c9ff; margin-bottom:2px; }
 .msg-menu-btn{ background:none; border:none; color:#a3a8d1; font-size:18px; padding:4px 8px; cursor:pointer; border-radius:50%; opacity:0.6; transition:.2s; }
@@ -146,26 +117,22 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .chat-input input[type="text"]{ flex:1; border:1px solid #343785; border-radius:25px; padding:12px 16px; background:#080b35; color:white; outline:none; font-size:15px; }
 .chat-input-btn{ width:42px; height:42px; border:none; border-radius:50%; background:#343785; color:white; font-size:18px; cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
 .chat-input button.send-btn{ width:46px; height:46px; background:linear-gradient(135deg, #22c9ff, #7c3aed); border-radius:50%; }
-.chat-input-btn.recording{ background: #ef4444 !important; animation: pulse 1.2s infinite; }
 
-@keyframes pulse {
-    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
-    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-}
-
-/* ================= IMAGE ZOOM MODAL ================= */
-.image-modal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.9); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
-.image-modal.active { display: flex; }
+/* ================= MODALS (Image & Profile View) ================= */
+.image-modal, .profile-modal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+.image-modal.active, .profile-modal.active { display: flex; }
 .image-modal img { max-width: 90%; max-height: 90vh; border-radius: 12px; object-fit: contain; }
 .close-modal-btn { position: absolute; top: 20px; right: 25px; background: none; border: none; color: white; font-size: 32px; cursor: pointer; }
+
+.profile-popup-card{ width: 100%; max-width: 380px; background: #171a62; border: 1px solid rgba(133,95,255,.6); border-radius: 20px; padding: 25px; text-align: center; position: relative; }
+.profile-popup-avatar{ width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #22c9ff; margin-bottom: 12px; background: #080b35; }
 
 /* ================= FRIENDS & PROFILE ================= */
 .friends-container{ padding:25px; max-width:850px; margin:25px auto; background:#12154c; border:1px solid rgba(133,95,255,.4); border-radius:24px; }
 .search-box input{ width:100%; padding:14px 18px; border-radius:14px; border:1px solid #343785; background:#080b35; color:white; font-size:15px; outline:none; margin-bottom:20px; }
 .users-grid{ display:grid; grid-template-columns:1fr; gap:12px; }
 .user-card{ background:#171a62; border:1px solid rgba(133,95,255,.4); border-radius:16px; padding:15px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
-.user-info{ display:flex; align-items:center; gap:12px; }
+.user-info{ display:flex; align-items:center; gap:12px; cursor: pointer; }
 .user-avatar-img{ width:45px; height:45px; border-radius:50%; object-fit:cover; background:#343785; }
 .user-details h4{ font-size:16px; margin-bottom:2px; }
 .user-details p{ font-size:12px; color:#aaaed0; }
@@ -219,12 +186,11 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 <header>
     <div class="logo" onclick="showPage('home')">
         <img src="https://i.ibb.co/3ykL8w4/school-logo.png" id="headerLogoImg" class="logo-img" alt="Logo">
-        Student <span>Chat</span>
+        เพื่อน <span>ช่วยเพื่อน</span>
     </div>
 
     <nav>
         <a onclick="showPage('home')" id="navHome" class="active">🏠 <span>หน้าแรก</span></a>
-        <a onclick="showPage('feed')" id="navFeed">📰 <span>โพสต์</span></a>
         <a onclick="showPage('friends')" id="navFriends">👥 <span>เพื่อน</span></a>
         <a onclick="showPage('chat')" id="navChat">💬 <span>แชท</span></a>
         <a onclick="showPage('profile')" id="navProfile">👤 <span>โปรไฟล์</span></a>
@@ -240,60 +206,25 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 <div id="pageHome" class="page-section active">
     <section class="hero">
         <div class="school-badge-container">
-            <img src="https://i.ibb.co/3ykL8w4/school-logo.png" class="school-hero-logo" alt="ตราโรงเรียนมหรรณพาราม">
+            <img src="https://i.ibb.co/3ykL8w4/school-logo.png" class="school-hero-logo" alt="โลโก้เพื่อนช่วยเพื่อน">
         </div>
         <div class="hero-text">
-            <h1>ห้องพูดคุย<br><span class="gradient-text">โรงเรียนมหรรณพาราม</span></h1>
+            <h1>ห้องพูดคุยเพื่อนช่วยเพื่อน<br><span class="gradient-text">คอมมูนิตี้สำหรับทุกคน</span></h1>
             <h2>ถาม-ตอบ แลกเปลี่ยนความรู้ และเพิ่มเพื่อนพูดคุย</h2>
-            <p>ไม่ว่าจะเป็นการบ้าน การเรียน หรือเพื่อนคุยแก้เหงา มาร่วมสร้างสังคมการเรียนรู้ไปด้วยกันสำหรับชาวมหรรณพาราม</p>
+            <p>ไม่ว่าจะเป็นการบ้าน การเรียน หรือเพื่อนคุยแก้เหงา มาร่วมสร้างสังคมการเรียนรู้และช่วยเหลือกันได้ที่นี่</p>
             <div class="hero-buttons">
-                <button onclick="showPage('feed')" class="start-btn">📰 ไปหน้าโพสต์</button>
-                <button onclick="showPage('chat')" class="start-btn" style="background:linear-gradient(90deg, #7c3aed, #22c9ff);">💬 เริ่มแชท</button>
+                <button onclick="requestNotificationPermission()" class="start-btn" style="background:linear-gradient(90deg, #f59e0b, #ef4444); max-width:240px;">🔔 เปิดรับแจ้งเตือน</button>
+                <button onclick="showPage('chat')" class="start-btn">💬 เริ่มต้นพูดคุยเลย</button>
             </div>
         </div>
     </section>
-</div>
-
-<!-- ================= FEED / POSTS PAGE ================= -->
-<div id="pageFeed" class="page-section">
-    <div class="feed-container">
-        <!-- กล่องสร้างโพสต์ -->
-        <div class="create-post-card">
-            <div class="create-post-header">
-                <img id="createPostAvatar" src="" alt="Avatar">
-                <h4 id="createPostUsername">กำลังโหลด...</h4>
-            </div>
-            <textarea id="postTextInput" class="create-post-input" placeholder="คุณอยากถามอะไร หรือแชร์เรื่องอะไรวันนี้?"></textarea>
-            
-            <!-- พรีวิวรูปภาพที่จะอัปโหลด -->
-            <div id="postImagePreviewContainer" style="display:none; position:relative; margin-top:10px;">
-                <img id="postImagePreview" style="max-height:150px; border-radius:10px; display:block;" src="">
-                <button onclick="clearPostImage()" style="position:absolute; top:5px; right:5px; background:rgba(0,0,0,0.7); border:none; color:white; border-radius:50%; width:24px; height:24px; cursor:pointer;">✕</button>
-            </div>
-
-            <div class="create-post-footer">
-                <div class="post-tools">
-                    <label class="tool-btn" style="cursor:pointer;">
-                        📷 เพิ่มรูปภาพ
-                        <input type="file" id="postImageInput" accept="image/*" style="display:none;" onchange="previewPostImage(event)">
-                    </label>
-                </div>
-                <button class="submit-post-btn" onclick="submitPost()">โพสต์ข้อความ</button>
-            </div>
-        </div>
-
-        <!-- รายการโพสต์ทั้งหมด -->
-        <div id="postsFeedList">
-            <div style="text-align:center; color:#aaa; padding:20px;">กำลังโหลดโพสต์...</div>
-        </div>
-    </div>
 </div>
 
 <!-- ================= FRIENDS PAGE ================= -->
 <div id="pageFriends" class="page-section">
     <div class="friends-container">
         <h2 style="margin-bottom:5px;">👥 เพื่อน & คำขอ</h2>
-        <p style="color:#aaaed0; margin-bottom:15px; font-size:13px;">ค้นหาเพื่อนนักเรียนเพื่อส่งคำขอ หรือกดรับเพื่อนที่นี่</p>
+        <p style="color:#aaaed0; margin-bottom:15px; font-size:13px;">ค้นหาเพื่อนเพื่อส่งคำขอ หรือกดรับเพื่อนที่นี่</p>
         
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="พิมพ์ชื่อผู้ใช้เพื่อค้นหา..." onkeyup="renderUsers()">
@@ -317,13 +248,22 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
             <div class="chat-main" id="chatMain">
                 <div class="chat-header">
                     <button class="back-to-list-btn" onclick="toggleMobileChatView('sidebar')">← กลับไปรายชื่อ</button>
-                    <h3 id="chatTargetTitle">เลือกเพื่อนเพื่อเริ่มคุย</h3>
+                    <h3 id="chatTargetTitle" onclick="openActiveFriendProfile()">เลือกเพื่อนเพื่อเริ่มคุย</h3>
                     <div></div>
                 </div>
                 
                 <div class="chat-messages" id="chatMessagesArea" onclick="closeAllMsgMenus()">
                     <div style="text-align:center; color:#8f93b8; margin-top:80px; font-size:14px;">
                         💬 เลือกรายชื่อเพื่อนเพื่อเริ่มการสนทนา
+                    </div>
+                </div>
+
+                <!-- จุด 3 จุดขณะเพื่อนกำลังพิมพ์ข้อความ -->
+                <div style="padding: 0 15px;">
+                    <div class="typing-indicator" id="typingIndicator">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
                     </div>
                 </div>
 
@@ -338,9 +278,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                     <label for="chatImageInput" class="chat-input-btn" title="ส่งรูปภาพ">📷</label>
                     <input type="file" id="chatImageInput" accept="image/*" style="display:none;" onchange="sendChatImage(event)">
                     
-                    <button class="chat-input-btn" id="recordAudioBtn" title="อัดเสียงพูด" onclick="toggleVoiceRecording()">🎤</button>
-                    
-                    <input type="text" id="msgInput" placeholder="พิมพ์ข้อความ..." onkeydown="if(event.key==='Enter') sendPrivateMessage()">
+                    <input type="text" id="msgInput" placeholder="พิมพ์ข้อความ..." oninput="handleTypingInput()" onkeydown="if(event.key==='Enter') sendPrivateMessage()">
                     <button class="chat-input-btn send-btn" onclick="sendPrivateMessage()">➤</button>
                 </div>
             </div>
@@ -364,7 +302,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 
         <div style="border-top: 1px solid rgba(255,255,255,.1); padding-top: 15px; text-align: left;">
             <label style="display:block; font-size:12px; color:#aaaed0; margin-bottom:5px;">เปลี่ยนชื่อผู้ใช้ใหม่</label>
-            <input type="text" id="newUsernameInput" class="status-input" placeholder="กรอกชื่อผู้ใช้ใหม่...">
+            <input type="text" id="newUsernameInput" class="status-input" placeholder="กรอกชื่อผู้ใช้ใหม่ (ห้ามซ้ำ)...">
             <button class="start-btn" style="background:linear-gradient(90deg, #f59e0b, #ef4444); max-width:100%;" onclick="handleUpdateUsername()">เปลี่ยนชื่อ</button>
         </div>
     </div>
@@ -375,7 +313,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
     <div class="auth-box" id="loginBox">
         <button class="auth-close" onclick="closeAuth()">✕</button>
         <h2>เข้าสู่ระบบ</h2>
-        <p class="auth-sub">ยินดีต้อนรับกลับมาที่ Student Chat</p>
+        <p class="auth-sub">ยินดีต้อนรับกลับมาที่ห้องพูดคุยเพื่อนช่วยเพื่อน</p>
         <div class="auth-field">
             <label>ชื่อผู้ใช้</label>
             <input type="text" id="loginUsername" placeholder="กรอกชื่อผู้ใช้">
@@ -393,7 +331,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
     <div class="auth-box" id="signupBox" style="display:none;">
         <button class="auth-close" onclick="closeAuth()">✕</button>
         <h2>สมัครสมาชิก</h2>
-        <p class="auth-sub">เข้าร่วมชุมชน Student Chat</p>
+        <p class="auth-sub">เข้าร่วมห้องพูดคุยเพื่อนช่วยเพื่อน</p>
         <div class="auth-field">
             <label>ชื่อผู้ใช้</label>
             <input type="text" id="signupUsername" placeholder="ตั้งชื่อผู้ใช้ (ห้ามซ้ำ)">
@@ -406,6 +344,16 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         <div class="auth-switch">
             มีบัญชีอยู่แล้ว? <button onclick="switchAuth('login')">เข้าสู่ระบบ</button>
         </div>
+    </div>
+</div>
+
+<!-- ================= VIEW OTHER PROFILE MODAL ================= -->
+<div class="profile-modal" id="viewProfileModal" onclick="closeProfileModal()">
+    <div class="profile-popup-card" onclick="event.stopPropagation()">
+        <button class="close-modal-btn" onclick="closeProfileModal()">✕</button>
+        <img id="popupAvatar" class="profile-popup-avatar" src="" alt="Avatar">
+        <h3 id="popupUsername" style="color:#22c9ff; font-size:20px; margin-bottom:6px;">Username</h3>
+        <p id="popupStatus" style="color:#aaaed0; font-size:14px;">Status...</p>
     </div>
 </div>
 
@@ -438,15 +386,13 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
     let currentUser = localStorage.getItem("activeUser") || null;
     let activeChatFriend = null;
     let currentChatListener = null;
+    let typingListener = null;
+    let globalRequestsListener = null;
     let replyData = null;
-    let uploadedPostImageBase64 = null;
-    
-    let mediaRecorder = null;
-    let audioChunks = [];
-    let isRecording = false;
+    let typingTimer = null;
 
     window.showPage = function(pageId){
-        if((pageId === 'friends' || pageId === 'chat' || pageId === 'profile' || pageId === 'feed') && !currentUser){
+        if((pageId === 'friends' || pageId === 'chat' || pageId === 'profile') && !currentUser){
             alert("กรุณาเข้าสู่ระบบก่อนใช้งานครับ");
             openAuth('login');
             return;
@@ -458,11 +404,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         if(pageId === 'home'){
             document.getElementById('pageHome').classList.add('active');
             document.getElementById('navHome').classList.add('active');
-        } else if(pageId === 'feed'){
-            document.getElementById('pageFeed').classList.add('active');
-            document.getElementById('navFeed').classList.add('active');
-            loadFeedPosts();
-            setupCreatePostHeader();
         } else if(pageId === 'friends'){
             document.getElementById('pageFriends').classList.add('active');
             document.getElementById('navFriends').classList.add('active');
@@ -510,6 +451,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         }
     };
 
+    // ระบบห้ามตั้งชื่อซ้ำ (สมัครสมาชิก)
     window.handleSignup = function(){
         const u = document.getElementById("signupUsername").value.trim();
         const p = document.getElementById("signupPassword").value;
@@ -522,14 +464,15 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                 set(ref(db, `users/${u}`), { 
                     username: u, 
                     password: p,
-                    status: "นักเรียนโรงเรียนมหรรณพาราม",
+                    status: "สมาชิกเพื่อนช่วยเพื่อน",
                     avatar: DEFAULT_AVATAR
                 });
                 currentUser = u;
                 localStorage.setItem("activeUser", currentUser);
                 updateHeader();
                 closeAuth();
-                showPage('feed');
+                initGlobalListeners();
+                showPage('friends');
                 alert("สมัครสมาชิกสำเร็จเรียบร้อย!");
             }
         });
@@ -548,7 +491,8 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                     localStorage.setItem("activeUser", currentUser);
                     updateHeader();
                     closeAuth();
-                    showPage('feed');
+                    initGlobalListeners();
+                    showPage('chat');
                 } else {
                     alert("❌ รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง");
                 }
@@ -589,185 +533,68 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         }
     }
 
-    // ================= FEED LOGIC =================
-    function setupCreatePostHeader(){
-        if(!currentUser) return;
-        get(child(ref(db), `users/${currentUser}`)).then((snap) => {
-            const data = snap.val() || {};
-            document.getElementById("createPostAvatar").src = data.avatar || DEFAULT_AVATAR;
-            document.getElementById("createPostUsername").innerText = currentUser;
-        });
-    }
-
-    window.previewPostImage = function(event){
-        const file = event.target.files[0];
-        if(!file) return;
-        if(!file.type.startsWith('image/')){
-            alert("กรุณาเลือกไฟล์รูปภาพเท่านั้น");
+    // ระบบแจ้งเตือนข้อความเด้ง (Browser Notification)
+    window.requestNotificationPermission = function(){
+        if (!("Notification" in window)) {
+            alert("เบราว์เซอร์นี้ไม่รองรับการแจ้งเตือนเดสก์ท็อป");
             return;
         }
-
-        const reader = new FileReader();
-        reader.onload = function(e){
-            const img = new Image();
-            img.onload = function(){
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                const maxSize = 800;
-                let width = img.width;
-                let height = img.height;
-
-                if (width > height) {
-                    if (width > maxSize) { height *= maxSize / width; width = maxSize; }
-                } else {
-                    if (height > maxSize) { width *= maxSize / height; height = maxSize; }
-                }
-
-                canvas.width = width;
-                canvas.height = height;
-                ctx.drawImage(img, 0, 0, width, height);
-
-                uploadedPostImageBase64 = canvas.toDataURL('image/jpeg', 0.85);
-                document.getElementById("postImagePreview").src = uploadedPostImageBase64;
-                document.getElementById("postImagePreviewContainer").style.display = "block";
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    };
-
-    window.clearPostImage = function(){
-        uploadedPostImageBase64 = null;
-        document.getElementById("postImagePreviewContainer").style.display = "none";
-        document.getElementById("postImagePreview").src = "";
-        document.getElementById("postImageInput").value = "";
-    };
-
-    window.submitPost = function(){
-        const text = document.getElementById("postTextInput").value.trim();
-        if(!text && !uploadedPostImageBase64){
-            alert("กรุณากรอกข้อความหรือแนบรูปภาพอย่างน้อย 1 อย่างครับ");
-            return;
-        }
-
-        get(child(ref(db), `users/${currentUser}/avatar`)).then((snap) => {
-            const avatar = snap.exists() ? snap.val() : DEFAULT_AVATAR;
-
-            const postData = {
-                author: currentUser,
-                avatar: avatar,
-                text: text || "",
-                image: uploadedPostImageBase64 || "",
-                timestamp: Date.now()
-            };
-
-            push(ref(db, "posts"), postData);
-
-            document.getElementById("postTextInput").value = "";
-            clearPostImage();
-            alert("โพสต์ข้อความสำเร็จเรียบร้อย!");
-        });
-    };
-
-    function loadFeedPosts(){
-        const container = document.getElementById("postsFeedList");
-        
-        onValue(ref(db, "posts"), (snapshot) => {
-            container.innerHTML = "";
-            const posts = snapshot.val() || {};
-            const postIds = Object.keys(posts).reverse(); // โพสต์ใหม่ขึ้นบน
-
-            if(postIds.length === 0){
-                container.innerHTML = `<div style="text-align:center; color:#aaa; padding:30px;">ยังไม่มีโพสต์ในระบบ เป็นคนแรกที่โพสต์เลยสิ!</div>`;
-                return;
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                alert("เปิดระบบแจ้งเตือนสำเร็จเรียบร้อย!");
+            } else {
+                alert("คุณปิดการอนุญาตแจ้งเตือน");
             }
-
-            postIds.forEach(postId => {
-                const post = posts[postId];
-                const card = document.createElement("div");
-                card.className = "post-card";
-
-                let imgHtml = post.image ? `<img src="${post.image}" class="post-img" onclick="openImageModal('${post.image}')">` : '';
-                
-                // คำนวณเวลาแบบย่อ
-                const timeStr = new Date(post.timestamp).toLocaleString("th-TH", { dateStyle: 'short', timeStyle: 'short' });
-
-                card.innerHTML = `
-                    <div class="post-user-info">
-                        <img src="${post.avatar || DEFAULT_AVATAR}">
-                        <div>
-                            <h4>${post.author}</h4>
-                            <span>${timeStr}</span>
-                        </div>
-                    </div>
-                    <div class="post-text">${post.text}</div>
-                    ${imgHtml}
-                    <div class="post-actions">
-                        <button class="action-btn" onclick="toggleComments('${postId}')">💬 ตอบกลับ / ความเห็น</button>
-                        ${post.author === currentUser ? `<button class="action-btn" style="color:#ef4444; margin-left:auto;" onclick="deletePost('${postId}')">🗑️ ลบโพสต์</button>` : ''}
-                    </div>
-                    <div class="comments-section" id="comments-${postId}">
-                        <div id="comments-list-${postId}"></div>
-                        <div class="comment-input-box">
-                            <input type="text" id="comment-input-${postId}" placeholder="เขียนความคิดเห็นหรือตอบกลับ..." onkeydown="if(event.key==='Enter') sendComment('${postId}')">
-                            <button class="comment-send-btn" onclick="sendComment('${postId}')">ส่ง</button>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-                loadComments(postId);
-            });
-        });
-    }
-
-    window.toggleComments = function(postId){
-        const sec = document.getElementById(`comments-${postId}`);
-        sec.classList.toggle('active');
-    };
-
-    window.sendComment = function(postId){
-        const input = document.getElementById(`comment-input-${postId}`);
-        const text = input.value.trim();
-        if(!text) return;
-
-        get(child(ref(db), `users/${currentUser}/avatar`)).then((snap) => {
-            const avatar = snap.exists() ? snap.val() : DEFAULT_AVATAR;
-
-            push(ref(db, `post_comments/${postId}`), {
-                author: currentUser,
-                avatar: avatar,
-                text: text,
-                timestamp: Date.now()
-            });
-            input.value = "";
         });
     };
 
-    function loadComments(postId){
-        const listDiv = document.getElementById(`comments-list-${postId}`);
-        onValue(ref(db, `post_comments/${postId}`), (snap) => {
-            listDiv.innerHTML = "";
-            const comments = snap.val() || {};
-            
-            Object.keys(comments).forEach(cId => {
-                const com = comments[cId];
-                const item = document.createElement("div");
-                item.className = "comment-item";
-                item.innerHTML = `
-                    <img src="${com.avatar || DEFAULT_AVATAR}">
-                    <div class="comment-content">
-                        <b>${com.author}</b> ${com.text}
-                    </div>
-                `;
-                listDiv.appendChild(item);
+    function showDesktopNotification(sender, text){
+        if (Notification.permission === "granted" && document.hidden) {
+            new Notification(`ข้อความใหม่จาก ${sender}`, {
+                body: text,
+                icon: SCHOOL_LOGO_URL
             });
+        }
+    }
+
+    // ระบบกล้องรับเพื่อน (แจ้งเตือนคำขอเพิ่มเพื่อนเข้ามาแบบเรียลไทม์)
+    function initGlobalListeners(){
+        if(!currentUser) return;
+        
+        if(globalRequestsListener) off(globalRequestsListener);
+        globalRequestsListener = ref(db, `requests/${currentUser}`);
+        
+        let isFirstLoad = true;
+        onValue(globalRequestsListener, (snapshot) => {
+            const reqs = snapshot.val() || {};
+            const count = Object.keys(reqs).length;
+            if(!isFirstLoad && count > 0){
+                alert("👥 มีผู้ส่งคำขอเป็นเพื่อนมาหาคุณ! ไปที่หน้า 'เพื่อน' เพื่อตรวจสอบได้เลย");
+            }
+            isFirstLoad = false;
         });
     }
 
-    window.deletePost = function(postId){
-        if(confirm("คุณต้องการลบโพสต์นี้ใช่หรือไม่?")){
-            remove(ref(db, `posts/${postId}`));
-            remove(ref(db, `post_comments/${postId}`));
+    // ฟังก์ชันดูโปรไฟล์คนอื่น
+    window.viewUserProfile = function(username){
+        get(child(ref(db), `users/${username}`)).then((snapshot) => {
+            if(snapshot.exists()){
+                const data = snapshot.val();
+                document.getElementById("popupAvatar").src = data.avatar || DEFAULT_AVATAR;
+                document.getElementById("popupUsername").innerText = data.username;
+                document.getElementById("popupStatus").innerText = `"${data.status || 'ยังไม่มีสถานะ'}"`;
+                document.getElementById("viewProfileModal").classList.add("active");
+            }
+        });
+    };
+
+    window.closeProfileModal = function(){
+        document.getElementById("viewProfileModal").classList.remove("active");
+    };
+
+    window.openActiveFriendProfile = function(){
+        if(activeChatFriend){
+            viewUserProfile(activeChatFriend);
         }
     };
 
@@ -811,7 +638,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                         const card = document.createElement("div");
                         card.className = "user-card";
                         card.innerHTML = `
-                            <div class="user-info">
+                            <div class="user-info" onclick="viewUserProfile('${username}')">
                                 <img src="${userAvatar}" class="user-avatar-img">
                                 <div class="user-details">
                                     <h4>${username}</h4>
@@ -876,10 +703,46 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 
     function selectFriendToChat(friendUsername, avatarUrl){
         activeChatFriend = friendUsername;
-        document.getElementById("chatTargetTitle").innerHTML = `<img src="${avatarUrl}" class="user-avatar-small"> ${friendUsername}`;
+        document.getElementById("chatTargetTitle").innerHTML = `<img src="${avatarUrl}" class="user-avatar-small"> ${friendUsername} (คลิกดูโปรไฟล์)`;
         renderSidebarFriends();
         loadPrivateMessages();
+        setupTypingIndicator();
         toggleMobileChatView('main');
+    }
+
+    // ระบบกำลังพิมพ์ (Typing Indicator)
+    window.handleTypingInput = function(){
+        if(!activeChatFriend) return;
+        const roomId = [currentUser, activeChatFriend].sort().join("_");
+        set(ref(db, `typing/${roomId}/${currentUser}`), true);
+
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(() => {
+            set(ref(db, `typing/${roomId}/${currentUser}`), false);
+        }, 1500);
+    };
+
+    function setupTypingIndicator(){
+        if(typingListener) off(typingListener);
+        const roomId = [currentUser, activeChatFriend].sort().join("_");
+        typingListener = ref(db, `typing/${roomId}`);
+
+        onValue(typingListener, (snapshot) => {
+            const typingData = snapshot.val() || {};
+            let isSomeoneTyping = false;
+            Object.keys(typingData).forEach(user => {
+                if(user !== currentUser && typingData[user] === true){
+                    isSomeoneTyping = true;
+                }
+            });
+
+            const indicator = document.getElementById("typingIndicator");
+            if(isSomeoneTyping){
+                indicator.classList.add("active");
+            } else {
+                indicator.classList.remove("active");
+            }
+        });
     }
 
     window.sendPrivateMessage = function(){
@@ -889,6 +752,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         if(!text || !activeChatFriend) return;
 
         const roomId = [currentUser, activeChatFriend].sort().join("_");
+        set(ref(db, `typing/${roomId}/${currentUser}`), false);
 
         const msgData = {
             sender: currentUser,
@@ -957,62 +821,8 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         event.target.value = "";
     };
 
-    window.toggleVoiceRecording = async function(){
-        const btn = document.getElementById("recordAudioBtn");
-        
-        if (!isRecording) {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
-                audioChunks = [];
-
-                mediaRecorder.ondataavailable = event => {
-                    audioChunks.push(event.data);
-                };
-
-                mediaRecorder.onstop = () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const base64Audio = e.target.result;
-                        const roomId = [currentUser, activeChatFriend].sort().join("_");
-                        
-                        const msgData = {
-                            sender: currentUser,
-                            audio: base64Audio,
-                            timestamp: Date.now()
-                        };
-
-                        if(replyData){
-                            msgData.replyTo = replyData;
-                        }
-
-                        push(ref(db, `private_chats/${roomId}`), msgData);
-                        cancelReply();
-                    };
-                    reader.readAsDataURL(audioBlob);
-                    
-                    stream.getTracks().forEach(track => track.stop());
-                };
-
-                mediaRecorder.start();
-                isRecording = true;
-                btn.classList.add("recording");
-                btn.title = "กำลังอัดเสียง... (กดเพื่อหยุดและส่ง)";
-            } catch (err) {
-                alert("ไม่สามารถเข้าถึงไมโครโฟนได้ กรุณาเปิดใช้งานสิทธิ์ไมโครโฟน");
-            }
-        } else {
-            mediaRecorder.stop();
-            isRecording = false;
-            btn.classList.remove("recording");
-            btn.title = "อัดเสียงพูด";
-        }
-    };
-
     function loadPrivateMessages(){
         const msgArea = document.getElementById("chatMessagesArea");
-
         if(!activeChatFriend) return;
 
         const roomId = [currentUser, activeChatFriend].sort().join("_");
@@ -1020,13 +830,23 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         if (currentChatListener) off(currentChatListener);
         currentChatListener = ref(db, `private_chats/${roomId}`);
 
+        let isInitialLoad = true;
         onValue(currentChatListener, (snapshot) => {
             msgArea.innerHTML = "";
             const messages = snapshot.val() || {};
+            const msgKeys = Object.keys(messages);
 
-            Object.keys(messages).forEach(msgId => {
+            if(msgKeys.length > 0 && !isInitialLoad){
+                const lastKey = msgKeys[msgKeys.length - 1];
+                const lastMsg = messages[lastKey];
+                if(lastMsg.sender !== currentUser){
+                    showDesktopNotification(lastMsg.sender, lastMsg.text || "[ส่งรูปภาพ]");
+                }
+            }
+            isInitialLoad = false;
+
+            msgKeys.forEach(msgId => {
                 const msg = messages[msgId];
-
                 if(msg.deletedFor && msg.deletedFor[currentUser]) return;
 
                 const isMe = msg.sender === currentUser;
@@ -1035,7 +855,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 
                 let replyHTML = "";
                 if(msg.replyTo){
-                    let previewContent = msg.replyTo.text || (msg.replyTo.image ? '📷 [รูปภาพ]' : '🎤 [ข้อความเสียง]');
+                    let previewContent = msg.replyTo.text || '📷 [รูปภาพ]';
                     replyHTML = `
                         <div class="reply-preview-box">
                             <div class="reply-user">${msg.replyTo.sender}</div>
@@ -1044,29 +864,18 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                     `;
                 }
 
-                let contentHTML = "";
-                if(msg.image){
-                    contentHTML = `${replyHTML}<img src="${msg.image}" class="chat-msg-img" onclick="openImageModal('${msg.image}')">`;
-                } else if(msg.audio){
-                    contentHTML = `${replyHTML}<audio controls src="${msg.audio}" class="chat-audio"></audio>`;
-                } else {
-                    contentHTML = `${replyHTML}${msg.text}`;
-                }
-
-                const safeTextForReply = msg.text ? msg.text.replace(/'/g, "\\'") : (msg.image ? 'รูปภาพ' : 'ข้อความเสียง');
+                let contentHTML = msg.image ? `${replyHTML}<img src="${msg.image}" class="chat-msg-img" onclick="openImageModal('${msg.image}')">` : `${replyHTML}${msg.text}`;
+                const safeTextForReply = msg.text ? msg.text.replace(/'/g, "\\'") : 'รูปภาพ';
 
                 row.innerHTML = `
                     <button class="msg-menu-btn" onclick="toggleMsgMenu(event, '${msgId}')">⋮</button>
-                    <div class="msg-bubble">
-                        ${contentHTML}
-                    </div>
+                    <div class="msg-bubble">${contentHTML}</div>
                     <div class="msg-options-menu" id="menu-${msgId}">
                         <div class="menu-item" onclick="startReply('${msg.sender}', '${safeTextForReply}')">↩ ตอบกลับ</div>
                         <div class="menu-item" onclick="deleteForMe('${msgId}')">🗑️ ลบเฉพาะฉัน</div>
                         ${isMe ? `<div class="menu-item danger" onclick="unsendMsg('${msgId}')">🚫 ยกเลิกข้อความ</div>` : ''}
                     </div>
                 `;
-
                 msgArea.appendChild(row);
             });
             msgArea.scrollTop = msgArea.scrollHeight;
@@ -1087,9 +896,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         const currentMenu = document.getElementById(`menu-${msgId}`);
         const isActive = currentMenu.classList.contains('active');
         closeAllMsgMenus();
-        if(!isActive){
-            currentMenu.classList.add('active');
-        }
+        if(!isActive){ currentMenu.classList.add('active'); }
     };
 
     window.closeAllMsgMenus = function(){
@@ -1165,7 +972,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                 ctx.drawImage(img, 0, 0, width, height);
 
                 const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
-                
                 set(ref(db, `users/${currentUser}/avatar`), resizedDataUrl);
                 document.getElementById("profileAvatarImg").src = resizedDataUrl;
                 updateHeader();
@@ -1186,6 +992,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         alert("อัปเดตสถานะเรียบร้อยครับ!");
     };
 
+    // ระบบห้ามตั้งชื่อซ้ำ (ตอนเปลี่ยนชื่อใหม่ในโปรไฟล์)
     window.handleUpdateUsername = async function(){
         const newUsername = document.getElementById("newUsernameInput").value.trim();
         if(!newUsername) {
@@ -1219,7 +1026,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 
                 for (let friendName of Object.keys(friendsList)) {
                     await set(ref(db, `friends/${friendName}/${newUsername}`), true);
-                    await remove(ref, `friends/${friendName}/${oldUser}`);
+                    await remove(ref(db, `friends/${friendName}/${oldUser}`));
                 }
             }
 
@@ -1228,12 +1035,36 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                 await set(ref(db, `requests/${newUsername}`), reqSnap.val());
             }
 
+            const chatSnap = await get(child(ref(db), `private_chats`));
+            if (chatSnap.exists()) {
+                const allChats = chatSnap.val();
+                for (let roomId of Object.keys(allChats)) {
+                    if (roomId.includes(oldUser)) {
+                        const newRoomId = roomId.split('_').map(n => n === oldUser ? newUsername : n).sort().join('_');
+                        await set(ref(db, `private_chats/${newRoomId}`), allChats[roomId]);
+
+                        const messages = allChats[roomId];
+                        for (let msgId of Object.keys(messages)) {
+                            if (messages[msgId].sender === oldUser) {
+                                await set(ref(db, `private_chats/${newRoomId}/${msgId}/sender`), newUsername);
+                            }
+                        }
+                        await remove(ref(db, `private_chats/${roomId}`));
+                    }
+                }
+            }
+
+            await remove(ref(db, `users/${oldUser}`));
+            await remove(ref(db, `friends/${oldUser}`));
+            await remove(ref(db, `requests/${oldUser}`));
+
             currentUser = newUsername;
             localStorage.setItem("activeUser", currentUser);
             updateHeader();
             loadProfile();
+            initGlobalListeners();
             document.getElementById("newUsernameInput").value = "";
-            alert("เปลี่ยนชื่อสำเร็จเรียบร้อยครับ!");
+            alert("เปลี่ยนชื่อและย้ายข้อมูลสำเร็จเรียบร้อยครับ!");
 
         } catch (err) {
             console.error(err);
@@ -1242,6 +1073,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
     };
 
     updateHeader();
+    if(currentUser) initGlobalListeners();
 </script>
 </body>
 </html>
