@@ -80,7 +80,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .post-action-btn{ background:none; border:none; color:#aaaed0; cursor:pointer; display:flex; align-items:center; gap:5px; font-size:13px; }
 .post-action-btn:hover{ color:#22c9ff; }
 
-/* ปุ่มดาวน์โหลดภาพทับบนรูป */
 .download-img-btn{
     position: absolute; bottom: 10px; right: 10px; background: rgba(0, 0, 0, 0.75); color: white;
     border: 1px solid rgba(255, 255, 255, 0.3); padding: 6px 10px; border-radius: 8px; font-size: 12px;
@@ -88,7 +87,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 }
 .download-img-btn:hover{ background: #22c9ff; color: #080b35; border-color: #22c9ff; }
 
-/* ส่วนคอมเมนต์ใต้โพสต์ */
 .post-comments-section{ margin-top: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px; }
 .comment-item{ background: #0c0e43; padding: 8px 12px; border-radius: 10px; margin-bottom: 6px; font-size: 13px; display: flex; gap: 8px; align-items: flex-start; }
 .comment-avatar{ width: 28px; height: 28px; border-radius: 50%; object-fit: cover; cursor: pointer; flex-shrink: 0; }
@@ -637,7 +635,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         });
     }
 
-    // ฟังก์ชันช่วยดาวน์โหลดรูปภาพ
     window.downloadImage = function(url, filename = 'downloaded-image.jpg') {
         fetch(url)
             .then(response => response.blob())
@@ -652,12 +649,10 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                 window.URL.revokeObjectURL(blobUrl);
             })
             .catch(() => {
-                // กรณีติดปัญหา CORS ให้เปิดรูปในแท็บใหม่แทนเพื่อให้ผู้ใช้กด Save ได้
                 window.open(url, '_blank');
             });
     };
 
-    // ระบบโพสต์สาธารณะ
     window.previewPostImage = function(event){
         const file = event.target.files[0];
         if(!file) return;
