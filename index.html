@@ -750,7 +750,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                             ${post.author === currentUser ? `<button class="post-action-btn" onclick="deletePost('${postId}')">🗑️ ลบโพสต์</button>` : '<div></div>'}
                         </div>
                         <div class="post-comments-section">
-                            <div style="font-size:12px; color:#22c9ff; margin-bottom:6px;">💬 ความเห็นและการช่วยเหลือจากเพื่อนๆ & AI:</div>
+                            <div style="font-size:12px; color:#22c9ff; margin-bottom:6px;">💬 ความเห็นและการช่วยเหลือจากเพื่อนๆ :</div>
                             <div id="comments-list-${postId}">${commentsHTML}</div>
                             <div class="comment-input-box">
                                 <input type="text" id="comment-input-${postId}" placeholder="พิมพ์ความคิดเห็นหรือบอกคำตอบที่ถูก..." onkeydown="if(event.key==='Enter') addCommentToPost('${postId}')">
