@@ -1,20 +1,43 @@
-// ฟังก์ชันสำหรับปุ่มโพสต์ (สามารถปรับเปลี่ยนปลายทางการบันทึกข้อมูลได้ตามต้องการ)
-window.handlePostMessage = function() {
-    const input = document.getElementById("msgInput");
+// ฟังก์ชันสลับหน้าแท็บ (รวมแท็บโพสต์)
+function switchTab(tabName) {
+    // ซ่อนทุกหน้า (ปรับชื่อ id ของหน้าอื่นๆ ตามโปรเจกต์ของคุณ เช่น homeTab, chatTab ฯลฯ)
+    const tabs = ['home', 'friends', 'posts', 'chat', 'profile'];
+    tabs.forEach(t => {
+        let el = document.getElementById(t + 'Tab');
+        if (el) el.style.display = 'none';
+    });
+
+    // แสดงหน้าปัจจุบันที่เลือก
+    let activeEl = document.getElementById(tabName + 'Tab');
+    if (activeEl) activeEl.style.display = 'block';
+}
+
+// ฟังก์ชันกดโพสต์ข้อความใหม่
+function createNewPost() {
+    const input = document.getElementById("postContentInput");
     const text = input.value.trim();
 
     if (!text) {
-        alert("กรุณากรอกข้อความที่ต้องการโพสต์ครับ");
+        alert("กรุณากรอกข้อความก่อนโพสต์ครับ");
         return;
     }
 
-    // ตัวอย่าง: หากต้องการใช้ระบบส่งข้อความแชทส่วนตัวเดิม
-    if (typeof sendPrivateMessage === "function") {
-        sendPrivateMessage();
-        // หรือถ้าต้องการเพิ่มข้อความแจ้งเตือนพิเศษสำหรับการโพสต์
-        // console.log("โพสต์ข้อความสำเร็จ:", text);
-    } else {
-        alert("โพสต์สำเร็จ: " + text);
-        input.value = "";
-    }
-};
+    // สร้างกล่องโพสต์ใหม่แสดงบนหน้าจอทันที (หรือเชื่อม Firebase ตามระบบฐานข้อมูลของคุณ)
+    const feedList = document.getElementById("feedList");
+    const newCard = document.createElement("div");
+    newCard.className = "post-card";
+    newCard.innerHTML = `
+        <div class="post-header">
+            <strong>คุณ</strong> <span style="font-size: 12px; color: gray;">เมื่อสักครู่</span>
+        </div>
+        <div class="post-body">${escapeHtml(text)}</div>
+    `;
+
+    feedList.prepend(newCard); // นำโพสต์ใหม่ไว้บนสุด
+    input.value = ""; //เคลียร์ช่องพิมพ์
+}
+
+// ฟังก์ชันป้องกัน XSS เบื้องต้น
+function escapeHtml(text) {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
