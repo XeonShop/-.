@@ -1,18 +1,4 @@
-// ฟังก์ชันสลับหน้าแท็บ (รวมแท็บโพสต์)
-function switchTab(tabName) {
-    // ซ่อนทุกหน้า (ปรับชื่อ id ของหน้าอื่นๆ ตามโปรเจกต์ของคุณ เช่น homeTab, chatTab ฯลฯ)
-    const tabs = ['home', 'friends', 'posts', 'chat', 'profile'];
-    tabs.forEach(t => {
-        let el = document.getElementById(t + 'Tab');
-        if (el) el.style.display = 'none';
-    });
-
-    // แสดงหน้าปัจจุบันที่เลือก
-    let activeEl = document.getElementById(tabName + 'Tab');
-    if (activeEl) activeEl.style.display = 'block';
-}
-
-// ฟังก์ชันกดโพสต์ข้อความใหม่
+// ฟังก์ชันสร้างโพสต์ใหม่
 function createNewPost() {
     const input = document.getElementById("postContentInput");
     const text = input.value.trim();
@@ -22,22 +8,54 @@ function createNewPost() {
         return;
     }
 
-    // สร้างกล่องโพสต์ใหม่แสดงบนหน้าจอทันที (หรือเชื่อม Firebase ตามระบบฐานข้อมูลของคุณ)
     const feedList = document.getElementById("feedList");
+    const postId = "post_" + Date.now(); // สร้างไอดีไม่ซ้ำกัน
+
     const newCard = document.createElement("div");
     newCard.className = "post-card";
     newCard.innerHTML = `
         <div class="post-header">
-            <strong>คุณ</strong> <span style="font-size: 12px; color: gray;">เมื่อสักครู่</span>
+            <strong>${typeof currentUser !== 'undefined' ? currentUser : 'คุณ'}</strong> 
+            <span style="font-size: 12px; color: gray;">เมื่อสักครู่</span>
         </div>
         <div class="post-body">${escapeHtml(text)}</div>
+        
+        <div class="comment-section">
+            <div class="comment-list" id="commentList_${postId}"></div>
+            <div class="comment-input-box">
+                <input type="text" id="commentInput_${postId}" placeholder="พิมพ์คอมเมนต์ตอบกลับ...">
+                <button class="comment-btn" onclick="addComment('${postId}')">ส่ง</button>
+            </div>
+        </div>
     `;
 
     feedList.prepend(newCard); // นำโพสต์ใหม่ไว้บนสุด
-    input.value = ""; //เคลียร์ช่องพิมพ์
+    input.value = "";
 }
 
-// ฟังก์ชันป้องกัน XSS เบื้องต้น
+// ฟังก์ชันกดส่งคอมเมนต์ใต้โพสต์
+function addComment(postId) {
+    const input = document.getElementById(`commentInput_${postId}`);
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    const commentList = document.getElementById(`commentList_${postId}`);
+    const commentItem = document.createElement("div");
+    commentItem.className = "comment-item";
+    commentItem.innerHTML = `<strong>${typeof currentUser !== 'undefined' ? currentUser : 'เพื่อน'} :</strong> ${escapeHtml(text)}`;
+
+    commentList.appendChild(commentItem);
+    commentList.scrollTop = commentList.scrollHeight; // เลื่อนลงล่างสุดอัตโนมัติเมื่อมีคนคอมเมนต์
+    input.value = "";
+}
+
+// ฟังก์ชันป้องกัน HTML Injection (ความปลอดภัยเบื้องต้น)
 function escapeHtml(text) {
-    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
