@@ -85,15 +85,66 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .chat-header h3{ font-size:15px; display:flex; align-items:center; gap:8px; }
 .back-to-list-btn{ background:#343785; color:white; border:none; padding:6px 12px; border-radius:8px; font-size:12px; cursor:pointer; }
 
-/* สไตล์กล่องข้อความแชท รองรับการเลื่อนขึ้นเลื่อนลง */
-.chat-messages{ 
-    flex:1; 
-    padding:15px; 
-    overflow-y: scroll; 
-    display:flex; 
-    flex-direction:column; 
-    gap:12px; 
-    scroll-behavior: smooth;
+/* ================= CHAT SCROLL แบบ FACEBOOK ================= */
+.chat-messages{
+    flex:1;
+    padding:15px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    scroll-behavior:smooth;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+}
+
+.chat-messages::-webkit-scrollbar{
+    width:8px;
+}
+
+.chat-messages::-webkit-scrollbar-track{
+    background:transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb{
+    background:rgba(255,255,255,.25);
+    border-radius:20px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover{
+    background:rgba(255,255,255,.4);
+}
+
+/* ปุ่มกลับไปข้อความล่าสุด */
+.chat-scroll-bottom{
+    position:absolute;
+    right:20px;
+    bottom:85px;
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
+    background:#fff;
+    color:#222;
+    font-size:22px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 4px 15px rgba(0,0,0,.35);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:50;
+    transition:transform .15s ease, opacity .15s ease;
+}
+
+.chat-scroll-bottom.show{
+    display:flex;
+}
+
+.chat-scroll-bottom:hover{
+    transform:scale(1.06);
 }
 
 /* ================= MESSAGE BUBBLE & MENU ================= */
@@ -326,6 +377,10 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                         💬 เลือกรายชื่อเพื่อนเพื่อเริ่มการสนทนา
                     </div>
                 </div>
+
+                <!-- ปุ่มกลับไปข้อความล่าสุด -->
+                <button id="chatScrollBottom" class="chat-scroll-bottom" type="button"
+                    onclick="scrollChatToBottom(event)" title="ไปข้อความล่าสุด">↓</button>
 
                 <div class="active-reply-bar" id="activeReplyBar">
                     <div class="active-reply-info">
@@ -841,6 +896,12 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         currentChatListener = ref(db, `private_chats/${roomId}`);
 
         onValue(currentChatListener, (snapshot) => {
+            // จำตำแหน่งเดิมก่อนโหลดข้อความใหม่
+            const oldScrollTop = msgArea.scrollTop;
+            const oldScrollHeight = msgArea.scrollHeight;
+            const wasAtBottom =
+                oldScrollHeight - oldScrollTop - msgArea.clientHeight < 80;
+
             msgArea.innerHTML = "";
             const messages = snapshot.val() || {};
 
@@ -890,10 +951,55 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 
                 msgArea.appendChild(row);
             });
-            // เลื่อนลงมาล่างสุดอัตโนมัติเมื่อมีข้อความใหม่
-            msgArea.scrollTop = msgArea.scrollHeight;
+            // ถ้าเดิมอยู่ล่างสุด ให้ลงไปข้อความล่าสุด
+            // แต่ถ้าอ่านข้อความเก่าอยู่ ให้คงตำแหน่งเดิมไว้ ไม่เด้งลง
+            if(wasAtBottom){
+                requestAnimationFrame(() => {
+                    msgArea.scrollTop = msgArea.scrollHeight;
+                    updateChatScrollButton();
+                });
+            }else{
+                const newScrollHeight = msgArea.scrollHeight;
+                msgArea.scrollTop = Math.max(
+                    0,
+                    oldScrollTop + (newScrollHeight - oldScrollHeight)
+                );
+                updateChatScrollButton();
+            }
         });
     }
+
+    // ================= CHAT SCROLL CONTROLS =================
+    const chatMessagesArea = document.getElementById("chatMessagesArea");
+    const chatScrollBottom = document.getElementById("chatScrollBottom");
+
+    function isChatAtBottom(){
+        return chatMessagesArea.scrollHeight - chatMessagesArea.scrollTop
+            - chatMessagesArea.clientHeight < 80;
+    }
+
+    function updateChatScrollButton(){
+        if(!chatScrollBottom) return;
+
+        if(isChatAtBottom()){
+            chatScrollBottom.classList.remove("show");
+        }else{
+            chatScrollBottom.classList.add("show");
+        }
+    }
+
+    chatMessagesArea.addEventListener("scroll", updateChatScrollButton);
+
+    window.scrollChatToBottom = function(event){
+        if(event) event.stopPropagation();
+
+        chatMessagesArea.scrollTo({
+            top: chatMessagesArea.scrollHeight,
+            behavior:"smooth"
+        });
+
+        setTimeout(updateChatScrollButton, 350);
+    };
 
     // ฟังก์ชันเปิด-ปิด ตัวซูมรูปภาพ
     window.openImageModal = function(imgSrc){
