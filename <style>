@@ -1,4 +1,4 @@
-/* สไตล์สำหรับหน้าโพสต์ */
+/* --- สไตล์สำหรับระบบโพสต์และคอมเมนต์ --- */
 .post-container {
     padding: 15px;
     max-width: 600px;
@@ -39,26 +39,87 @@
     float: right;
 }
 
-.feed-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
+/* กล่องแสดงโพสต์แต่ละโพสต์ */
 .post-card {
-    background: rgba(255, 255, 255, 0.07);
-    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .post-header {
+    font-size: 14px;
     margin-bottom: 8px;
-    display: flex;
-    justify-content: space-between;
 }
 
 .post-body {
-    font-size: 14px;
+    font-size: 15px;
+    margin-bottom: 12px;
     word-break: break-word;
+}
+
+/* ส่วนคอมเมนต์ใต้โพสต์ */
+.comment-section {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.comment-list {
+    max-height: 150px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.comment-item {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.comment-input-box {
+    display: flex;
+    gap: 8px;
+}
+
+.comment-input-box input {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: white;
+    padding: 6px 10px;
+    font-size: 13px;
+    outline: none;
+}
+
+.comment-btn {
+    background: #7c3aed;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+/* แก้ไขปัญหาปุ่มพิมพ์แชทหาย (สำหรับหน้าแชทหลัก) */
+.chat-messages-container {
+    flex: 1;
+    overflow-y: auto; /* ทำให้เลื่อนดูข้อความเก่าได้ */
+    padding: 15px;
+}
+
+.chat-input-container {
+    position: sticky;
+    bottom: 0;
+    background: #080b35; /* สีพื้นหลังกล่องพิมพ์ */
+    padding: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
