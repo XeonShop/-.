@@ -1,277 +1,906 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แอปพลิเคชันของฉัน - ระบบโพสต์</title>
-    <style>
-        /* ตั้งค่าพื้นฐาน */
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #0d1117;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: white;
-            padding-bottom: 70px; /* เว้นที่ให้แถบเมนูด้านล่างไม่บังเนื้อหา */
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Maharnnoparam School</title>
 
-        /* ซ่อน/แสดง แท็บหน้าต่างๆ */
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
+<style>
+*{
+    box-sizing:border-box;
+}
 
-        /* สไตล์สำหรับหน้าโพสต์ */
-        .post-container {
-            padding: 15px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+body{
+    margin:0;
+    font-family:Arial,"Noto Sans Thai",sans-serif;
+    background:#080b32;
+    color:white;
+}
 
-        .post-container h3 {
-            margin-bottom: 15px;
-            font-size: 18px;
-        }
+/* ===== HEADER ===== */
 
-        .create-post-box {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+.header{
+    height:78px;
+    background:#070922;
+    border-bottom:1px solid #282d75;
+    display:flex;
+    align-items:center;
+    padding:0 25px;
+    gap:30px;
+}
 
-        .create-post-box textarea {
-            width: 100%;
-            height: 80px;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            color: white;
-            padding: 10px;
-            resize: none;
-            font-size: 14px;
-            outline: none;
-            box-sizing: border-box;
-        }
+.logo{
+    font-size:23px;
+    font-weight:bold;
+    white-space:nowrap;
+}
 
-        .submit-post-btn {
-            margin-top: 10px;
-            background: linear-gradient(135deg, #22c9ff, #7c3aed);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            display: block;
-            margin-left: auto;
-            transition: opacity 0.2s;
-        }
+.logo span{
+    color:#754cff;
+}
 
-        .submit-post-btn:hover {
-            opacity: 0.9;
-        }
+.nav{
+    display:flex;
+    gap:8px;
+    margin-left:auto;
+}
 
-        .feed-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+.nav button{
+    border:0;
+    background:transparent;
+    color:white;
+    padding:14px 18px;
+    border-radius:15px;
+    font-size:17px;
+    cursor:pointer;
+}
 
-        .post-card {
-            background: rgba(255, 255, 255, 0.07);
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+.nav button:hover,
+.nav .active{
+    background:#191d54;
+    color:#20cfff;
+}
 
-        .post-header {
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-        }
+/* ===== PAGE ===== */
 
-        .post-body {
-            font-size: 14px;
-            word-break: break-word;
-            white-space: pre-wrap;
-        }
+.page{
+    padding:25px;
+}
 
-        /* สไตล์แถบเมนูด้านล่าง (Nav Bar) */
-        .nav-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: #161b22;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            z-index: 1000;
-        }
+.chat-box{
+    max-width:1100px;
+    height:calc(100vh - 130px);
+    margin:auto;
+    background:#151a62;
+    border:1px solid #604cff;
+    border-radius:22px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+}
 
-        .nav-item {
-            background: transparent;
-            border: none;
-            color: #8b949e;
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            transition: color 0.2s;
-        }
+/* ===== CHAT HEADER ===== */
 
-        .nav-item.active {
-            color: #22c9ff;
-            font-weight: bold;
-        }
-    </style>
+.chat-header{
+    min-height:80px;
+    background:#10144d;
+    border-bottom:1px solid #343a87;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:12px 20px;
+}
+
+.back-btn{
+    border:0;
+    background:#30378b;
+    color:white;
+    border-radius:13px;
+    padding:12px 18px;
+    cursor:pointer;
+}
+
+.avatar{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    object-fit:cover;
+    background:#30378b;
+}
+
+.friend-name{
+    font-size:20px;
+    font-weight:bold;
+}
+
+/* ===== MESSAGE AREA ===== */
+
+.messages{
+    flex:1;
+    overflow-y:auto;
+    padding:20px;
+    scroll-behavior:smooth;
+}
+
+.message-row{
+    display:flex;
+    margin:10px 0;
+}
+
+.message-row.me{
+    justify-content:flex-end;
+}
+
+.message{
+    max-width:70%;
+    padding:11px 15px;
+    border-radius:18px;
+    background:#303678;
+    word-break:break-word;
+}
+
+.message-row.me .message{
+    background:linear-gradient(135deg,#087fd8,#6330d9);
+    border-bottom-right-radius:5px;
+}
+
+.message-row:not(.me) .message{
+    border-bottom-left-radius:5px;
+}
+
+.message-time{
+    font-size:10px;
+    opacity:.65;
+    margin-top:5px;
+}
+
+/* ===== IMAGE ===== */
+
+.chat-image{
+    max-width:260px;
+    max-height:300px;
+    display:block;
+    border-radius:13px;
+    cursor:pointer;
+    object-fit:cover;
+}
+
+.download-btn{
+    display:inline-block;
+    margin-top:8px;
+    padding:7px 10px;
+    border-radius:9px;
+    background:rgba(0,0,0,.25);
+    color:white;
+    text-decoration:none;
+    font-size:13px;
+}
+
+.download-btn:hover{
+    background:rgba(0,0,0,.5);
+}
+
+/* ===== TYPING ===== */
+
+.typing{
+    display:none;
+    align-items:center;
+    gap:8px;
+    padding:7px 16px;
+    color:#b8bee8;
+    font-size:13px;
+}
+
+.typing.show{
+    display:flex;
+}
+
+.dots{
+    display:flex;
+    gap:4px;
+}
+
+.dots span{
+    width:6px;
+    height:6px;
+    background:#20cfff;
+    border-radius:50%;
+    animation:bounce 1.2s infinite;
+}
+
+.dots span:nth-child(2){
+    animation-delay:.15s;
+}
+
+.dots span:nth-child(3){
+    animation-delay:.3s;
+}
+
+@keyframes bounce{
+    0%,60%,100%{
+        transform:translateY(0);
+        opacity:.35;
+    }
+    30%{
+        transform:translateY(-5px);
+        opacity:1;
+    }
+}
+
+/* ===== INPUT ===== */
+
+.chat-input{
+    min-height:75px;
+    padding:12px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#10144d;
+    border-top:1px solid #343a87;
+}
+
+.icon-btn{
+    width:48px;
+    height:48px;
+    border:0;
+    border-radius:50%;
+    background:#30378b;
+    color:white;
+    font-size:21px;
+    cursor:pointer;
+}
+
+#messageInput{
+    flex:1;
+    height:50px;
+    border:1px solid #4c54a5;
+    background:#080c3b;
+    color:white;
+    border-radius:25px;
+    padding:0 18px;
+    font-size:16px;
+    outline:none;
+}
+
+.send-btn{
+    height:48px;
+    padding:0 20px;
+    border:0;
+    border-radius:24px;
+    background:linear-gradient(135deg,#08b7ed,#6634df);
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* ===== IMAGE MODAL ===== */
+
+.image-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.85);
+    z-index:9999;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.image-modal.show{
+    display:flex;
+}
+
+.image-modal img{
+    max-width:90vw;
+    max-height:80vh;
+    border-radius:15px;
+}
+
+.modal-buttons{
+    position:absolute;
+    bottom:25px;
+    display:flex;
+    gap:10px;
+}
+
+.modal-buttons a,
+.modal-buttons button{
+    border:0;
+    padding:12px 18px;
+    border-radius:12px;
+    background:#6338df;
+    color:white;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+/* ===== MOBILE ===== */
+
+@media(max-width:700px){
+
+    .header{
+        height:auto;
+        min-height:65px;
+        padding:8px 10px;
+    }
+
+    .logo{
+        font-size:16px;
+    }
+
+    .nav button{
+        padding:10px 8px;
+        font-size:13px;
+    }
+
+    .page{
+        padding:8px;
+    }
+
+    .chat-box{
+        height:calc(100vh - 82px);
+        border-radius:15px;
+    }
+
+    .chat-header{
+        min-height:65px;
+        padding:8px 10px;
+    }
+
+    .back-btn{
+        padding:9px;
+        font-size:12px;
+    }
+
+    .avatar{
+        width:42px;
+        height:42px;
+    }
+
+    .friend-name{
+        font-size:17px;
+    }
+
+    .message{
+        max-width:82%;
+    }
+
+    .chat-input{
+        padding:8px;
+    }
+
+    .icon-btn{
+        width:42px;
+        height:42px;
+    }
+
+    .send-btn{
+        padding:0 14px;
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <!-- 1. หน้าแรก (Home) -->
-    <div id="homeTab" class="tab-content">
-        <div style="padding: 20px; text-align: center;">
-            <h2>🏠 หน้าแรก</h2>
-            <p>ยินดีต้อนรับสู่หน้าแรกของแอปพลิเคชัน</p>
-        </div>
+<header class="header">
+
+    <div class="logo">
+        🏫 Maharnnoparam <span>School</span>
     </div>
 
-    <!-- 2. หน้าเพื่อน (Friends) -->
-    <div id="friendsTab" class="tab-content">
-        <div style="padding: 20px; text-align: center;">
-            <h2>👥 เพื่อน</h2>
-            <p>รายชื่อเพื่อนของคุณจะแสดงที่นี่</p>
-        </div>
-    </div>
+    <nav class="nav">
+        <button>🏠 หน้าแรก</button>
+        <button>👥 เพื่อน</button>
+        <button class="active">💬 แชท</button>
+        <button>👤 โปรไฟล์</button>
+    </nav>
 
-    <!-- 3. หน้าโพสต์ (Posts) - ค่าเริ่มต้นให้เปิดแสดงผลหน้านี้ -->
-    <div id="postsTab" class="tab-content active">
-        <div class="post-container">
-            <h3>💬 ฟีดโพสต์สาธารณะ</h3>
-            
-            <!-- กล่องสำหรับพิมพ์สร้างโพสต์ใหม่ -->
-            <div class="create-post-box">
-                <textarea id="postContentInput" placeholder="คุณกำลังคิดอะไรอยู่..."></textarea>
-                <button class="submit-post-btn" onclick="createNewPost()">โพสต์เลย</button>
-            </div>
+</header>
 
-            <!-- พื้นที่แสดงรายการโพสต์ทั้งหมด -->
-            <div id="feedList" class="feed-list">
-                <!-- โพสต์ตัวอย่าง -->
-                <div class="post-card">
-                    <div class="post-header">
-                        <strong>Admin</strong> <span style="font-size: 12px; color: #8b949e;">เมื่อสักครู่</span>
-                    </div>
-                    <div class="post-body">ยินดีต้อนรับสู่ระบบโพสต์ใหม่ล่าสุด! 🎉 ลองพิมพ์ข้อความแล้วกดโพสต์ดูได้เลยครับ</div>
-                </div>
-            </div>
-        </div>
-    </div>
+<main class="page">
 
-    <!-- 4. หน้าแชท (Chat) -->
-    <div id="chatTab" class="tab-content">
-        <div style="padding: 20px; text-align: center;">
-            <h2>💬 แชท</h2>
-            <p>ระบบสนทนาพูดคุย</p>
-        </div>
-    </div>
+<div class="chat-box">
 
-    <!-- 5. หน้าโปรไฟล์ (Profile) -->
-    <div id="profileTab" class="tab-content">
-        <div style="padding: 20px; text-align: center;">
-            <h2>👤 โปรไฟล์</h2>
-            <p>ข้อมูลส่วนตัวของผู้ใช้งาน</p>
-        </div>
-    </div>
+    <!-- HEADER CHAT -->
 
+    <div class="chat-header">
 
-    <!-- แถบเมนูด้านล่าง (Nav Bar ตามภาพตัวอย่างของคุณ) -->
-    <div class="nav-bar">
-        <button class="nav-item" onclick="switchTab('home', this)">
-            <span>🏠</span> หน้าแรก
+        <button class="back-btn" onclick="alert('กลับไปรายชื่อเพื่อน')">
+            ← กลับ
         </button>
-        <button class="nav-item" onclick="switchTab('friends', this)">
-            <span>👥</span> เพื่อน
-        </button>
-        <button class="nav-item active" onclick="switchTab('posts', this)">
-            <span>📝</span> โพสต์
-        </button>
-        <button class="nav-item" onclick="switchTab('chat', this)">
-            <span>💬</span> แชท
-        </button>
-        <button class="nav-item" onclick="switchTab('profile', this)">
-            <span>👤</span> โปรไฟล์
-        </button>
+
+        <img
+            class="avatar"
+            src="https://i.pravatar.cc/100?img=12"
+            id="friendAvatar"
+        >
+
+        <div class="friend-name" id="friendName">
+            เพื่อน
+        </div>
+
     </div>
 
 
-    <!-- ส่วนของจาวาสคริปต์ (JavaScript) -->
-    <script>
-        // ฟังก์ชันสำหรับสลับหน้าแท็บ
-        function switchTab(tabName, element) {
-            // ซ่อนทุกหน้าแท็บ
-            const tabs = ['home', 'friends', 'posts', 'chat', 'profile'];
-            tabs.forEach(t => {
-                let el = document.getElementById(t + 'Tab');
-                if (el) el.classList.remove('active');
+    <!-- MESSAGES -->
+
+    <div class="messages" id="messages"></div>
+
+
+    <!-- TYPING -->
+
+    <div class="typing" id="typing">
+
+        <span id="typingName">
+            เพื่อน
+        </span>
+
+        กำลังพิมพ์
+
+        <div class="dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+
+
+    <!-- INPUT -->
+
+    <div class="chat-input">
+
+        <button
+            class="icon-btn"
+            onclick="document.getElementById('imageInput').click()">
+            📷
+        </button>
+
+        <input
+            type="file"
+            id="imageInput"
+            accept="image/*"
+            hidden
+            onchange="sendImage(event)"
+        >
+
+        <input
+            id="messageInput"
+            type="text"
+            placeholder="พิมพ์ข้อความ..."
+            autocomplete="off"
+        >
+
+        <button
+            class="send-btn"
+            onclick="sendMessage()">
+            ส่ง
+        </button>
+
+    </div>
+
+</div>
+
+</main>
+
+
+<!-- IMAGE MODAL -->
+
+<div
+    class="image-modal"
+    id="imageModal"
+    onclick="closeImageModal(event)"
+>
+
+    <img id="bigImage">
+
+    <div class="modal-buttons">
+
+        <a
+            id="modalDownload"
+            href="#"
+            download="Maharnnoparam-School-image.jpg">
+            ⬇️ ดาวน์โหลด
+        </a>
+
+        <button onclick="closeImageModal()">
+            ✕ ปิด
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   ระบบแชท
+===================================================== */
+
+const messageInput =
+    document.getElementById("messageInput");
+
+const messages =
+    document.getElementById("messages");
+
+const typing =
+    document.getElementById("typing");
+
+
+/* เก็บข้อความ */
+
+let chatData =
+    JSON.parse(
+        localStorage.getItem("maharnnoparam_chat") || "[]"
+    );
+
+
+/* แสดงข้อความ */
+
+function renderMessages(){
+
+    messages.innerHTML = "";
+
+    chatData.forEach((msg,index)=>{
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "message-row " +
+            (msg.mine ? "me" : "");
+
+
+        const bubble =
+            document.createElement("div");
+
+        bubble.className = "message";
+
+
+        if(msg.type === "image"){
+
+            const img =
+                document.createElement("img");
+
+            img.src = msg.data;
+
+            img.className = "chat-image";
+
+            img.onclick =
+                () => openImage(msg.data);
+
+            bubble.appendChild(img);
+
+
+            const br =
+                document.createElement("br");
+
+            bubble.appendChild(br);
+
+
+            /* ปุ่มดาวน์โหลด */
+
+            const download =
+                document.createElement("a");
+
+            download.href = msg.data;
+
+            download.download =
+                "Maharnnoparam-School-image-" +
+                (index+1) +
+                ".jpg";
+
+            download.className =
+                "download-btn";
+
+            download.textContent =
+                "⬇️ ดาวน์โหลดรูป";
+
+            download.onclick =
+                e => e.stopPropagation();
+
+            bubble.appendChild(download);
+
+        }else{
+
+            const text =
+                document.createElement("div");
+
+            text.textContent = msg.text;
+
+            bubble.appendChild(text);
+
+        }
+
+
+        const time =
+            document.createElement("div");
+
+        time.className =
+            "message-time";
+
+        time.textContent =
+            msg.time || "";
+
+        bubble.appendChild(time);
+
+
+        row.appendChild(bubble);
+
+        messages.appendChild(row);
+
+    });
+
+
+    messages.scrollTop =
+        messages.scrollHeight;
+}
+
+
+/* ส่งข้อความ */
+
+function sendMessage(){
+
+    const text =
+        messageInput.value.trim();
+
+    if(!text) return;
+
+
+    chatData.push({
+
+        mine:true,
+
+        type:"text",
+
+        text:text,
+
+        time:new Date().toLocaleTimeString(
+            "th-TH",
+            {
+                hour:"2-digit",
+                minute:"2-digit"
+            }
+        )
+
+    });
+
+
+    saveChat();
+
+    messageInput.value = "";
+
+    stopTyping();
+
+
+    /*
+      ตัวอย่างให้เพื่อนตอบกลับ
+      ถ้าต่อ Firebase ให้เปลี่ยนส่วนนี้
+      เป็นการส่งข้อมูลไป Firebase
+    */
+
+    setTimeout(()=>{
+
+        showTyping();
+
+        setTimeout(()=>{
+
+            hideTyping();
+
+            chatData.push({
+
+                mine:false,
+
+                type:"text",
+
+                text:"ได้รับข้อความแล้วครับ 😊",
+
+                time:new Date().toLocaleTimeString(
+                    "th-TH",
+                    {
+                        hour:"2-digit",
+                        minute:"2-digit"
+                    }
+                )
+
             });
 
-            // แสดงหน้าแท็บที่ถูกเลือก
-            let activeEl = document.getElementById(tabName + 'Tab');
-            if (activeEl) activeEl.classList.add('active');
+            saveChat();
 
-            // สลับสถานะปุ่มแอคทีฟที่เมนูด้านล่าง
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => item.classList.remove('active'));
-            if (element) {
-                element.classList.add('active');
-            }
+        },1200);
+
+    },300);
+
+}
+
+
+/* =====================================================
+   ส่งรูป
+===================================================== */
+
+function sendImage(event){
+
+    const file =
+        event.target.files[0];
+
+    if(!file) return;
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload = function(e){
+
+        chatData.push({
+
+            mine:true,
+
+            type:"image",
+
+            data:e.target.result,
+
+            time:new Date().toLocaleTimeString(
+                "th-TH",
+                {
+                    hour:"2-digit",
+                    minute:"2-digit"
+                }
+            )
+
+        });
+
+
+        saveChat();
+
+    };
+
+
+    reader.readAsDataURL(file);
+
+    event.target.value = "";
+
+}
+
+
+/* =====================================================
+   กำลังพิมพ์ 3 จุด
+===================================================== */
+
+let typingTimer;
+
+
+function showTyping(){
+
+    typing.classList.add("show");
+
+}
+
+
+function hideTyping(){
+
+    typing.classList.remove("show");
+
+}
+
+
+function stopTyping(){
+
+    clearTimeout(typingTimer);
+
+    hideTyping();
+
+}
+
+
+messageInput.addEventListener(
+    "input",
+    function(){
+
+        if(messageInput.value.trim()){
+
+            showTyping();
+
+            clearTimeout(typingTimer);
+
+            typingTimer =
+                setTimeout(
+                    hideTyping,
+                    1500
+                );
+
+        }else{
+
+            hideTyping();
+
         }
 
-        // ฟังก์ชันสร้างโพสต์ใหม่
-        function createNewPost() {
-            const input = document.getElementById("postContentInput");
-            const text = input.value.trim();
+    }
+);
 
-            if (!text) {
-                alert("กรุณากรอกข้อความก่อนโพสต์ครับ");
-                return;
-            }
 
-            const feedList = document.getElementById("feedList");
-            const newCard = document.createElement("div");
-            newCard.className = "post-card";
-            newCard.innerHTML = `
-                <div class="post-header">
-                    <strong>คุณ</strong> <span style="font-size: 12px; color: #8b949e;">เมื่อสักครู่</span>
-                </div>
-                <div class="post-body">${escapeHtml(text)}</div>
-            `;
+/* =====================================================
+   Enter ส่งข้อความ
+===================================================== */
 
-            // นำโพสต์ใหม่ไปไว้บนสุดของฟีด
-            feedList.prepend(newCard); 
-            
-            // เคลียร์ช่องพิมพ์ข้อความ
-            input.value = ""; 
+messageInput.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+
+            event.preventDefault();
+
+            sendMessage();
+
         }
 
-        // ฟังก์ชันป้องกัน XSS เบื้องต้นเพื่อความปลอดภัย
-        function escapeHtml(text) {
-            return text
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-    </script>
+    }
+);
+
+
+/* =====================================================
+   บันทึก
+===================================================== */
+
+function saveChat(){
+
+    localStorage.setItem(
+        "maharnnoparam_chat",
+        JSON.stringify(chatData)
+    );
+
+    renderMessages();
+
+}
+
+
+/* =====================================================
+   เปิดรูปใหญ่
+===================================================== */
+
+function openImage(src){
+
+    document
+        .getElementById("bigImage")
+        .src = src;
+
+
+    document
+        .getElementById("modalDownload")
+        .href = src;
+
+
+    document
+        .getElementById("imageModal")
+        .classList.add("show");
+
+}
+
+
+function closeImageModal(event){
+
+    if(
+        !event ||
+        event.target.id === "imageModal"
+    ){
+
+        document
+            .getElementById("imageModal")
+            .classList.remove("show");
+
+    }
+
+}
+
+
+/* เริ่มต้น */
+
+renderMessages();
+
+</script>
+
 </body>
 </html>
