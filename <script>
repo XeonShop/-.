@@ -1,0 +1,20 @@
+// ฟังก์ชันสำหรับปุ่มโพสต์ (สามารถปรับเปลี่ยนปลายทางการบันทึกข้อมูลได้ตามต้องการ)
+window.handlePostMessage = function() {
+    const input = document.getElementById("msgInput");
+    const text = input.value.trim();
+
+    if (!text) {
+        alert("กรุณากรอกข้อความที่ต้องการโพสต์ครับ");
+        return;
+    }
+
+    // ตัวอย่าง: หากต้องการใช้ระบบส่งข้อความแชทส่วนตัวเดิม
+    if (typeof sendPrivateMessage === "function") {
+        sendPrivateMessage();
+        // หรือถ้าต้องการเพิ่มข้อความแจ้งเตือนพิเศษสำหรับการโพสต์
+        // console.log("โพสต์ข้อความสำเร็จ:", text);
+    } else {
+        alert("โพสต์สำเร็จ: " + text);
+        input.value = "";
+    }
+};
