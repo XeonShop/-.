@@ -4,9 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>เพื่อนช่วยเพื่อน - โรงเรียนมหรรณพาราม</title>
-<!-- ไลบรารีสำหรับแปลงและอ่าน QR Code -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://unpkg.com/html5-qrcode"></script>
 <style>
 *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
 body{ font-family:Arial,"Tahoma",sans-serif; background:#080b35; color:white; height:100vh; overflow:hidden; }
@@ -20,8 +17,9 @@ header{
 .logo-img{ width:32px; height:32px; border-radius:50%; object-fit:contain; background:white; padding:2px; }
 .logo span{ color:#8b5cf6; }
 
-nav{ display:flex; align-items:center; gap:4px; }
-nav a{ color:#ddd; text-decoration:none; font-size:13px; padding:6px 8px; border-radius:10px; transition:.3s; cursor:pointer; display: flex; align-items:center; gap:4px; }
+nav{ display:flex; align-items:center; gap:4px; overflow-x: auto; max-width: 60vw; }
+nav::-webkit-scrollbar { display: none; }
+nav a{ color:#ddd; text-decoration:none; font-size:13px; padding:6px 8px; border-radius:10px; transition:.3s; cursor:pointer; display: flex; align-items:center; gap:4px; white-space: nowrap; }
 nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 
 .header-buttons{ display:flex; gap:6px; align-items:center; }
@@ -164,14 +162,8 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .profile-popup-card{ width: 100%; max-width: 380px; background: #171a62; border: 1px solid rgba(133,95,255,.6); border-radius: 20px; padding: 25px; text-align: center; position: relative; }
 .profile-popup-avatar{ width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #22c9ff; margin-bottom: 12px; background: #080b35; }
 
-/* ================= FRIENDS SEPARATION STYLES ================= */
+/* ================= FRIENDS & PROFILE ================= */
 .friends-container{ padding:25px; max-width:850px; margin:25px auto; background:#12154c; border:1px solid rgba(133,95,255,.4); border-radius:24px; }
-.friends-tab-menu { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,.1); padding-bottom: 12px; }
-.f-tab-btn { background: #080b35; border: 1px solid #343785; color: #aaaed0; padding: 8px 16px; border-radius: 12px; font-size: 14px; cursor: pointer; transition: 0.2s; }
-.f-tab-btn.active { background: linear-gradient(90deg, #22c9ff, #7c3aed); color: white; border-color: transparent; font-weight: bold; }
-.friends-sub-section { display: none; }
-.friends-sub-section.active { display: block; }
-
 .search-box input{ width:100%; padding:14px 18px; border-radius:14px; border:1px solid #343785; background:#080b35; color:white; font-size:15px; outline:none; margin-bottom:20px; }
 .users-grid{ display:grid; grid-template-columns:1fr; gap:12px; }
 .user-card{ background:#171a62; border:1px solid rgba(133,95,255,.4); border-radius:16px; padding:15px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
@@ -183,10 +175,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .btn-add{ background:linear-gradient(90deg, #22c9ff, #7c3aed); color:white; }
 .btn-accept{ background:#22c55e; color:white; }
 .btn-remove{ background:#ef4444; color:white; }
-
-/* QR Scanner Styles */
-.scanner-box { background: #080b35; border: 1px solid #343785; border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 20px; }
-#reader { width: 100%; max-width: 400px; margin: 0 auto; border-radius: 12px; overflow: hidden; }
 
 .profile-card{ max-width:450px; margin:20px auto; background:#171a62; border:1px solid rgba(133,95,255,.5); border-radius:22px; padding:25px 20px; text-align:center; }
 .profile-avatar-container{ position:relative; width:100px; height:100px; margin:0 auto 15px; }
@@ -250,6 +238,8 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         <a onclick="showPage('home')" id="navHome" class="active">🏠 <span>หน้าแรก</span></a>
         <a onclick="showPage('posts')" id="navPosts">📰 <span>โพสต์</span></a>
         <a onclick="showPage('friends')" id="navFriends">👥 <span>เพื่อน</span></a>
+        <a onclick="showPage('searchFriends')" id="navSearchFriends">🔍 <span>ค้นหาและแอด</span></a>
+        <a onclick="showPage('friendCamera')" id="navFriendCamera">📷 <span>กล้องรับเพื่อน</span></a>
         <a onclick="showPage('chat')" id="navChat">💬 <span>แชท</span></a>
         <a onclick="showPage('profile')" id="navProfile">👤 <span>โปรไฟล์</span></a>
     </nav>
@@ -298,40 +288,48 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
     </div>
 </div>
 
-<!-- ================= FRIENDS PAGE (แยกส่วนเพิ่มเพื่อน และ รับเพื่อน) ================= -->
+<!-- ================= FRIENDS PAGE ================= -->
 <div id="pageFriends" class="page-section">
     <div class="friends-container">
-        <h2 style="margin-bottom:5px;">👥 ระบบจัดการเพื่อน</h2>
-        <p style="color:#aaaed0; margin-bottom:15px; font-size:13px;">ค้นหาเพื่อนเพื่อส่งคำขอ หรือใช้กล้องสแกนรับเพื่อนที่แอดคุณมา</p>
+        <h2 style="margin-bottom:5px;">👥 เพื่อน & คำขอ</h2>
+        <p style="color:#aaaed0; margin-bottom:15px; font-size:13px;">ค้นหาเพื่อนนักเรียนเพื่อส่งคำขอ หรือกดรับเพื่อนที่นี่</p>
         
-        <!-- Tab เมนูสลับระหว่างระบบแอดเพื่อน กับ ระบบรับเพื่อน -->
-        <div class="friends-tab-menu">
-            <button class="f-tab-btn active" id="tabBtnAdd" onclick="switchFriendTab('add')">🔍 ค้นหาและแอดเพื่อน</button>
-            <button class="f-tab-btn" id="tabBtnAccept" onclick="switchFriendTab('accept')">📷 กล้องรับเพื่อน / คำขอ</button>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="พิมพ์ชื่อผู้ใช้เพื่อค้นหา..." onkeyup="renderUsers()">
         </div>
 
-        <!-- แท็บที่ 1: ระบบแอดเพื่อน (ค้นหาผู้ใช้เพื่อส่งคำขอ) -->
-        <div id="subSectionAdd" class="friends-sub-section active">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="พิมพ์ชื่อผู้ใช้เพื่อค้นหาเพื่อน..." onkeyup="renderUsers()">
-            </div>
-            <div class="users-grid" id="usersListGrid"></div>
+        <div class="users-grid" id="usersListGrid"></div>
+    </div>
+</div>
+
+<!-- ================= SEARCH & ADD FRIEND PAGE ================= -->
+<div id="pageSearchFriends" class="page-section">
+    <div class="friends-container">
+        <h2 style="margin-bottom:5px;">🔍 ค้นหาและแอดเพื่อน</h2>
+        <p style="color:#aaaed0; margin-bottom:15px; font-size:13px;">ค้นหารายชื่อเพื่อนในโรงเรียนมหรรณพารามเพื่อเพิ่มเพื่อน</p>
+        
+        <div class="search-box">
+            <input type="text" id="globalSearchInput" placeholder="พิมพ์ชื่อผู้ใช้ที่ต้องการค้นหา..." onkeyup="renderGlobalSearchUsers()">
         </div>
 
-        <!-- แท็บที่ 2: ระบบรับเพื่อน (กล้องสแกน QR และคำขอที่ส่งมาหาเรา) -->
-        <div id="subSectionAccept" class="friends-sub-section">
-            <div class="scanner-box">
-                <h3 style="font-size:15px; color:#22c9ff; margin-bottom:8px;">📷 กล้องสแกน QR Code รับเพื่อน</h3>
-                <p style="font-size:12px; color:#aaaed0; margin-bottom:15px;">สแกนคิวอาร์โค้ดโปรไฟล์ของเพื่อนเพื่อกดรับทันที</p>
-                <div id="reader"></div>
-                <button class="start-btn" style="margin: 15px auto 0; max-width:180px; padding:10px; font-size:13px;" onclick="initQrScanner()">เปิดกล้องสแกน</button>
-                <button class="start-btn" style="margin: 8px auto 0; background:#ef4444; max-width:180px; padding:10px; font-size:13px;" onclick="stopQrScanner()">ปิดกล้อง</button>
-            </div>
+        <div class="users-grid" id="globalSearchGrid"></div>
+    </div>
+</div>
 
-            <h3 style="font-size:15px; color:#22c9ff; margin: 20px 0 10px;">📥 รายชื่อคำขอเป็นเพื่อนที่รอคุณกดรับ</h3>
-            <div class="users-grid" id="incomingRequestsGrid"></div>
+<!-- ================= FRIEND CAMERA & REQUESTS PAGE ================= -->
+<div id="pageFriendCamera" class="page-section">
+    <div class="friends-container" style="text-align: center;">
+        <h2 style="margin-bottom:5px;">📷 กล้องรับเพื่อน & คำขอ</h2>
+        <p style="color:#aaaed0; margin-bottom:20px; font-size:13px;">สแกน QR Code หรือตรวจสอบคำขอรับเพื่อนด่วน</p>
+        
+        <div style="background:#080b35; border:2px dashed #7c3aed; border-radius:16px; padding:30px; margin-bottom:20px; max-width:400px; margin-left:auto; margin-right:auto;">
+            <div style="font-size:40px; margin-bottom:10px;">📷</div>
+            <p style="color:#ddd; font-size:14px; margin-bottom:15px;">เปิดกล้องเพื่อสแกนรหัสเพิ่มเพื่อน</p>
+            <button class="start-btn" style="margin: 0 auto; max-width: 180px; padding: 10px;" onclick="alert('เปิดใช้งานกล้องจำลองเรียบร้อย')">เปิดกล้องสแกน</button>
         </div>
 
+        <h3 style="text-align: left; font-size: 16px; color: #22c9ff; margin-bottom: 10px;">📋 คำขอเป็นเพื่อนที่รอการอนุมัติ</h3>
+        <div class="users-grid" id="cameraRequestsGrid"></div>
     </div>
 </div>
 
@@ -397,12 +395,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         <h3 id="profileUsername">ชื่อผู้ใช้</h3>
         <p id="profileStatusDisplay">"ยังไม่มีสถานะ"</p>
         
-        <!-- แสดง QR Code ประจำตัวผู้ใช้สำหรับให้เพื่อนสแกน -->
-        <div style="background:white; padding:12px; border-radius:12px; width:fit-content; margin: 15px auto;">
-            <div id="qrcode" style="display:flex; justify-content:center;"></div>
-            <span style="font-size:11px; color:#333; margin-top:6px; display:block;">QR Code ของฉัน (ให้เพื่อนสแกนรับ)</span>
-        </div>
-
         <input type="text" id="statusInput" class="status-input" placeholder="พิมพ์ข้อความสถานะใหม่...">
         <button class="start-btn" style="margin-bottom: 15px;" onclick="updateStatus()">บันทึกสถานะ</button>
 
@@ -498,10 +490,9 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
     let replyData = null;
     let typingTimer = null;
     let tempPostImage = null;
-    let html5QrCode = null;
 
     window.showPage = function(pageId){
-        if((pageId === 'friends' || pageId === 'chat' || pageId === 'profile') && !currentUser){
+        if((pageId === 'friends' || pageId === 'chat' || pageId === 'profile' || pageId === 'searchFriends' || pageId === 'friendCamera') && !currentUser){
             alert("กรุณาเข้าสู่ระบบก่อนใช้งานครับ");
             openAuth('login');
             return;
@@ -521,7 +512,14 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
             document.getElementById('pageFriends').classList.add('active');
             document.getElementById('navFriends').classList.add('active');
             renderUsers();
-            renderIncomingRequests();
+        } else if(pageId === 'searchFriends'){
+            document.getElementById('pageSearchFriends').classList.add('active');
+            document.getElementById('navSearchFriends').classList.add('active');
+            renderGlobalSearchUsers();
+        } else if(pageId === 'friendCamera'){
+            document.getElementById('pageFriendCamera').classList.add('active');
+            document.getElementById('navFriendCamera').classList.add('active');
+            renderFriendRequestsOnly();
         } else if(pageId === 'chat'){
             document.getElementById('pageChat').classList.add('active');
             document.getElementById('navChat').classList.add('active');
@@ -532,58 +530,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
             document.getElementById('pageProfile').classList.add('active');
             document.getElementById('navProfile').classList.add('active');
             loadProfile();
-        }
-    };
-
-    window.switchFriendTab = function(tabName){
-        document.getElementById('tabBtnAdd').classList.remove('active');
-        document.getElementById('tabBtnAccept').classList.remove('active');
-        document.getElementById('subSectionAdd').classList.remove('active');
-        document.getElementById('subSectionAccept').classList.remove('active');
-
-        if(tabName === 'add'){
-            document.getElementById('tabBtnAdd').classList.add('active');
-            document.getElementById('subSectionAdd').classList.add('active');
-            stopQrScanner();
-        } else {
-            document.getElementById('tabBtnAccept').classList.add('active');
-            document.getElementById('subSectionAccept').classList.add('active');
-            renderIncomingRequests();
-        }
-    };
-
-    window.initQrScanner = function(){
-        if(html5QrCode) return;
-        html5QrCode = new Html5Qrcode("reader");
-        html5QrCode.start(
-            { facingMode: "environment" },
-            { fps: 10, qrbox: { width: 220, height: 220 } },
-            (decodedText) => {
-                // สมมติ QR Code เก็บชื่อผู้ใช้
-                const targetUser = decodedText.trim();
-                if(targetUser && targetUser !== currentUser){
-                    stopQrScanner();
-                    // กดรับเป็นเพื่อนทันทีเมื่อสแกน QR ของเพื่อนคนนั้น
-                    set(ref(db, `friends/${currentUser}/${targetUser}`), true);
-                    set(ref(db, `friends/${targetUser}/${currentUser}`), true);
-                    remove(ref(db, `requests/${currentUser}/${targetUser}`));
-                    alert(`🎉 สแกนสำเร็จ! คุณและ ${targetUser} เป็นเพื่อนกันแล้ว`);
-                    showPage('chat');
-                }
-            },
-            (errorMessage) => {}
-        ).catch(err => {
-            alert("ไม่สามารถเปิดกล้องได้ กรุณาอนุญาตการใช้งานกล้องในเบราว์เซอร์");
-        });
-    };
-
-    window.stopQrScanner = function(){
-        if(html5QrCode){
-            html5QrCode.stop().then(() => {
-                html5QrCode = null;
-            }).catch(() => {
-                html5QrCode = null;
-            });
         }
     };
 
@@ -669,7 +615,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
     };
 
     window.handleLogout = function(){
-        stopQrScanner();
         currentUser = null;
         activeChatFriend = null;
         localStorage.removeItem("activeUser");
@@ -726,7 +671,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
             const reqs = snapshot.val() || {};
             const count = Object.keys(reqs).length;
             if(!isFirstLoad && count > 0){
-                alert("👥 มีผู้ส่งคำขอเป็นเพื่อนมาหาคุณ! ไปที่แท็บ 'กล้องรับเพื่อน / คำขอ' เพื่อตรวจสอบได้เลย");
+                alert("👥 มีผู้ส่งคำขอเป็นเพื่อนมาหาคุณ! ไปที่หน้า 'เพื่อน' หรือ 'กล้องรับเพื่อน' เพื่อตรวจสอบได้เลย");
             }
             isFirstLoad = false;
         });
@@ -938,7 +883,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         if(activeChatFriend) viewUserProfile(activeChatFriend);
     };
 
-    // แท็บที่ 1: ระบบค้นหาเพื่อส่งคำขอ
     window.renderUsers = function(){
         const grid = document.getElementById("usersListGrid");
         const searchText = document.getElementById("searchInput").value.toLowerCase();
@@ -950,97 +894,151 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
             onValue(ref(db, `friends/${currentUser}`), (friendSnap) => {
                 const friendsData = friendSnap.val() || {};
 
-                Object.keys(usersData).forEach(username => {
-                    if(username === currentUser) return;
-                    if(searchText && !username.toLowerCase().includes(searchText)) return;
+                onValue(ref(db, `requests/${currentUser}`), (reqSnap) => {
+                    const requestsData = reqSnap.val() || {};
 
-                    const isFriend = !!friendsData[username];
-                    const userAvatar = usersData[username].avatar || DEFAULT_AVATAR;
+                    Object.keys(usersData).forEach(username => {
+                        if(username === currentUser) return;
+                        if(searchText && !username.toLowerCase().includes(searchText)) return;
 
-                    const card = document.createElement("div");
-                    card.className = "user-card";
-                    card.innerHTML = `
-                        <div class="user-info" onclick="viewUserProfile('${username}')">
-                            <img src="${userAvatar}" class="user-avatar-img">
-                            <div class="user-details">
-                               <h4>${username}</h4>
-                               <p>${usersData[username].status || ''}</p>
-                            </div>
-                        </div>
-                        <button class="btn-friend ${isFriend ? 'btn-remove' : 'btn-add'}" id="btn-act-${username}">
-                            ${isFriend ? 'ยกเลิกเพื่อน' : '+ ส่งคำขอ'}
-                        </button>
-                    `;
-                    grid.appendChild(card);
+                        const isFriend = !!friendsData[username];
+                        const hasIncomingRequest = !!requestsData[username];
 
-                    document.getElementById(`btn-act-${username}`).addEventListener('click', () => {
-                        if(!isFriend){
-                            set(ref(db, `requests/${username}/${currentUser}`), true);
-                            alert(`ส่งคำขอเป็นเพื่อนไปยัง ${username} แล้ว`);
-                        } else {
-                            remove(ref(db, `friends/${currentUser}/${username}`));
-                            remove(ref(db, `friends/${username}/${currentUser}`));
-                            alert(`ยกเลิกความเป็นเพื่อนกับ ${username} เรียบร้อย`);
+                        let btnText = "+ ส่งคำขอ";
+                        let btnClass = "btn-add";
+                        let actionType = "sendRequest";
+
+                        if(isFriend){
+                            btnText = "ยกเลิกเพื่อน";
+                            btnClass = "btn-remove";
+                            actionType = "removeFriend";
+                        } else if(hasIncomingRequest){
+                            btnText = "✓ ยอมรับเพื่อน";
+                            btnClass = "btn-accept";
+                            actionType = "acceptRequest";
                         }
-                        renderUsers();
+
+                        const userAvatar = usersData[username].avatar || DEFAULT_AVATAR;
+
+                        const card = document.createElement("div");
+                        card.className = "user-card";
+                        card.innerHTML = `
+                            <div class="user-info" onclick="viewUserProfile('${username}')">
+                                <img src="${userAvatar}" class="user-avatar-img">
+                                <div class="user-details">
+                                    <h4>${username}</h4>
+                                    <p>${usersData[username].status || ''}</p>
+                                </div>
+                            </div>
+                            <button class="btn-friend ${btnClass}" id="btn-act-${username}">
+                                ${btnText}
+                            </button>
+                        `;
+                        grid.appendChild(card);
+
+                        document.getElementById(`btn-act-${username}`).addEventListener('click', () => {
+                            if(actionType === "sendRequest"){
+                                set(ref(db, `requests/${username}/${currentUser}`), true);
+                                alert(`ส่งคำขอเป็นเพื่อนไปยัง ${username} แล้ว`);
+                            } else if(actionType === "acceptRequest"){
+                                set(ref(db, `friends/${currentUser}/${username}`), true);
+                                set(ref(db, `friends/${username}/${currentUser}`), true);
+                                remove(ref(db, `requests/${currentUser}/${username}`));
+                                alert(`คุณและ ${username} เป็นเพื่อนกันแล้ว!`);
+                            } else if(actionType === "removeFriend"){
+                                remove(ref(db, `friends/${currentUser}/${username}`));
+                                remove(ref(db, `friends/${username}/${currentUser}`));
+                            }
+                            renderUsers();
+                        });
                     });
-                });
+                }, { onlyOnce: true });
             }, { onlyOnce: true });
         });
     };
 
-    // แท็บที่ 2: ระบบรับเพื่อน (แสดงคำขอคนที่แอดเข้ามา)
-    window.renderIncomingRequests = function(){
-        const grid = document.getElementById("incomingRequestsGrid");
-        if(!currentUser) return;
+    window.renderGlobalSearchUsers = function(){
+        const grid = document.getElementById("globalSearchGrid");
+        const searchText = document.getElementById("globalSearchInput") ? document.getElementById("globalSearchInput").value.toLowerCase() : "";
+        
+        onValue(ref(db, `users`), (snapshot) => {
+            grid.innerHTML = "";
+            const usersData = snapshot.val() || {};
+            
+            Object.keys(usersData).forEach(username => {
+                if(username === currentUser) return;
+                if(searchText && !username.toLowerCase().includes(searchText)) return;
+
+                const userAvatar = usersData[username].avatar || DEFAULT_AVATAR;
+                const card = document.createElement("div");
+                card.className = "user-card";
+                card.innerHTML = `
+                    <div class="user-info" onclick="viewUserProfile('${username}')">
+                        <img src="${userAvatar}" class="user-avatar-img">
+                        <div class="user-details">
+                            <h4>${username}</h4>
+                            <p>${usersData[username].status || ''}</p>
+                        </div>
+                    </div>
+                    <button class="btn-friend btn-add" onclick="sendFriendReqFromSearch('${username}')">
+                        + ส่งคำขอ
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+        }, { onlyOnce: true });
+    };
+
+    window.sendFriendReqFromSearch = function(username){
+        set(ref(db, `requests/${username}/${currentUser}`), true);
+        alert(`ส่งคำขอเป็นเพื่อนไปยัง ${username} แล้ว`);
+    };
+
+    window.renderFriendRequestsOnly = function(){
+        const grid = document.getElementById("cameraRequestsGrid");
+        grid.innerHTML = "";
 
         onValue(ref(db, `requests/${currentUser}`), (snapshot) => {
             grid.innerHTML = "";
             const requestsData = snapshot.val() || {};
-            const reqUsernames = Object.keys(requestsData);
+            const requestUsers = Object.keys(requestsData);
 
-            if(reqUsernames.length === 0){
-                grid.innerHTML = `<div style="text-align:center; color:#aaa; font-size:13px; padding:20px; grid-column: 1 / -1;">ยังไม่มีคำขอเป็นเพื่อนที่รอรับ</div>`;
+            if(requestUsers.length === 0){
+                grid.innerHTML = `<div style="text-align:center; color:#aaa; font-size:13px; padding:20px; grid-column: 1/-1;">ไม่มีคำขอเป็นเพื่อนในขณะนี้</div>`;
                 return;
             }
 
-            reqUsernames.forEach(username => {
-                get(child(ref(db), `users/${username}`)).then((userSnap) => {
+            requestUsers.forEach(reqUser => {
+                get(child(ref(db), `users/${reqUser}`)).then((userSnap) => {
                     const userData = userSnap.exists() ? userSnap.val() : {};
                     const userAvatar = userData.avatar || DEFAULT_AVATAR;
 
                     const card = document.createElement("div");
                     card.className = "user-card";
                     card.innerHTML = `
-                        <div class="user-info" onclick="viewUserProfile('${username}')">
+                        <div class="user-info" onclick="viewUserProfile('${reqUser}')">
                             <img src="${userAvatar}" class="user-avatar-img">
                             <div class="user-details">
-                                <h4>${username}</h4>
-                                <p>ส่งคำขอมาหาคุณ</p>
+                                <h4>${reqUser}</h4>
+                                <p>${userData.status || 'ส่งคำขอมาหาคุณ'}</p>
                             </div>
                         </div>
-                        <div style="display:flex; gap:6px;">
-                            <button class="btn-friend btn-accept" id="btn-acc-${username}">ยอมรับ</button>
-                            <button class="btn-friend btn-remove" id="btn-rej-${username}">ลบ</button>
-                        </div>
+                        <button class="btn-friend btn-accept" onclick="acceptFriendRequest('${reqUser}')">
+                            ✓ ยอมรับ
+                        </button>
                     `;
                     grid.appendChild(card);
-
-                    document.getElementById(`btn-acc-${username}`).addEventListener('click', () => {
-                        set(ref(db, `friends/${currentUser}/${username}`), true);
-                        set(ref(db, `friends/${username}/${currentUser}`), true);
-                        remove(ref(db, `requests/${currentUser}/${username}`));
-                        alert(`คุณและ ${username} เป็นเพื่อนกันแล้ว!`);
-                        renderIncomingRequests();
-                    });
-
-                    document.getElementById(`btn-rej-${username}`).addEventListener('click', () => {
-                        remove(ref(db, `requests/${currentUser}/${username}`));
-                        renderIncomingRequests();
-                    });
                 });
             });
         }, { onlyOnce: true });
+    };
+
+    window.acceptFriendRequest = function(reqUser){
+        set(ref(db, `friends/${currentUser}/${reqUser}`), true);
+        set(ref(db, `friends/${reqUser}/${currentUser}`), true);
+        remove(ref(db, `requests/${currentUser}/${reqUser}`));
+        alert(`คุณและ ${reqUser} เป็นเพื่อนกันแล้ว!`);
+        renderFriendRequestsOnly();
     };
 
     function renderSidebarFriends(){
@@ -1052,7 +1050,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
             const friendsData = snapshot.val();
 
             if(!friendsData){
-                list.innerHTML = `<div style="text-align:center; color:#aaa; font-size:13px; padding:20px;">ยังไม่มีเพื่อน<br>ไปที่หน้า "เพื่อน" เพื่อแอดหรือรับคำขอก่อนครับ</div>`;
+                list.innerHTML = `<div style="text-align:center; color:#aaa; font-size:13px; padding:20px;">ยังไม่มีเพื่อน<br>ไปที่หน้า "เพื่อน" หรือ "ค้นหาและแอด" ก่อนครับ</div>`;
                 return;
             }
 
@@ -1315,18 +1313,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                 const data = snapshot.val();
                 document.getElementById("profileStatusDisplay").innerText = `"${data.status || 'ยังไม่มีสถานะ'}"`;
                 document.getElementById("profileAvatarImg").src = data.avatar || DEFAULT_AVATAR;
-
-                // สร้าง QR Code สำหรับโปรไฟล์ตนเอง
-                const qrContainer = document.getElementById("qrcode");
-                qrContainer.innerHTML = "";
-                new QRCode(qrContainer, {
-                    text: currentUser,
-                    width: 120,
-                    height: 120,
-                    colorDark : "#000000",
-                    colorLight : "#ffffff",
-                    correctLevel : QRCode.CorrectLevel.H
-                });
             }
         });
     }
