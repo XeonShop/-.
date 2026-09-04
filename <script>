@@ -75,7 +75,7 @@
         stopButton.addEventListener("click", () => {
             mediaRecorder.stop();
             
-            // หยุดการทำงานของฮาร์ดแวร์ไมค์ (ปิดไฟสีส้ม/เขียวที่แสดงว่าไมค์กำลังทำงาน)
+            // หยุดการทำงานของฮาร์ดแวร์ไมค์
             mediaRecorder.stream.getTracks().forEach(track => track.stop());
 
             recordButton.disabled = false;
