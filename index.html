@@ -63,6 +63,21 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 
 .start-btn{ display:block; width:100%; max-width:220px; padding:14px 20px; border-radius:16px; background:linear-gradient(90deg, #22c9ff, #7c3aed); color:white; text-decoration:none; font-weight:bold; font-size:15px; text-align:center; box-shadow:0 8px 25px rgba(67,56,202,.4); border:none; cursor:pointer; }
 
+/* ================= POSTS PAGE (ระบบโพสต์) ================= */
+.posts-container{ max-width:700px; margin:20px auto; padding:0 15px 40px; }
+.create-post-card{ background:#12154c; border:1px solid rgba(133,95,255,.4); border-radius:20px; padding:20px; margin-bottom:20px; }
+.create-post-card textarea{ width:100%; background:#080b35; border:1px solid #343785; border-radius:12px; padding:12px; color:white; font-size:14px; outline:none; resize:none; height:80px; margin-bottom:10px; }
+.post-card{ background:#12154c; border:1px solid rgba(133,95,255,.3); border-radius:18px; padding:18px; margin-bottom:15px; }
+.post-header{ display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.post-avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover; background:#080b35; }
+.post-user-info h4{ font-size:14px; color:white; }
+.post-user-info span{ font-size:11px; color:#aaaed0; }
+.post-content{ font-size:14px; line-height:1.5; color:#ddd; margin-bottom:12px; word-break:break-word; }
+.post-img{ max-width:100%; border-radius:10px; margin-bottom:10px; max-height:300px; object-fit:cover; display:block; }
+.post-actions{ display:flex; gap:15px; border-top:1px solid rgba(255,255,255,.08); padding-top:10px; font-size:13px; color:#aaaed0; }
+.post-action-btn{ background:none; border:none; color:#aaaed0; cursor:pointer; display:flex; align-items:center; gap:5px; font-size:13px; }
+.post-action-btn:hover{ color:#22c9ff; }
+
 /* ================= CHAT CONTAINER ================= */
 .chat-container{ padding:15px 3%; max-width:1200px; margin:0 auto; height: 100%; }
 .chat-wrapper{ display:flex; flex-direction:column; height:calc(100vh - 95px); background:#0c0e43; border:1px solid rgba(133,95,255,.4); border-radius:20px; overflow:hidden; }
@@ -79,7 +94,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .back-to-list-btn{ background:#343785; color:white; border:none; padding:6px 12px; border-radius:8px; font-size:12px; cursor:pointer; }
 .chat-messages{ flex: 1; padding: 15px; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth; min-height: 0; }
 
-/* ================= TYPING INDICATOR (จุด 3 จุดเหมือนเฟส) ================= */
+/* ================= TYPING INDICATOR ================= */
 .typing-indicator { display: none; align-items: center; gap: 4px; padding: 10px 14px; background: #20256e; border-radius: 18px; border-bottom-left-radius: 4px; width: fit-content; margin-bottom: 5px; }
 .typing-indicator.active { display: flex; }
 .typing-dot { width: 7px; height: 7px; background: #a3a8d1; border-radius: 50%; animation: typingBounce 1.4s infinite ease-in-out both; }
@@ -98,7 +113,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .msg-row.me .msg-bubble{ background:linear-gradient(135deg, #006f9f, #4c1d95); border-bottom-right-radius:4px; }
 .msg-row.other .msg-bubble{ background:#20256e; border-bottom-left-radius:4px; }
 .chat-msg-img{ max-width:200px; max-height:200px; border-radius:10px; display:block; margin-top:4px; object-fit: cover; cursor: pointer; }
-.chat-audio{ width: 220px; height: 40px; margin-top: 4px; }
 .reply-preview-box{ background:rgba(0,0,0,0.25); border-left:3px solid #22c9ff; padding:6px 10px; border-radius:6px; margin-bottom:6px; font-size:12px; color:#ddd; }
 .reply-preview-box .reply-user{ font-weight:bold; color:#22c9ff; margin-bottom:2px; }
 .msg-menu-btn{ background:none; border:none; color:#a3a8d1; font-size:18px; padding:4px 8px; cursor:pointer; border-radius:50%; opacity:0.6; transition:.2s; }
@@ -119,12 +133,11 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 .chat-input-btn{ width:42px; height:42px; border:none; border-radius:50%; background:#343785; color:white; font-size:18px; cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
 .chat-input button.send-btn{ width:46px; height:46px; background:linear-gradient(135deg, #22c9ff, #7c3aed); border-radius:50%; }
 
-/* ================= MODALS (Image & Profile View) ================= */
+/* ================= MODALS ================= */
 .image-modal, .profile-modal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
 .image-modal.active, .profile-modal.active { display: flex; }
 .image-modal img { max-width: 90%; max-height: 90vh; border-radius: 12px; object-fit: contain; }
 .close-modal-btn { position: absolute; top: 20px; right: 25px; background: none; border: none; color: white; font-size: 32px; cursor: pointer; }
-
 .profile-popup-card{ width: 100%; max-width: 380px; background: #171a62; border: 1px solid rgba(133,95,255,.6); border-radius: 20px; padding: 25px; text-align: center; position: relative; }
 .profile-popup-avatar{ width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #22c9ff; margin-bottom: 12px; background: #080b35; }
 
@@ -192,6 +205,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
 
     <nav>
         <a onclick="showPage('home')" id="navHome" class="active">🏠 <span>หน้าแรก</span></a>
+        <a onclick="showPage('posts')" id="navPosts">📰 <span>โพสต์</span></a>
         <a onclick="showPage('friends')" id="navFriends">👥 <span>เพื่อน</span></a>
         <a onclick="showPage('chat')" id="navChat">💬 <span>แชท</span></a>
         <a onclick="showPage('profile')" id="navProfile">👤 <span>โปรไฟล์</span></a>
@@ -214,11 +228,31 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
             <h2>ถาม-ตอบ แลกเปลี่ยนความรู้ และเพิ่มเพื่อนพูดคุย</h2>
             <p>ไม่ว่าจะเป็นการบ้าน การเรียน หรือเพื่อนคุยแก้เหงา มาร่วมสร้างสังคมการเรียนรู้ไปด้วยกันสำหรับชาวมหรรณพาราม</p>
             <div class="hero-buttons">
-                <button onclick="requestNotificationPermission()" class="start-btn" style="background:linear-gradient(90deg, #f59e0b, #ef4444); max-width:240px;">🔔 เปิดรับแจ้งเตือน</button>
+                <button onclick="showPage('posts')" class="start-btn" style="background:linear-gradient(90deg, #f59e0b, #ef4444); max-width:240px;">📰 ดูโพสต์สาธารณะ</button>
                 <button onclick="showPage('chat')" class="start-btn">💬 เริ่มต้นพูดคุยเลย</button>
             </div>
         </div>
     </section>
+</div>
+
+<!-- ================= POSTS PAGE (ระบบโพสต์) ================= -->
+<div id="pagePosts" class="page-section">
+    <div class="posts-container">
+        <div class="create-post-card">
+            <h3 style="margin-bottom:10px; font-size:15px; color:#22c9ff;">✍️ สร้างโพสต์ใหม่</h3>
+            <textarea id="postTextInput" placeholder="คุณกำลังคิดอะไรอยู่ หรือมีเรื่องอะไรอยากให้เพื่อนๆ ช่วยไหม..."></textarea>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <label for="postImageInput" style="cursor:pointer; font-size:14px; background:#080b35; padding:6px 12px; border-radius:8px; border:1px solid #343785;">📷 แนบรูปภาพ</label>
+                <input type="file" id="postImageInput" accept="image/*" style="display:none;" onchange="previewPostImage(event)">
+                <button class="start-btn" style="max-width:120px; padding:8px 16px; font-size:13px;" onclick="createNewPost()">โพสต์</button>
+            </div>
+            <div id="postImagePreviewContainer" style="margin-top:10px; display:none; position:relative; width:fit-content;">
+                <img id="postImgPreview" style="max-height:100px; border-radius:8px;">
+                <button onclick="clearPostImage()" style="position:absolute; top:-5px; right:-5px; background:red; color:white; border:none; border-radius:50%; width:20px; height:20px; font-size:10px; cursor:pointer;">✕</button>
+            </div>
+        </div>
+        <div id="postsFeedArea"></div>
+    </div>
 </div>
 
 <!-- ================= FRIENDS PAGE ================= -->
@@ -259,7 +293,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                     </div>
                 </div>
 
-                <!-- จุด 3 จุดขณะเพื่อนกำลังพิมพ์ข้อความ -->
                 <div style="padding: 0 15px;">
                     <div class="typing-indicator" id="typingIndicator">
                         <div class="typing-dot"></div>
@@ -391,6 +424,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
     let globalRequestsListener = null;
     let replyData = null;
     let typingTimer = null;
+    let tempPostImage = null;
 
     window.showPage = function(pageId){
         if((pageId === 'friends' || pageId === 'chat' || pageId === 'profile') && !currentUser){
@@ -405,6 +439,10 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         if(pageId === 'home'){
             document.getElementById('pageHome').classList.add('active');
             document.getElementById('navHome').classList.add('active');
+        } else if(pageId === 'posts'){
+            document.getElementById('pagePosts').classList.add('active');
+            document.getElementById('navPosts').classList.add('active');
+            renderPostsFeed();
         } else if(pageId === 'friends'){
             document.getElementById('pageFriends').classList.add('active');
             document.getElementById('navFriends').classList.add('active');
@@ -414,6 +452,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
             document.getElementById('navChat').classList.add('active');
             renderSidebarFriends();
             toggleMobileChatView('sidebar');
+            requestAutoNotificationPermission();
         } else if(pageId === 'profile'){
             document.getElementById('pageProfile').classList.add('active');
             document.getElementById('navProfile').classList.add('active');
@@ -452,7 +491,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         }
     };
 
-    // ระบบห้ามตั้งชื่อซ้ำ (สมัครสมาชิก)
     window.handleSignup = function(){
         const u = document.getElementById("signupUsername").value.trim();
         const p = document.getElementById("signupPassword").value;
@@ -534,23 +572,15 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         }
     }
 
-    // ระบบแจ้งเตือนข้อความเด้ง (Browser Notification)
-    window.requestNotificationPermission = function(){
-        if (!("Notification" in window)) {
-            alert("เบราว์เซอร์นี้ไม่รองรับการแจ้งเตือนเดสก์ท็อป");
-            return;
+    // ระบบแจ้งเตือนอัตโนมัติ
+    function requestAutoNotificationPermission(){
+        if ("Notification" in window && Notification.permission !== "granted") {
+            Notification.requestPermission();
         }
-        Notification.requestPermission().then(permission => {
-            if (permission === "granted") {
-                alert("เปิดระบบแจ้งเตือนสำเร็จเรียบร้อย!");
-            } else {
-                alert("คุณปิดการอนุญาตแจ้งเตือน");
-            }
-        });
-    };
+    }
 
     function showDesktopNotification(sender, text){
-        if (Notification.permission === "granted" && document.hidden) {
+        if ("Notification" in window && Notification.permission === "granted" && document.hidden) {
             new Notification(`ข้อความใหม่จาก ${sender}`, {
                 body: text,
                 icon: SCHOOL_LOGO_URL
@@ -558,7 +588,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         }
     }
 
-    // ระบบกล้องรับเพื่อน (แจ้งเตือน/จัดการคำขอเพิ่มเพื่อนเข้ามาแบบเรียลไทม์)
     function initGlobalListeners(){
         if(!currentUser) return;
         
@@ -576,7 +605,95 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         });
     }
 
-    // ฟังก์ชันดูโปรไฟล์คนอื่น
+    // ระบบโพสต์สาธารณะ
+    window.previewPostImage = function(event){
+        const file = event.target.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e){
+            tempPostImage = e.target.result;
+            document.getElementById("postImgPreview").src = tempPostImage;
+            document.getElementById("postImagePreviewContainer").style.display = "block";
+        };
+        reader.readAsDataURL(file);
+    };
+
+    window.clearPostImage = function(){
+        tempPostImage = null;
+        document.getElementById("postImagePreviewContainer").style.display = "none";
+        document.getElementById("postImageInput").value = "";
+    };
+
+    window.createNewPost = function(){
+        if(!currentUser){
+            alert("กรุณาเข้าสู่ระบบก่อนโพสต์ครับ");
+            openAuth('login');
+            return;
+        }
+        const text = document.getElementById("postTextInput").value.trim();
+        if(!text && !tempPostImage){
+            alert("กรุณากรอกข้อความหรือแนบรูปภาพอย่างน้อย 1 อย่างครับ");
+            return;
+        }
+
+        const newPostData = {
+            author: currentUser,
+            text: text || "",
+            image: tempPostImage || "",
+            timestamp: Date.now()
+        };
+
+        push(ref(db, "posts"), newPostData);
+        document.getElementById("postTextInput").value = "";
+        clearPostImage();
+        alert("โพสต์เรื่องราวเรียบร้อยแล้ว!");
+    };
+
+    function renderPostsFeed(){
+        const feedArea = document.getElementById("postsFeedArea");
+        onValue(ref(db, "posts"), (snapshot) => {
+            feedArea.innerHTML = "";
+            const posts = snapshot.val() || {};
+            const postKeys = Object.keys(posts).reverse();
+
+            if(postKeys.length === 0){
+                feedArea.innerHTML = `<div style="text-align:center; color:#aaa; padding:30px;">ยังไม่มีโพสต์ในระบบ ลองโพสต์ข้อความแรกกันเลย!</div>`;
+                return;
+            }
+
+            postKeys.forEach(postId => {
+                const post = posts[postId];
+                get(child(ref(db), `users/${post.author}/avatar`)).then((avatarSnap) => {
+                    const avatar = avatarSnap.exists() ? avatarSnap.val() : DEFAULT_AVATAR;
+                    
+                    const card = document.createElement("div");
+                    card.className = "post-card";
+                    card.innerHTML = `
+                        <div class="post-header">
+                            <img src="${avatar}" class="post-avatar">
+                            <div class="post-user-info">
+                                <h4>${post.author}</h4>
+                                <span>${new Date(post.timestamp).toLocaleString('th-TH')}</span>
+                            </div>
+                        </div>
+                        ${post.text ? `<div class="post-content">${post.text}</div>` : ''}
+                        ${post.image ? `<img src="${post.image}" class="post-img" onclick="openImageModal('${post.image}')">` : ''}
+                        <div class="post-actions">
+                            ${post.author === currentUser ? `<button class="post-action-btn" onclick="deletePost('${postId}')">🗑️ ลบโพสต์</button>` : ''}
+                        </div>
+                    `;
+                    feedArea.appendChild(card);
+                });
+            });
+        });
+    }
+
+    window.deletePost = function(postId){
+        if(confirm("คุณต้องการลบโพสต์นี้ใช่หรือไม่?")){
+            remove(ref(db, `posts/${postId}`));
+        }
+    };
+
     window.viewUserProfile = function(username){
         get(child(ref(db), `users/${username}`)).then((snapshot) => {
             if(snapshot.exists()){
@@ -594,9 +711,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
     };
 
     window.openActiveFriendProfile = function(){
-        if(activeChatFriend){
-            viewUserProfile(activeChatFriend);
-        }
+        if(activeChatFriend) viewUserProfile(activeChatFriend);
     };
 
     window.renderUsers = function(){
@@ -711,7 +826,6 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         toggleMobileChatView('main');
     }
 
-    // ระบบกำลังพิมพ์ (Typing Indicator)
     window.handleTypingInput = function(){
         if(!activeChatFriend) return;
         const roomId = [currentUser, activeChatFriend].sort().join("_");
@@ -761,12 +875,9 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
             timestamp: Date.now()
         };
 
-        if(replyData){
-            msgData.replyTo = replyData;
-        }
+        if(replyData) msgData.replyTo = replyData;
 
         push(ref(db, `private_chats/${roomId}`), msgData);
-
         input.value = "";
         cancelReply();
     };
@@ -809,9 +920,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
                     timestamp: Date.now()
                 };
 
-                if(replyData){
-                    msgData.replyTo = replyData;
-                }
+                if(replyData) msgData.replyTo = replyData;
 
                 push(ref(db, `private_chats/${roomId}`), msgData);
                 cancelReply();
@@ -897,7 +1006,7 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         const currentMenu = document.getElementById(`menu-${msgId}`);
         const isActive = currentMenu.classList.contains('active');
         closeAllMsgMenus();
-        if(!isActive){ currentMenu.classList.add('active'); }
+        if(!isActive) currentMenu.classList.add('active');
     };
 
     window.closeAllMsgMenus = function(){
@@ -993,18 +1102,10 @@ nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
         alert("อัปเดตสถานะเรียบร้อยครับ!");
     };
 
-    // ระบบห้ามตั้งชื่อซ้ำ (ตอนเปลี่ยนชื่อใหม่ในโปรไฟล์)
     window.handleUpdateUsername = async function(){
         const newUsername = document.getElementById("newUsernameInput").value.trim();
-        if(!newUsername) {
-            alert("กรุณากรอกชื่อใหม่ครับ");
-            return;
-        }
-
-        if(newUsername === currentUser) {
-            alert("นี่คือชื่อปัจจุบันของคุณอยู่แล้วครับ");
-            return;
-        }
+        if(!newUsername) { alert("กรุณากรอกชื่อใหม่ครับ"); return; }
+        if(newUsername === currentUser) { alert("นี่คือชื่อปัจจุบันของคุณอยู่แล้วครับ"); return; }
 
         try {
             const nameSnap = await get(child(ref(db), `users/${newUsername}`));
