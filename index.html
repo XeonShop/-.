@@ -1,366 +1,1099 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maharnnoparam School</title>
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: Arial, "Tahoma", sans-serif; background: #080b35; color: white; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Chat - โรงเรียนมหรรณพาราม</title>
+<style>
+*{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+body{ font-family:Arial,"Tahoma",sans-serif; background:#080b35; color:white; min-height:100vh; padding-bottom: 20px; }
 
-        /* HEADER & NAVIGATION */
-        header {
-            height: 65px; padding: 0 3%; display: flex; align-items: center; justify-content: space-between;
-            background: rgba(5, 7, 35, 0.98); border-bottom: 1px solid rgba(255, 255, 255, 0.08); flex-shrink: 0; z-index: 10;
-        }
-        .logo { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: bold; cursor: pointer; flex-shrink: 0; }
-        .logo-img { width: 32px; height: 32px; border-radius: 50%; object-fit: contain; background: white; padding: 2px; }
-        .logo span { color: #8b5cf6; }
-
-        nav { display: flex; align-items: center; gap: 4px; }
-        nav a { color: #ddd; text-decoration: none; font-size: 13px; padding: 6px 8px; border-radius: 10px; transition: .3s; cursor: pointer; display: flex; align-items: center; gap: 4px; }
-        nav a:hover, nav a.active { color: #22c9ff; background: rgba(255, 255, 255, 0.05); }
-
-        .header-buttons { display: flex; gap: 6px; align-items: center; }
-        .login { padding: 6px 10px; border: 1px solid #4935a5; border-radius: 10px; color: white; background: none; font-size: 12px; cursor: pointer; }
-        .signup { padding: 6px 10px; border-radius: 10px; background: linear-gradient(135deg, #9333ea, #c026ff); color: white; border: none; font-size: 12px; cursor: pointer; }
-
-        .user-profile-badge { background: #171a62; border: 1px solid #7c3aed; padding: 4px 8px; border-radius: 10px; font-size: 12px; display: flex; gap: 6px; align-items: center; }
-        .user-avatar-small { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
-        .logout-btn { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 11px; font-weight: bold; }
-
-        /* PAGES */
-        .page-section { display: none; flex: 1; overflow-y: auto; }
-        .page-section.active { display: flex; flex-direction: column; }
-
-        /* HERO */
-        .hero {
-            padding: 50px 5% 70px; text-align: center; position: relative; overflow: hidden;
-            background: radial-gradient(circle at 50% 30%, rgba(72,40,220,.35), transparent 50%), linear-gradient(135deg, #080b35, #11136c, #080b35);
-        }
-        .school-badge-container { margin-bottom: 20px; }
-        .school-hero-logo {
-            width: 90px; height: 90px; border-radius: 50%; object-fit: contain; background: rgba(255, 255, 255, 0.95);
-            padding: 6px; box-shadow: 0 0 25px rgba(34, 201, 255, 0.4); border: 2px solid rgba(133, 95, 255, 0.8);
-            animation: floatLogo 3s ease-in-out infinite;
-        }
-        @keyframes floatLogo {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-        }
-        .hero-text h1 { font-size: 32px; line-height: 1.2; margin-bottom: 12px; }
-        .gradient-text { background: linear-gradient(90deg, #9b5cff, #24b8ff); -webkit-background-clip: text; color: transparent; }
-        .hero-text h2 { font-size: 15px; margin-bottom: 12px; color: #22c9ff; }
-        .hero-text p { color: #b8b9d0; font-size: 13px; line-height: 1.6; max-width: 600px; margin: 0 auto; }
-        .hero-buttons { margin-top: 25px; display: flex; justify-content: center; }
-        .start-btn { display: block; width: 100%; max-width: 300px; padding: 14px 20px; border-radius: 16px; background: linear-gradient(90deg, #22c9ff, #7c3aed); color: white; text-decoration: none; font-weight: bold; font-size: 15px; text-align: center; box-shadow: 0 8px 25px rgba(67,56,202,.4); border: none; cursor: pointer; }
-
-        /* CHAT SYSTEM */
-        .chat-container { padding: 10px 2%; max-width: 1200px; width: 100%; margin: 0 auto; flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-        .chat-wrapper { display: flex; flex: 1; background: #0c0e43; border: 1px solid rgba(133,95,255,.4); border-radius: 16px; overflow: hidden; height: 100%; }
-
-        .chat-sidebar { width: 100%; background: #12154c; display: flex; flex-direction: column; overflow-y: auto; }
-        .friends-list { padding: 10px; }
-        .friend-item { padding: 12px 15px; border-radius: 14px; margin-bottom: 8px; background: rgba(255,255,255,.05); cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 15px; }
-        .friend-item:active, .friend-item.active { background: linear-gradient(135deg, rgba(34,201,255,.3), rgba(124,58,237,.4)); border: 1px solid rgba(34,201,255,.5); }
-        .friend-profile-mini { background: transparent; border: 0; color: #22c9ff; font-size: 18px; cursor: pointer; padding: 4px; }
-        .friend-item-img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; background: #343785; flex-shrink: 0; }
-
-        .chat-main { display: none; flex: 1; flex-direction: column; background: #171a62; position: relative; overflow: hidden; height: 100%; }
-        .chat-main.active { display: flex; }
-        .chat-header { height: 50px; padding: 0 15px; background: rgba(10,13,58,.8); border-bottom: 1px solid rgba(255,255,255,.1); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
-        .chat-header h3 { font-size: 15px; display: flex; align-items: center; gap: 8px; cursor: pointer; }
-        .chat-header h3:hover { color: #22c9ff; }
-        .back-to-list-btn { background: #343785; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; }
-
-        /* แก้ไขปัญหาเลื่อนข้อความแชทให้อยู่กรอบพอดี */
-        .chat-messages-container {
-            flex: 1;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            min-height: 0;
-        }
-        .chat-messages {
-            flex: 1;
-            width: 100%;
-            padding: 15px;
-            overflow-y: auto !important;
-            -webkit-overflow-scrolling: touch;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        /* ปุ่มลัดเลื่อนแชท */
-        .scroll-quick-btns { position: absolute; right: 15px; bottom: 15px; display: flex; flex-direction: column; gap: 6px; z-index: 10; }
-        .scroll-btn { width: 38px; height: 38px; border-radius: 50%; background: rgba(124, 58, 237, 0.9); color: white; border: 1px solid rgba(255, 255, 255, 0.4); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.5); transition: transform 0.2s, background 0.2s; }
-        .scroll-btn:hover { transform: scale(1.1); background: rgba(34, 201, 255, 0.95); }
-
-        /* MESSAGE BUBBLES */
-        .msg-row { display: flex; align-items: center; gap: 6px; position: relative; max-width: 85%; flex-shrink: 0; }
-        .msg-row.me { align-self: flex-end; flex-direction: row-reverse; }
-        .msg-row.other { align-self: flex-start; flex-direction: row; }
-
-        .msg-bubble { padding: 12px 16px; border-radius: 18px; font-size: 15px; line-height: 1.4; word-break: break-word; position: relative; width: 100%; }
-        .msg-row.me .msg-bubble { background: linear-gradient(135deg, #006f9f, #4c1d95); border-bottom-right-radius: 4px; }
-        .msg-row.other .msg-bubble { background: #20256e; border-bottom-left-radius: 4px; }
-
-        .chat-msg-img { max-width: 200px; max-height: 200px; border-radius: 10px; display: block; margin-top: 4px; object-fit: cover; cursor: pointer; }
-        .chat-audio { width: 220px; height: 40px; margin-top: 4px; }
-
-        .reply-preview-box { background: rgba(0,0,0,0.25); border-left: 3px solid #22c9ff; padding: 6px 10px; border-radius: 6px; margin-bottom: 6px; font-size: 12px; color: #ddd; }
-        .reply-preview-box .reply-user { font-weight: bold; color: #22c9ff; margin-bottom: 2px; }
-
-        .msg-menu-btn { background: none; border: none; color: #a3a8d1; font-size: 18px; padding: 4px 8px; cursor: pointer; border-radius: 50%; opacity: 0.6; }
-        .msg-menu-btn:hover { opacity: 1; background: rgba(255,255,255,.1); }
-
-        .msg-options-menu { display: none; position: absolute; top: 100%; z-index: 20; background: #0e1140; border: 1px solid rgba(133,95,255,.6); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); overflow: hidden; min-width: 140px; }
-        .msg-options-menu.active { display: block; }
-        .msg-row.me .msg-options-menu { right: 0; }
-        .msg-row.other .msg-options-menu { left: 0; }
-
-        .menu-item { padding: 10px 14px; font-size: 13px; color: white; cursor: pointer; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,.05); }
-        .menu-item:last-child { border-bottom: none; }
-        .menu-item:hover { background: rgba(34,201,255,.15); }
-        .menu-item.danger { color: #f87171; }
-
-        .active-reply-bar { display: none; background: #0f1248; border-top: 1px solid rgba(255,255,255,.1); padding: 8px 15px; align-items: center; justify-content: space-between; font-size: 13px; flex-shrink: 0; }
-        .active-reply-bar.active { display: flex; }
-        .active-reply-info { border-left: 3px solid #22c9ff; padding-left: 8px; color: #aaaed0; }
-        .cancel-reply-btn { background: none; border: none; color: #ef4444; font-size: 16px; cursor: pointer; }
-
-        .chat-input { padding: 10px 12px; background: #12154c; display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
-        .chat-input input[type="text"] { flex: 1; border: 1px solid #343785; border-radius: 25px; padding: 12px 16px; background: #080b35; color: white; outline: none; font-size: 15px; }
-        .chat-input-btn { width: 42px; height: 42px; border: none; border-radius: 50%; background: #343785; color: white; font-size: 18px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-        .chat-input button.send-btn { width: 46px; height: 46px; background: linear-gradient(135deg, #22c9ff, #7c3aed); border-radius: 50%; }
-        .chat-input-btn.recording { background: #ef4444 !important; animation: pulse 1.2s infinite; }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-        }
-
-        /* MODALS & QR SCANNER */
-        .image-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
-        .image-modal.active { display: flex; }
-        .image-modal img { max-width: 90%; max-height: 90vh; border-radius: 12px; object-fit: contain; }
-        .close-modal-btn { position: absolute; top: 20px; right: 25px; background: none; border: none; color: white; font-size: 32px; cursor: pointer; }
-
-        .scanner-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
-        .scanner-modal.active { display: flex; }
-        .scanner-box { background: #12154c; border: 1px solid rgba(133,95,255,.5); border-radius: 20px; padding: 20px; width: 100%; max-width: 400px; text-align: center; position: relative; }
-
-        /* FRIENDS & PROFILE */
-        .friends-container { padding: 20px; max-width: 850px; margin: 20px auto; background: #12154c; border: 1px solid rgba(133,95,255,.4); border-radius: 24px; width: 95%; }
-        .search-box { display: flex; gap: 10px; margin-bottom: 20px; }
-        .search-box input { flex: 1; padding: 14px 18px; border-radius: 14px; border: 1px solid #343785; background: #080b35; color: white; font-size: 15px; outline: none; }
-        .scan-camera-btn { background: linear-gradient(135deg, #7c3aed, #22c9ff); border: none; border-radius: 14px; color: white; padding: 0 16px; font-size: 18px; cursor: pointer; }
-        
-        .users-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-        .user-card { background: #171a62; border: 1px solid rgba(133,95,255,.4); border-radius: 16px; padding: 15px; display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; transition: 0.2s; }
-        .user-card:hover { border-color: #22c9ff; }
-        .user-info { display: flex; align-items: center; gap: 12px; flex: 1; }
-        .user-avatar-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; background: #343785; flex-shrink: 0; }
-        .user-details h4 { font-size: 16px; margin-bottom: 2px; }
-        .user-details p { font-size: 12px; color: #aaaed0; }
-
-        .btn-friend { padding: 10px 16px; border-radius: 12px; border: none; font-weight: bold; font-size: 13px; cursor: pointer; min-width: 110px; text-align: center; z-index: 2; }
-        .btn-add { background: linear-gradient(90deg, #22c9ff, #7c3aed); color: white; }
-        .btn-accept { background: #22c55e; color: white; }
-        .btn-remove { background: #ef4444; color: white; }
-
-        /* USER PROFILE POPUP / VIEW */
-        .profile-card { max-width: 450px; margin: 20px auto; background: #171a62; border: 1px solid rgba(133,95,255,.5); border-radius: 22px; padding: 25px 20px; text-align: center; width: 95%; }
-        .profile-avatar-container { position: relative; width: 100px; height: 100px; margin: 0 auto 15px; }
-        .profile-avatar-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #22c9ff; background: #080b35; }
-        .upload-btn-label { position: absolute; bottom: 0; right: 0; background: #7c3aed; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; border: 2px solid #171a62; }
-        .status-input { width: 100%; padding: 14px; border-radius: 14px; border: 1px solid #343785; background: #080b35; color: white; outline: none; font-size: 15px; margin-bottom: 15px; }
-
-        /* AUTH OVERLAY */
-        .auth-overlay { display: none; position: fixed; inset: 0; background: rgba(5,6,25,.85); z-index: 100; align-items: center; justify-content: center; padding: 15px; }
-        .auth-overlay.active { display: flex; }
-        .auth-box { width: 100%; max-width: 360px; background: linear-gradient(160deg, #171a62, #0c0e43); border: 1px solid rgba(133,95,255,.5); border-radius: 20px; padding: 25px 20px; position: relative; }
-        .auth-close { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #aaaed0; font-size: 22px; cursor: pointer; }
-        .auth-field { margin-bottom: 14px; }
-        .auth-field label { display: block; font-size: 12px; color: #c4c6e6; margin-bottom: 5px; }
-        .auth-field input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #343785; background: #0e1044; color: white; font-size: 15px; outline: none; }
-        .auth-submit { width: 100%; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(90deg, #22c9ff, #7c3aed); color: white; font-weight: bold; font-size: 16px; cursor: pointer; }
-        .auth-switch { text-align: center; margin-top: 15px; font-size: 13px; color: #aaaed0; }
-        .auth-switch button { background: none; border: none; color: #a855f7; font-weight: bold; cursor: pointer; font-size: 13px; }
-
-        @media (max-width: 767px) {
-            .logo span { display: none; }
-            nav a span { display: none; }
-            nav a { padding: 8px 10px; font-size: 18px; }
-        }
-
-        @media (min-width: 768px) {
-            .hero { padding: 70px 7% 90px; text-align: left; }
-            .school-badge-container { display: inline-block; margin-bottom: 15px; }
-            .hero-text h1 { font-size: 48px; }
-            .hero-buttons { justify-content: flex-start; }
-            .users-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
-            .chat-wrapper { display: grid; grid-template-columns: 280px 1fr; }
-            .chat-sidebar { display: flex !important; }
-            .chat-main { display: flex !important; }
-            .back-to-list-btn { display: none; }
-        }
-
-        /* ===== CHAT LAYOUT FIX v2 ===== */
-        html, body { width:100%; height:100%; }
-        .page-section.active#pageChat { min-height:0; overflow:hidden; }
-        .chat-container { min-height:0; height:100%; }
-        .chat-wrapper { min-height:0; height:100%; }
-        .chat-sidebar { min-width:0; min-height:0; }
-        .chat-main { min-width:0; min-height:0; }
-        .chat-messages-container { min-width:0; min-height:0; height:auto; flex:1 1 auto; }
-        .chat-messages {
-            min-width:0; min-height:0; height:100%;
-            overflow-x:hidden !important; overflow-y:auto !important;
-            justify-content:flex-start;
-            align-items:stretch;
-            padding:18px 56px 18px 18px;
-        }
-        .msg-row {
-            width:auto; max-width:min(75%, 520px);
-            flex:0 0 auto;
-            align-items:flex-end;
-        }
-        .msg-row.me { margin-left:auto; margin-right:0; }
-        .msg-row.other { margin-left:0; margin-right:auto; }
-        .msg-bubble { width:auto; max-width:100%; overflow-wrap:anywhere; }
-        .scroll-quick-btns { right:12px; bottom:12px; }
-        .chat-input { min-width:0; }
-        #msgInput { min-width:0; flex:1 1 auto; }
-
-        @media (min-width:768px) {
-            .chat-wrapper { grid-template-columns:280px minmax(0,1fr); }
-        }
-
-        @media (max-width:767px) {
-            .chat-container { padding:6px; }
-            .chat-wrapper { width:100%; }
-            .chat-messages { padding:14px 52px 14px 12px; }
-            .msg-row { max-width:84%; }
-            .chat-msg-img { max-width:180px; max-height:180px; }
-            .chat-audio { width:min(220px,65vw); }
-        }
-
-    
-        /* Messenger-style chat */
-        .chat-wrapper { min-height: 0; }
-        .chat-main { min-width: 0; }
-        .chat-header { height: 68px; padding: 0 16px; border-bottom: 1px solid rgba(133,95,255,.35); }
-        .chat-header h3 { margin: 0 auto; font-size: 17px; min-width: 0; max-width: 65%; justify-content: center; }
-        .chat-header h3 img { width: 40px !important; height: 40px !important; border: 2px solid #22c9ff; }
-        .back-to-list-btn { font-size: 14px; padding: 9px 13px; }
-        .chat-messages-container { min-height: 0; background: #171a62; }
-        .chat-messages { box-sizing: border-box; padding: 18px 14px 24px; gap: 14px; min-height: 0; overflow-x: hidden !important; overscroll-behavior: contain; }
-        .msg-row { max-width: min(78%, 420px); align-items: flex-end; }
-        .msg-bubble { width: auto; max-width: 100%; padding: 11px 15px; font-size: 16px; }
-        .msg-row.me .msg-bubble { border-bottom-right-radius: 5px; }
-        .msg-row.other .msg-bubble { border-bottom-left-radius: 5px; }
-        .chat-input { padding: 10px 12px; gap: 8px; border-top: 1px solid rgba(133,95,255,.35); }
-        .chat-input input[type='text'] { min-width: 0; height: 48px; box-sizing: border-box; font-size: 16px; }
-        .chat-input-btn { width: 48px; height: 48px; }
-        .chat-input button.send-btn { width: 48px; height: 48px; }
-        @media (max-width: 767px) {
-            .chat-container { padding: 8px 8px; }
-            .chat-wrapper { border-radius: 18px; }
-            .chat-main { width: 100%; }
-            .chat-header { height: 66px; }
-            .chat-header h3 { font-size: 16px; max-width: 58%; }
-            .chat-messages { padding: 14px 10px 18px; gap: 12px; }
-            .msg-row { max-width: 82%; }
-            .msg-bubble { font-size: 16px; padding: 10px 14px; }
-            .chat-input { padding: 8px 8px; }
-            .chat-input input[type='text'] { height: 46px; padding: 10px 14px; }
-            .chat-input-btn, .chat-input button.send-btn { width: 46px; height: 46px; }
-            .scroll-quick-btns { right: 8px; bottom: 8px; }
-        }
-
-
-/* ===== กำลังพิมพ์ 3 จุด ===== */
-.typing-indicator{
-    display:none;
-    align-items:center;
-    gap:7px;
-    width:max-content;
-    margin:0 15px 8px;
-    padding:8px 12px;
-    border-radius:14px;
-    background:#20256e;
-    color:#b9bde0;
-    font-size:12px;
+/* ================= HEADER & NAV ================= */
+header{
+    height:65px; padding:0 3%; display:flex; align-items:center; justify-content:space-between;
+    background:rgba(5,7,35,.98); border-bottom:1px solid rgba(255,255,255,.08); position:sticky; top:0; z-index:10;
 }
-.typing-indicator.active{display:flex}
-.typing-dots{display:flex;gap:3px;align-items:center}
-.typing-dots i{
-    width:5px;height:5px;border-radius:50%;background:#22c9ff;
-    animation:typingDot 1.2s infinite ease-in-out;
+.logo{ display:flex; align-items:center; gap:8px; font-size:16px; font-weight:bold; cursor:pointer; flex-shrink: 0; }
+.logo-img{ width:32px; height:32px; border-radius:50%; object-fit:contain; background:white; padding:2px; }
+.logo span{ color:#8b5cf6; }
+
+nav{ display:flex; align-items:center; gap:4px; }
+nav a{ color:#ddd; text-decoration:none; font-size:13px; padding:6px 8px; border-radius:10px; transition:.3s; cursor:pointer; display: flex; align-items:center; gap:4px; }
+nav a:hover, nav a.active{ color:#22c9ff; background:rgba(255,255,255,.05); }
+
+.header-buttons{ display:flex; gap:6px; align-items:center; }
+.login{ padding:6px 10px; border:1px solid #4935a5; border-radius:10px; color:white; background:none; font-size:12px; cursor:pointer; }
+.signup{ padding:6px 10px; border-radius:10px; background:linear-gradient(135deg, #9333ea, #c026ff); color:white; border:none; font-size:12px; cursor:pointer; }
+
+.user-profile-badge{ background:#171a62; border:1px solid #7c3aed; padding:4px 8px; border-radius:10px; font-size:12px; display:flex; gap:6px; align-items:center; }
+.user-avatar-small{ width:22px; height:22px; border-radius:50%; object-fit:cover; }
+.logout-btn{ background:none; border:none; color:#ef4444; cursor:pointer; font-size:11px; font-weight:bold; }
+
+/* ================= PAGES ================= */
+.page-section{ display:none; }
+.page-section.active{ display:block; }
+
+/* ================= HERO ================= */
+.hero{
+    padding:50px 5% 70px; 
+    text-align:center; 
+    position:relative; 
+    overflow:hidden;
+    background:radial-gradient(circle at 50% 30%, rgba(72,40,220,.35), transparent 50%), linear-gradient(135deg, #080b35, #11136c, #080b35);
 }
-.typing-dots i:nth-child(2){animation-delay:.15s}
-.typing-dots i:nth-child(3){animation-delay:.30s}
-@keyframes typingDot{
-    0%,60%,100%{transform:translateY(0);opacity:.35}
-    30%{transform:translateY(-4px);opacity:1}
+
+.school-badge-container{ margin-bottom: 20px; }
+.school-hero-logo{
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: contain;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 6px;
+    box-shadow: 0 0 25px rgba(34, 201, 255, 0.4);
+    border: 2px solid rgba(133, 95, 255, 0.8);
+    animation: floatLogo 3s ease-in-out infinite;
 }
-.download-chat-image{
-    display:inline-flex;align-items:center;gap:5px;
-    margin-top:7px;padding:6px 9px;border-radius:9px;
-    background:rgba(255,255,255,.14);color:#fff;
-    text-decoration:none;font-size:12px;
+
+@keyframes floatLogo {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
 }
-.download-chat-image:hover{background:rgba(34,201,255,.28)}
+
+.hero-text h1{ font-size:32px; line-height:1.2; margin-bottom:12px; }
+.gradient-text{ background:linear-gradient(90deg, #9b5cff, #24b8ff); -webkit-background-clip:text; color:transparent; }
+.hero-text h2{ font-size:15px; margin-bottom:12px; color:#22c9ff; }
+.hero-text p{ color:#b8b9d0; font-size:13px; line-height:1.6; max-width:600px; margin:0 auto; }
+.hero-buttons{ margin-top:25px; display:flex; justify-content:center; }
+
+.start-btn{ display:block; width:100%; max-width:300px; padding:14px 20px; border-radius:16px; background:linear-gradient(90deg, #22c9ff, #7c3aed); color:white; text-decoration:none; font-weight:bold; font-size:15px; text-align:center; box-shadow:0 8px 25px rgba(67,56,202,.4); border:none; cursor:pointer; }
+
+/* ================= CHAT CONTAINER ================= */
+.chat-container{ padding:15px 3%; max-width:1200px; margin:0 auto; }
+.chat-wrapper{ display:flex; flex-direction:column; height:calc(100vh - 100px); min-height:500px; background:#0c0e43; border:1px solid rgba(133,95,255,.4); border-radius:20px; overflow:hidden; }
+
+.chat-sidebar{ flex:1; background:#12154c; display:flex; flex-direction:column; overflow-y:auto; }
+.friends-list{ padding:10px; }
+
+.friend-item{ padding:12px 15px; border-radius:14px; margin-bottom:8px; background:rgba(255,255,255,.05); cursor:pointer; display:flex; align-items:center; gap:12px; font-size:15px; }
+.friend-item:active, .friend-item.active{ background:linear-gradient(135deg, rgba(34,201,255,.3), rgba(124,58,237,.4)); border:1px solid rgba(34,201,255,.5); }
+.friend-item-img{ width:36px; height:36px; border-radius:50%; object-fit:cover; background:#343785; flex-shrink:0; }
+
+.chat-main{ flex:1; display:none; flex-direction:column; background:#171a62; position:relative; }
+.chat-main.active{ display:flex; }
+.chat-header{ height:55px; padding:0 15px; background:rgba(10,13,58,.6); border-bottom:1px solid rgba(255,255,255,.1); display:flex; align-items:center; justify-content:space-between; }
+.chat-header h3{ font-size:15px; display:flex; align-items:center; gap:8px; }
+.back-to-list-btn{ background:#343785; color:white; border:none; padding:6px 12px; border-radius:8px; font-size:12px; cursor:pointer; }
+
+/* สไตล์กล่องข้อความแชท รองรับการเลื่อนขึ้นเลื่อนลง */
+.chat-messages{ 
+    flex:1; 
+    padding:15px; 
+    overflow-y: scroll; 
+    display:flex; 
+    flex-direction:column; 
+    gap:12px; 
+    scroll-behavior: smooth;
+}
+
+/* ================= MESSAGE BUBBLE & MENU ================= */
+.msg-row{ display:flex; align-items:center; gap:6px; position:relative; max-width:85%; }
+.msg-row.me{ align-self:flex-end; flex-direction:row-reverse; }
+.msg-row.other{ align-self:flex-start; flex-direction:row; }
+
+.msg-bubble{ padding:12px 16px; border-radius:18px; font-size:15px; line-height:1.4; word-break:break-word; position:relative; width:100%; }
+.msg-row.me .msg-bubble{ background:linear-gradient(135deg, #006f9f, #4c1d95); border-bottom-right-radius:4px; }
+.msg-row.other .msg-bubble{ background:#20256e; border-bottom-left-radius:4px; }
+
+.chat-msg-img{ max-width:200px; max-height:200px; border-radius:10px; display:block; margin-top:4px; object-fit: cover; cursor: pointer; transition: transform 0.2s; }
+.chat-msg-img:hover { transform: scale(1.02); }
+.chat-audio{ width: 220px; height: 40px; margin-top: 4px; }
+
+.reply-preview-box{ background:rgba(0,0,0,0.25); border-left:3px solid #22c9ff; padding:6px 10px; border-radius:6px; margin-bottom:6px; font-size:12px; color:#ddd; }
+.reply-preview-box .reply-user{ font-weight:bold; color:#22c9ff; margin-bottom:2px; }
+
+.msg-menu-btn{ background:none; border:none; color:#a3a8d1; font-size:18px; padding:4px 8px; cursor:pointer; border-radius:50%; opacity:0.6; transition:.2s; }
+.msg-menu-btn:hover, .msg-menu-btn:active{ opacity:1; background:rgba(255,255,255,.1); }
+
+.msg-options-menu{ display:none; position:absolute; top:100%; z-index:20; background:#0e1140; border:1px solid rgba(133,95,255,.6); border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.5); overflow:hidden; min-width:140px; }
+.msg-options-menu.active{ display:block; }
+.msg-row.me .msg-options-menu{ right:0; }
+.msg-row.other .msg-options-menu{ left:0; }
+
+.menu-item{ padding:10px 14px; font-size:13px; color:white; cursor:pointer; display:flex; align-items:center; gap:8px; border-bottom:1px solid rgba(255,255,255,.05); }
+.menu-item:last-child{ border-bottom:none; }
+.menu-item:hover{ background:rgba(34,201,255,.15); }
+.menu-item.danger{ color:#f87171; }
+
+.active-reply-bar{ display:none; background:#0f1248; border-top:1px solid rgba(255,255,255,.1); padding:8px 15px; align-items:center; justify-content:space-between; font-size:13px; }
+.active-reply-bar.active{ display:flex; }
+.active-reply-info{ border-left:3px solid #22c9ff; padding-left:8px; color:#aaaed0; }
+.cancel-reply-btn{ background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer; }
+
+.chat-input{ padding:10px 12px; background:#12154c; display:flex; gap:8px; align-items:center; }
+.chat-input input[type="text"]{ flex:1; border:1px solid #343785; border-radius:25px; padding:12px 16px; background:#080b35; color:white; outline:none; font-size:15px; }
+.chat-input-btn{ width:42px; height:42px; border:none; border-radius:50%; background:#343785; color:white; font-size:18px; cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+.chat-input button.send-btn{ width:46px; height:46px; background:linear-gradient(135deg, #22c9ff, #7c3aed); border-radius:50%; }
+.chat-input-btn.recording{ background: #ef4444 !important; animation: pulse 1.2s infinite; }
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+/* ================= IMAGE ZOOM MODAL ================= */
+.image-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+.image-modal.active { display: flex; }
+.image-modal img {
+    max-width: 90%;
+    max-height: 90vh;
+    border-radius: 12px;
+    object-fit: contain;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.8);
+}
+.close-modal-btn {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 32px;
+    cursor: pointer;
+}
+
+/* ================= FRIENDS PAGE ================= */
+.friends-container{ 
+    padding:25px; 
+    max-width:850px; 
+    margin:25px auto; 
+    background:#12154c; 
+    border:1px solid rgba(133,95,255,.4); 
+    border-radius:24px; 
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+.search-box input{ 
+    width:100%; 
+    padding:14px 18px; 
+    border-radius:14px; 
+    border:1px solid #343785; 
+    background:#080b35; 
+    color:white; 
+    font-size:15px; 
+    outline:none; 
+    margin-bottom:20px; 
+}
+
+.users-grid{ display:grid; grid-template-columns:1fr; gap:12px; }
+
+.user-card{ background:#171a62; border:1px solid rgba(133,95,255,.4); border-radius:16px; padding:15px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.user-info{ display:flex; align-items:center; gap:12px; }
+.user-avatar-img{ width:45px; height:45px; border-radius:50%; object-fit:cover; background:#343785; }
+.user-details h4{ font-size:16px; margin-bottom:2px; }
+.user-details p{ font-size:12px; color:#aaaed0; }
+
+.btn-friend{ padding:10px 16px; border-radius:12px; border:none; font-weight:bold; font-size:13px; cursor:pointer; min-width:110px; text-align:center; }
+.btn-add{ background:linear-gradient(90deg, #22c9ff, #7c3aed); color:white; }
+.btn-accept{ background:#22c55e; color:white; box-shadow:0 0 10px rgba(34,197,94,.4); }
+.btn-remove{ background:#ef4444; color:white; }
+
+/* ================= PROFILE PAGE ================= */
+.profile-card{ max-width:450px; margin:20px auto; background:#171a62; border:1px solid rgba(133,95,255,.5); border-radius:22px; padding:25px 20px; text-align:center; }
+.profile-avatar-container{ position:relative; width:100px; height:100px; margin:0 auto 15px; }
+.profile-avatar-img{ width:100px; height:100px; border-radius:50%; object-fit:cover; border:3px solid #22c9ff; background:#080b35; }
+.upload-btn-label{ position:absolute; bottom:0; right:0; background:#7c3aed; color:white; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; border:2px solid #171a62; }
+.profile-card h3{ font-size:22px; color:#22c9ff; margin-bottom:6px; }
+.profile-card p{ color:#aaaed0; margin-bottom:20px; font-size:14px; }
+.status-input{ width:100%; padding:14px; border-radius:14px; border:1px solid #343785; background:#080b35; color:white; outline:none; font-size:15px; margin-bottom:15px; }
+
+/* ================= AUTH MODAL ================= */
+.auth-overlay{ display:none; position:fixed; inset:0; background:rgba(5,6,25,.85); z-index:100; align-items:center; justify-content:center; padding:15px; }
+.auth-overlay.active{ display:flex; }
+.auth-box{ width:100%; max-width:360px; background:linear-gradient(160deg, #171a62, #0c0e43); border:1px solid rgba(133,95,255,.5); border-radius:20px; padding:25px 20px; position:relative; }
+.auth-close{ position:absolute; top:15px; right:15px; background:none; border:none; color:#aaaed0; font-size:22px; cursor:pointer; }
+.auth-box h2{ font-size:22px; margin-bottom:5px; }
+.auth-sub{ color:#aaaed0; font-size:13px; margin-bottom:20px; }
+.auth-field{ margin-bottom:14px; }
+.auth-field label{ display:block; font-size:12px; color:#c4c6e6; margin-bottom:5px; }
+.auth-field input{ width:100%; padding:12px; border-radius:12px; border:1px solid #343785; background:#0e1044; color:white; font-size:15px; outline:none; }
+.auth-submit{ width:100%; padding:14px; border:none; border-radius:12px; background:linear-gradient(90deg, #22c9ff, #7c3aed); color:white; font-weight:bold; font-size:16px; cursor:pointer; margin-top:5px; }
+.auth-switch{ text-align:center; margin-top:15px; font-size:13px; color:#aaaed0; }
+.auth-switch button{ background:none; border:none; color:#a855f7; font-weight:bold; cursor:pointer; font-size:13px; }
+
+@media (max-width: 767px) {
+    .logo span { display: none; }
+    nav a span { display: none; }
+    nav a { padding: 8px 10px; font-size: 18px; }
+}
+
+@media (min-width: 768px) {
+    .hero{ padding:70px 7% 90px; text-align:left; }
+    .school-badge-container { display: inline-block; margin-bottom: 15px; }
+    .hero-text h1{ font-size:48px; }
+    .hero-buttons{ justify-content:flex-start; }
+    .users-grid{ grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); }
+    .chat-wrapper{ display:grid; grid-template-columns:280px 1fr; height:600px; }
+    .chat-sidebar{ display:flex !important; }
+    .chat-main{ display:flex !important; }
+    .back-to-list-btn{ display:none; }
+}
 </style>
 </head>
 <body>
 
+<!-- ================= HEADER ================= -->
 <header>
     <div class="logo" onclick="showPage('home')">
-        <img src="data:image/jpeg;base64,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" alt="Logo">
-        Maharnnoparam School
+        <img src="https://i.ibb.co/3ykL8w4/school-logo.png" id="headerLogoImg" class="logo-img" alt="Logo">
+        Student <span>Chat</span>
     </div>
+
     <nav>
-        <a onclick="showPage('home')" class="active">🏠 <span>หน้าแรก</span></a>
-        <a onclick="showPage('friends')">👥 <span>เพื่อน</span></a>
-        <a onclick="showPage('chat')">💬 <span>แชท</span></a>
+        <a onclick="showPage('home')" id="navHome" class="active">🏠 <span>หน้าแรก</span></a>
+        <a onclick="showPage('friends')" id="navFriends">👥 <span>เพื่อน</span></a>
+        <a onclick="showPage('chat')" id="navChat">💬 <span>แชท</span></a>
+        <a onclick="showPage('profile')" id="navProfile">👤 <span>โปรไฟล์</span></a>
     </nav>
-    <div class="header-buttons" id="headerAuthArea">
+
+    <div class="header-buttons" id="authNavButtons">
         <button class="login" onclick="openAuth('login')">เข้าสู่ระบบ</button>
-        <button class="signup" onclick="openAuth('signup')">สมัครสมาชิก</button>
+        <button class="signup" onclick="openAuth('signup')">สมัคร</button>
     </div>
 </header>
 
-<main class="page-section active" id="pageHome">
-    <div class="hero">
+<!-- ================= HOME PAGE ================= -->
+<div id="pageHome" class="page-section active">
+    <section class="hero">
         <div class="school-badge-container">
-            <img src="data:image/jpeg;base64,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" alt="School Logo" class="school-hero-logo">
+            <img src="https://i.ibb.co/3ykL8w4/school-logo.png" class="school-hero-logo" alt="ตราโรงเรียนมหรรณพาราม">
         </div>
         <div class="hero-text">
-            <h2>Maharnnoparam School Chat & Community</h2>
-            <h1>ระบบแชทและชุมชน <span class="gradient-text">โรงเรียนวัดมหรรณพาราม</span></h1>
-            <p>เชื่อมต่อเพื่อนร่วมสถาบัน แชทคุยกันได้แบบเรียลไทม์ พร้อมระบบค้นหาเพื่อนและกลุ่มพูดคุยที่ปลอดภัย</p>
+            <h1>ห้องพูดคุย<br><span class="gradient-text">โรงเรียนมหรรณพาราม</span></h1>
+            <h2>ถาม-ตอบ แลกเปลี่ยนความรู้ และเพิ่มเพื่อนพูดคุย</h2>
+            <p>ไม่ว่าจะเป็นการบ้าน การเรียน หรือเพื่อนคุยแก้เหงา มาร่วมสร้างสังคมการเรียนรู้ไปด้วยกันสำหรับชาวมหรรณพาราม</p>
+            <div class="hero-buttons">
+                <button onclick="showPage('chat')" class="start-btn">💬 เริ่มต้นพูดคุยเลย</button>
+            </div>
         </div>
-        <div class="hero-buttons">
-            <button class="start-btn" onclick="showPage('chat')">เริ่มใช้งานแชทเลย</button>
+    </section>
+</div>
+
+<!-- ================= FRIENDS PAGE ================= -->
+<div id="pageFriends" class="page-section">
+    <div class="friends-container">
+        <h2 style="margin-bottom:5px;">👥 เพื่อน & คำขอ</h2>
+        <p style="color:#aaaed0; margin-bottom:15px; font-size:13px;">ค้นหาเพื่อนนักเรียนเพื่อส่งคำขอ หรือกดรับเพื่อนที่นี่</p>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="พิมพ์ชื่อผู้ใช้เพื่อค้นหา..." onkeyup="renderUsers()">
+        </div>
+
+        <div class="users-grid" id="usersListGrid"></div>
+    </div>
+</div>
+
+<!-- ================= CHAT PAGE ================= -->
+<div id="pageChat" class="page-section">
+    <div class="chat-container">
+        <div class="chat-wrapper">
+            <div class="chat-sidebar" id="chatSidebar">
+                <div style="padding:12px 15px; font-weight:bold; color:#22c9ff; border-bottom:1px solid rgba(255,255,255,.05);">
+                    รายชื่อเพื่อนของคุณ
+                </div>
+                <div class="friends-list" id="sidebarFriendsList"></div>
+            </div>
+
+            <div class="chat-main" id="chatMain">
+                <div class="chat-header">
+                    <button class="back-to-list-btn" onclick="toggleMobileChatView('sidebar')">← กลับไปรายชื่อ</button>
+                    <h3 id="chatTargetTitle">เลือกเพื่อนเพื่อเริ่มคุย</h3>
+                    <div></div>
+                </div>
+                
+                <!-- กล่องข้อความแชทที่มีระบบเลื่อนขึ้นเลื่อนลง -->
+                <div class="chat-messages" id="chatMessagesArea" onclick="closeAllMsgMenus()">
+                    <div style="text-align:center; color:#8f93b8; margin-top:80px; font-size:14px;">
+                        💬 เลือกรายชื่อเพื่อนเพื่อเริ่มการสนทนา
+                    </div>
+                </div>
+
+                <div class="active-reply-bar" id="activeReplyBar">
+                    <div class="active-reply-info">
+                        กำลังตอบกลับ <b id="replyTargetUser" style="color:#22c9ff;">...</b>: <span id="replyTargetText">...</span>
+                    </div>
+                    <button class="cancel-reply-btn" onclick="cancelReply()">✕</button>
+                </div>
+
+                <div class="chat-input">
+                    <label for="chatImageInput" class="chat-input-btn" title="ส่งรูปภาพ">📷</label>
+                    <input type="file" id="chatImageInput" accept="image/*" style="display:none;" onchange="sendChatImage(event)">
+                    
+                    <button class="chat-input-btn" id="recordAudioBtn" title="อัดเสียงพูด" onclick="toggleVoiceRecording()">🎤</button>
+                    
+                    <input type="text" id="msgInput" placeholder="พิมพ์ข้อความ..." onkeydown="if(event.key==='Enter') sendPrivateMessage()">
+                    <button class="chat-input-btn send-btn" onclick="sendPrivateMessage()">➤</button>
+                </div>
+            </div>
         </div>
     </div>
-</main>
+</div>
 
-<script>
-    // สcript ระบบหน้าเว็บหลักเดิม
-    function showPage(pageId) {
+<!-- ================= PROFILE PAGE ================= -->
+<div id="pageProfile" class="page-section">
+    <div class="profile-card">
+        <div class="profile-avatar-container">
+            <img id="profileAvatarImg" class="profile-avatar-img" src="" alt="Profile">
+            <label for="avatarFileInput" class="upload-btn-label">📷</label>
+            <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
+        </div>
+        <h3 id="profileUsername">ชื่อผู้ใช้</h3>
+        <p id="profileStatusDisplay">"ยังไม่มีสถานะ"</p>
+        
+        <input type="text" id="statusInput" class="status-input" placeholder="พิมพ์ข้อความสถานะใหม่...">
+        <button class="start-btn" style="margin-bottom: 15px;" onclick="updateStatus()">บันทึกสถานะ</button>
+
+        <div style="border-top: 1px solid rgba(255,255,255,.1); padding-top: 15px; text-align: left;">
+            <label style="display:block; font-size:12px; color:#aaaed0; margin-bottom:5px;">เปลี่ยนชื่อผู้ใช้ใหม่</label>
+            <input type="text" id="newUsernameInput" class="status-input" placeholder="กรอกชื่อผู้ใช้ใหม่...">
+            <button class="start-btn" style="background:linear-gradient(90deg, #f59e0b, #ef4444); max-width:100%;" onclick="handleUpdateUsername()">เปลี่ยนชื่อ</button>
+        </div>
+    </div>
+</div>
+
+<!-- ================= AUTH MODAL (มีรหัสผ่าน) ================= -->
+<div class="auth-overlay" id="authOverlay">
+    <div class="auth-box" id="loginBox">
+        <button class="auth-close" onclick="closeAuth()">✕</button>
+        <h2>เข้าสู่ระบบ</h2>
+        <p class="auth-sub">ยินดีต้อนรับกลับมาที่ Student Chat</p>
+        <div class="auth-field">
+            <label>ชื่อผู้ใช้</label>
+            <input type="text" id="loginUsername" placeholder="กรอกชื่อผู้ใช้">
+        </div>
+        <div class="auth-field">
+            <label>รหัสผ่าน</label>
+            <input type="password" id="loginPassword" placeholder="กรอกรหัสผ่าน">
+        </div>
+        <button class="auth-submit" onclick="handleLogin()">เข้าสู่ระบบ</button>
+        <div class="auth-switch">
+            ยังไม่มีบัญชี? <button onclick="switchAuth('signup')">สมัครสมาชิก</button>
+        </div>
+    </div>
+
+    <div class="auth-box" id="signupBox" style="display:none;">
+        <button class="auth-close" onclick="closeAuth()">✕</button>
+        <h2>สมัครสมาชิก</h2>
+        <p class="auth-sub">เข้าร่วมชุมชน Student Chat</p>
+        <div class="auth-field">
+            <label>ชื่อผู้ใช้</label>
+            <input type="text" id="signupUsername" placeholder="ตั้งชื่อผู้ใช้ (ห้ามซ้ำ)">
+        </div>
+        <div class="auth-field">
+            <label>รหัสผ่าน</label>
+            <input type="password" id="signupPassword" placeholder="ตั้งรหัสผ่าน">
+        </div>
+        <button class="auth-submit" onclick="handleSignup()">สมัครสมาชิก</button>
+        <div class="auth-switch">
+            มีบัญชีอยู่แล้ว? <button onclick="switchAuth('login')">เข้าสู่ระบบ</button>
+        </div>
+    </div>
+</div>
+
+<!-- ================= IMAGE ZOOM MODAL ================= -->
+<div class="image-modal" id="imageModal" onclick="closeImageModal()">
+    <button class="close-modal-btn">✕</button>
+    <img id="modalZoomImg" src="" alt="Zoomed Image">
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, push, set, get, child, remove, off, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDaN-eSOQve7qn8MPHcOj4IeYWrt-7SwHk",
+        authDomain: "xdhi13.firebaseapp.com",
+        databaseURL: "https://mnht-84ae0-default-rtdb.firebaseio.com",
+        projectId: "xdhi13",
+        storageBucket: "xdhi13.firebasestorage.app",
+        messagingSenderId: "1094865586143",
+        appId: "1:1094865586143:web:6f1a7e79780ae918eba66a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const DEFAULT_AVATAR = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2322c9ff'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>";
+    const SCHOOL_LOGO_URL = "https://i.ibb.co/3ykL8w4/school-logo.png";
+
+    let currentUser = localStorage.getItem("activeUser") || null;
+    let activeChatFriend = null;
+    let currentChatListener = null;
+    let replyData = null;
+    
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let isRecording = false;
+
+    window.showPage = function(pageId){
+        if((pageId === 'friends' || pageId === 'chat' || pageId === 'profile') && !currentUser){
+            alert("กรุณาเข้าสู่ระบบก่อนใช้งานครับ");
+            openAuth('login');
+            return;
+        }
+
         document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
-        if(pageId === 'home') document.getElementById('pageHome').classList.add('active');
-        if(pageId === 'chat') document.getElementById('pageChat').classList.add('active');
-        if(pageId === 'friends') document.getElementById('pageFriends').classList.add('active');
-    }
-</script>
+        document.querySelectorAll('nav a').forEach(el => el.classList.remove('active'));
 
+        if(pageId === 'home'){
+            document.getElementById('pageHome').classList.add('active');
+            document.getElementById('navHome').classList.add('active');
+        } else if(pageId === 'friends'){
+            document.getElementById('pageFriends').classList.add('active');
+            document.getElementById('navFriends').classList.add('active');
+            renderUsers();
+        } else if(pageId === 'chat'){
+            document.getElementById('pageChat').classList.add('active');
+            document.getElementById('navChat').classList.add('active');
+            renderSidebarFriends();
+            toggleMobileChatView('sidebar');
+        } else if(pageId === 'profile'){
+            document.getElementById('pageProfile').classList.add('active');
+            document.getElementById('navProfile').classList.add('active');
+            loadProfile();
+        }
+    };
+
+    window.toggleMobileChatView = function(view){
+        if(window.innerWidth < 768){
+            if(view === 'main'){
+                document.getElementById('chatSidebar').style.display = 'none';
+                document.getElementById('chatMain').style.display = 'flex';
+            } else {
+                document.getElementById('chatSidebar').style.display = 'flex';
+                document.getElementById('chatMain').style.display = 'none';
+            }
+        }
+    }
+
+    window.openAuth = function(type){
+        document.getElementById("authOverlay").classList.add("active");
+        switchAuth(type);
+    };
+
+    window.closeAuth = function(){
+        document.getElementById("authOverlay").classList.remove("active");
+    };
+
+    window.switchAuth = function(type){
+        if(type === 'signup'){
+            document.getElementById("loginBox").style.display = "none";
+            document.getElementById("signupBox").style.display = "block";
+        }else{
+            document.getElementById("signupBox").style.display = "none";
+            document.getElementById("loginBox").style.display = "block";
+        }
+    };
+
+    // ระบบสมัครสมาชิก (ตรวจสอบชื่อซ้ำ และบันทึกรหัสผ่าน)
+    window.handleSignup = function(){
+        const u = document.getElementById("signupUsername").value.trim();
+        const p = document.getElementById("signupPassword").value;
+        if(!u || !p){ alert("กรุณากรอกชื่อผู้ใช้และรหัสผ่านให้ครบถ้วน"); return; }
+
+        get(child(ref(db), `users/${u}`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                alert("❌ ชื่อผู้ใช้นี้มีคนใช้แล้ว กรุณาเปลี่ยนชื่ออื่นครับ");
+            } else {
+                set(ref(db, `users/${u}`), { 
+                    username: u, 
+                    password: p,
+                    status: "นักเรียนโรงเรียนมหรรณพาราม",
+                    avatar: DEFAULT_AVATAR
+                });
+                currentUser = u;
+                localStorage.setItem("activeUser", currentUser);
+                updateHeader();
+                closeAuth();
+                showPage('friends');
+                alert("สมัครสมาชิกสำเร็จเรียบร้อย!");
+            }
+        });
+    };
+
+    // ระบบเข้าสู่ระบบ (ตรวจสอบรหัสผ่าน)
+    window.handleLogin = function(){
+        const u = document.getElementById("loginUsername").value.trim();
+        const p = document.getElementById("loginPassword").value;
+        if(!u || !p){ alert("กรุณากรอกชื่อผู้ใช้และรหัสผ่าน"); return; }
+
+        get(child(ref(db), `users/${u}`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                const userData = snapshot.val();
+                if(userData.password === p) {
+                    currentUser = u;
+                    localStorage.setItem("activeUser", currentUser);
+                    updateHeader();
+                    closeAuth();
+                    showPage('chat');
+                } else {
+                    alert("❌ รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง");
+                }
+            } else {
+                alert("❌ ไม่พบชื่อผู้ใช้นี้ในระบบ กรุณาสมัครสมาชิกก่อนครับ");
+            }
+        });
+    };
+
+    window.handleLogout = function(){
+        currentUser = null;
+        activeChatFriend = null;
+        localStorage.removeItem("activeUser");
+        updateHeader();
+        showPage('home');
+    };
+
+    function updateHeader(){
+        const btnContainer = document.getElementById("authNavButtons");
+        document.getElementById("headerLogoImg").src = SCHOOL_LOGO_URL;
+        
+        if(currentUser){
+            get(child(ref(db), `users/${currentUser}/avatar`)).then((snapshot) => {
+                const avatarUrl = snapshot.exists() ? snapshot.val() : DEFAULT_AVATAR;
+                btnContainer.innerHTML = `
+                    <div class="user-profile-badge">
+                        <img src="${avatarUrl}" class="user-avatar-small">
+                        <span style="max-width:70px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${currentUser}</span>
+                        <button class="logout-btn" onclick="handleLogout()">ออก</button>
+                    </div>
+                `;
+            });
+        }else{
+            btnContainer.innerHTML = `
+                <button class="login" onclick="openAuth('login')">เข้าสู่ระบบ</button>
+                <button class="signup" onclick="openAuth('signup')">สมัคร</button>
+            `;
+        }
+    }
+
+    window.renderUsers = function(){
+        const grid = document.getElementById("usersListGrid");
+        const searchText = document.getElementById("searchInput").value.toLowerCase();
+        
+        onValue(ref(db, `users`), (snapshot) => {
+            grid.innerHTML = "";
+            const usersData = snapshot.val() || {};
+            
+            onValue(ref(db, `friends/${currentUser}`), (friendSnap) => {
+                const friendsData = friendSnap.val() || {};
+
+                onValue(ref(db, `requests/${currentUser}`), (reqSnap) => {
+                    const requestsData = reqSnap.val() || {};
+
+                    Object.keys(usersData).forEach(username => {
+                        if(username === currentUser) return;
+                        if(searchText && !username.toLowerCase().includes(searchText)) return;
+
+                        const isFriend = !!friendsData[username];
+                        const hasIncomingRequest = !!requestsData[username];
+
+                        let btnText = "+ ส่งคำขอ";
+                        let btnClass = "btn-add";
+                        let actionType = "sendRequest";
+
+                        if(isFriend){
+                            btnText = "ยกเลิกเพื่อน";
+                            btnClass = "btn-remove";
+                            actionType = "removeFriend";
+                        } else if(hasIncomingRequest){
+                            btnText = "✓ ยอมรับเพื่อน";
+                            btnClass = "btn-accept";
+                            actionType = "acceptRequest";
+                        }
+
+                        const userAvatar = usersData[username].avatar || DEFAULT_AVATAR;
+
+                        const card = document.createElement("div");
+                        card.className = "user-card";
+                        card.innerHTML = `
+                            <div class="user-info">
+                                <img src="${userAvatar}" class="user-avatar-img">
+                                <div class="user-details">
+                                    <h4>${username}</h4>
+                                    <p>${usersData[username].status || ''}</p>
+                                </div>
+                            </div>
+                            <button class="btn-friend ${btnClass}" id="btn-act-${username}">
+                                ${btnText}
+                            </button>
+                        `;
+                        grid.appendChild(card);
+
+                        document.getElementById(`btn-act-${username}`).addEventListener('click', () => {
+                            if(actionType === "sendRequest"){
+                                set(ref(db, `requests/${username}/${currentUser}`), true);
+                                alert(`ส่งคำขอเป็นเพื่อนไปยัง ${username} แล้ว`);
+                            } else if(actionType === "acceptRequest"){
+                                set(ref(db, `friends/${currentUser}/${username}`), true);
+                                set(ref(db, `friends/${username}/${currentUser}`), true);
+                                remove(ref(db, `requests/${currentUser}/${username}`));
+                                alert(`คุณและ ${username} เป็นเพื่อนกันแล้ว!`);
+                            } else if(actionType === "removeFriend"){
+                                remove(ref(db, `friends/${currentUser}/${username}`));
+                                remove(ref(db, `friends/${username}/${currentUser}`));
+                            }
+                            renderUsers();
+                        });
+                    });
+                }, { onlyOnce: true });
+            }, { onlyOnce: true });
+        });
+    };
+
+    function renderSidebarFriends(){
+        const list = document.getElementById("sidebarFriendsList");
+        list.innerHTML = "";
+
+        onValue(ref(db, `friends/${currentUser}`), (snapshot) => {
+            list.innerHTML = "";
+            const friendsData = snapshot.val();
+
+            if(!friendsData){
+                list.innerHTML = `<div style="text-align:center; color:#aaa; font-size:13px; padding:20px;">ยังไม่มีเพื่อน<br>ไปที่หน้า "เพื่อน" เพื่อรับหรือส่งคำขอก่อนครับ</div>`;
+                return;
+            }
+
+            Object.keys(friendsData).forEach(friendName => {
+                get(child(ref(db), `users/${friendName}/avatar`)).then((avatarSnap) => {
+                    const avatarUrl = avatarSnap.exists() ? avatarSnap.val() : DEFAULT_AVATAR;
+                    const item = document.createElement("div");
+                    item.className = `friend-item ${activeChatFriend === friendName ? 'active' : ''}`;
+                    item.innerHTML = `
+                        <img src="${avatarUrl}" class="friend-item-img">
+                        <span>${friendName}</span>
+                    `;
+                    item.onclick = () => selectFriendToChat(friendName, avatarUrl);
+                    list.appendChild(item);
+                });
+            });
+        });
+    }
+
+    function selectFriendToChat(friendUsername, avatarUrl){
+        activeChatFriend = friendUsername;
+        document.getElementById("chatTargetTitle").innerHTML = `<img src="${avatarUrl}" class="user-avatar-small"> ${friendUsername}`;
+        renderSidebarFriends();
+        loadPrivateMessages();
+        toggleMobileChatView('main');
+    }
+
+    window.sendPrivateMessage = function(){
+        const input = document.getElementById("msgInput");
+        const text = input.value.trim();
+
+        if(!text || !activeChatFriend) return;
+
+        const roomId = [currentUser, activeChatFriend].sort().join("_");
+
+        const msgData = {
+            sender: currentUser,
+            text: text,
+            timestamp: Date.now()
+        };
+
+        if(replyData){
+            msgData.replyTo = replyData;
+        }
+
+        push(ref(db, `private_chats/${roomId}`), msgData);
+
+        input.value = "";
+        cancelReply();
+    };
+
+    window.sendChatImage = function(event){
+        const file = event.target.files[0];
+        if(!file || !activeChatFriend) return;
+
+        if(!file.type.startsWith('image/')){
+            alert("กรุณาเลือกไฟล์รูปภาพเท่านั้นครับ");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e){
+            const img = new Image();
+            img.onload = function(){
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const maxSize = 800;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > maxSize) {
+                        height *= maxSize / width;
+                        width = maxSize;
+                    }
+                } else {
+                    if (height > maxSize) {
+                        width *= maxSize / height;
+                        height = maxSize;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+
+                const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                const roomId = [currentUser, activeChatFriend].sort().join("_");
+
+                const msgData = {
+                    sender: currentUser,
+                    image: resizedDataUrl,
+                    timestamp: Date.now()
+                };
+
+                if(replyData){
+                    msgData.replyTo = replyData;
+                }
+
+                push(ref(db, `private_chats/${roomId}`), msgData);
+                cancelReply();
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+        event.target.value = "";
+    };
+
+    window.toggleVoiceRecording = async function(){
+        const btn = document.getElementById("recordAudioBtn");
+        
+        if (!isRecording) {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const base64Audio = e.target.result;
+                        const roomId = [currentUser, activeChatFriend].sort().join("_");
+                        
+                        const msgData = {
+                            sender: currentUser,
+                            audio: base64Audio,
+                            timestamp: Date.now()
+                        };
+
+                        if(replyData){
+                            msgData.replyTo = replyData;
+                        }
+
+                        push(ref(db, `private_chats/${roomId}`), msgData);
+                        cancelReply();
+                    };
+                    reader.readAsDataURL(audioBlob);
+                    
+                    stream.getTracks().forEach(track => track.stop());
+                };
+
+                mediaRecorder.start();
+                isRecording = true;
+                btn.classList.add("recording");
+                btn.title = "กำลังอัดเสียง... (กดเพื่อหยุดและส่ง)";
+            } catch (err) {
+                alert("ไม่สามารถเข้าถึงไมโครโฟนได้ กรุณาเปิดใช้งานสิทธิ์ไมโครโฟน");
+            }
+        } else {
+            mediaRecorder.stop();
+            isRecording = false;
+            btn.classList.remove("recording");
+            btn.title = "อัดเสียงพูด";
+        }
+    };
+
+    function loadPrivateMessages(){
+        const msgArea = document.getElementById("chatMessagesArea");
+
+        if(!activeChatFriend) return;
+
+        const roomId = [currentUser, activeChatFriend].sort().join("_");
+        
+        if (currentChatListener) off(currentChatListener);
+        currentChatListener = ref(db, `private_chats/${roomId}`);
+
+        onValue(currentChatListener, (snapshot) => {
+            msgArea.innerHTML = "";
+            const messages = snapshot.val() || {};
+
+            Object.keys(messages).forEach(msgId => {
+                const msg = messages[msgId];
+
+                if(msg.deletedFor && msg.deletedFor[currentUser]) return;
+
+                const isMe = msg.sender === currentUser;
+                const row = document.createElement("div");
+                row.className = `msg-row ${isMe ? 'me' : 'other'}`;
+
+                let replyHTML = "";
+                if(msg.replyTo){
+                    let previewContent = msg.replyTo.text || (msg.replyTo.image ? '📷 [รูปภาพ]' : '🎤 [ข้อความเสียง]');
+                    replyHTML = `
+                        <div class="reply-preview-box">
+                            <div class="reply-user">${msg.replyTo.sender}</div>
+                            <div>${previewContent}</div>
+                        </div>
+                    `;
+                }
+
+                let contentHTML = "";
+                if(msg.image){
+                    // กดแล้วเปิดโหมดซูมรูปภาพ
+                    contentHTML = `${replyHTML}<img src="${msg.image}" class="chat-msg-img" onclick="openImageModal('${msg.image}')">`;
+                } else if(msg.audio){
+                    contentHTML = `${replyHTML}<audio controls src="${msg.audio}" class="chat-audio"></audio>`;
+                } else {
+                    contentHTML = `${replyHTML}${msg.text}`;
+                }
+
+                const safeTextForReply = msg.text ? msg.text.replace(/'/g, "\\'") : (msg.image ? 'รูปภาพ' : 'ข้อความเสียง');
+
+                row.innerHTML = `
+                    <button class="msg-menu-btn" onclick="toggleMsgMenu(event, '${msgId}')">⋮</button>
+                    <div class="msg-bubble">
+                        ${contentHTML}
+                    </div>
+                    <div class="msg-options-menu" id="menu-${msgId}">
+                        <div class="menu-item" onclick="startReply('${msg.sender}', '${safeTextForReply}')">↩ ตอบกลับ</div>
+                        <div class="menu-item" onclick="deleteForMe('${msgId}')">🗑️ ลบเฉพาะฉัน</div>
+                        ${isMe ? `<div class="menu-item danger" onclick="unsendMsg('${msgId}')">🚫 ยกเลิกข้อความ</div>` : ''}
+                    </div>
+                `;
+
+                msgArea.appendChild(row);
+            });
+            // เลื่อนลงมาล่างสุดอัตโนมัติเมื่อมีข้อความใหม่
+            msgArea.scrollTop = msgArea.scrollHeight;
+        });
+    }
+
+    // ฟังก์ชันเปิด-ปิด ตัวซูมรูปภาพ
+    window.openImageModal = function(imgSrc){
+        document.getElementById("modalZoomImg").src = imgSrc;
+        document.getElementById("imageModal").classList.add("active");
+    };
+
+    window.closeImageModal = function(){
+        document.getElementById("imageModal").classList.remove("active");
+    };
+
+    window.toggleMsgMenu = function(e, msgId){
+        e.stopPropagation();
+        const currentMenu = document.getElementById(`menu-${msgId}`);
+        const isActive = currentMenu.classList.contains('active');
+        closeAllMsgMenus();
+        if(!isActive){
+            currentMenu.classList.add('active');
+        }
+    };
+
+    window.closeAllMsgMenus = function(){
+        document.querySelectorAll('.msg-options-menu').forEach(el => el.classList.remove('active'));
+    };
+
+    window.startReply = function(sender, text){
+        replyData = { sender, text };
+        document.getElementById("replyTargetUser").innerText = sender;
+        document.getElementById("replyTargetText").innerText = text;
+        document.getElementById("activeReplyBar").classList.add('active');
+        closeAllMsgMenus();
+        document.getElementById("msgInput").focus();
+    };
+
+    window.cancelReply = function(){
+        replyData = null;
+        document.getElementById("activeReplyBar").classList.remove('active');
+    };
+
+    window.unsendMsg = function(msgId){
+        if(!activeChatFriend) return;
+        const roomId = [currentUser, activeChatFriend].sort().join("_");
+        remove(ref(db, `private_chats/${roomId}/${msgId}`));
+        closeAllMsgMenus();
+    };
+
+    window.deleteForMe = function(msgId){
+        if(!activeChatFriend) return;
+        const roomId = [currentUser, activeChatFriend].sort().join("_");
+        set(ref(db, `private_chats/${roomId}/${msgId}/deletedFor/${currentUser}`), true);
+        closeAllMsgMenus();
+    };
+
+    function loadProfile(){
+        document.getElementById("profileUsername").innerText = currentUser;
+        get(child(ref(db), `users/${currentUser}`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                document.getElementById("profileStatusDisplay").innerText = `"${data.status || 'ยังไม่มีสถานะ'}"`;
+                document.getElementById("profileAvatarImg").src = data.avatar || DEFAULT_AVATAR;
+            }
+        });
+    }
+
+    window.handleImageUpload = function(event){
+        const file = event.target.files[0];
+        if(!file) return;
+
+        if(!file.type.startsWith('image/')){
+            alert("กรุณาเลือกไฟล์รูปภาพเท่านั้นครับ");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e){
+            const img = new Image();
+            img.onload = function(){
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const maxSize = 200;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > maxSize) {
+                        height *= maxSize / width;
+                        width = maxSize;
+                    }
+                } else {
+                    if (height > maxSize) {
+                        width *= maxSize / height;
+                        height = maxSize;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+
+                const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                
+                set(ref(db, `users/${currentUser}/avatar`), resizedDataUrl);
+                document.getElementById("profileAvatarImg").src = resizedDataUrl;
+                updateHeader();
+                alert("เปลี่ยนรูปโปรไฟล์สำเร็จเรียบร้อยครับ!");
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    };
+
+    window.updateStatus = function(){
+        const statusText = document.getElementById("statusInput").value.trim();
+        if(!statusText) return;
+
+        set(ref(db, `users/${currentUser}/status`), statusText);
+        document.getElementById("profileStatusDisplay").innerText = `"${statusText}"`;
+        document.getElementById("statusInput").value = "";
+        alert("อัปเดตสถานะเรียบร้อยครับ!");
+    };
+
+    window.handleUpdateUsername = async function(){
+        const newUsername = document.getElementById("newUsernameInput").value.trim();
+        if(!newUsername) {
+            alert("กรุณากรอกชื่อใหม่ครับ");
+            return;
+        }
+
+        if(newUsername === currentUser) {
+            alert("นี่คือชื่อปัจจุบันของคุณอยู่แล้วครับ");
+            return;
+        }
+
+        try {
+            const nameSnap = await get(child(ref(db), `users/${newUsername}`));
+            if (nameSnap.exists()) {
+                alert("❌ ชื่อผู้ใช้นี้ถูกใช้งานแล้ว กรุณาใช้ชื่ออื่น");
+                return;
+            }
+
+            const oldUser = currentUser;
+            const userSnap = await get(child(ref(db), `users/${oldUser}`));
+            const userData = userSnap.exists() ? userSnap.val() : {};
+            userData.username = newUsername;
+
+            await set(ref(db, `users/${newUsername}`), userData);
+
+            const friendsSnap = await get(child(ref(db), `friends/${oldUser}`));
+            if (friendsSnap.exists()) {
+                const friendsList = friendsSnap.val();
+                await set(ref(db, `friends/${newUsername}`), friendsList);
+
+                for (let friendName of Object.keys(friendsList)) {
+                    await set(ref(db, `friends/${friendName}/${newUsername}`), true);
+                    await remove(ref(db, `friends/${friendName}/${oldUser}`));
+                }
+            }
+
+            const reqSnap = await get(child(ref(db), `requests/${oldUser}`));
+            if (reqSnap.exists()) {
+                await set(ref(db, `requests/${newUsername}`), reqSnap.val());
+            }
+
+            const chatSnap = await get(child(ref(db), `private_chats`));
+            if (chatSnap.exists()) {
+                const allChats = chatSnap.val();
+                for (let roomId of Object.keys(allChats)) {
+                    if (roomId.includes(oldUser)) {
+                        const newRoomId = roomId.split('_').map(n => n === oldUser ? newUsername : n).sort().join('_');
+                        await set(ref(db, `private_chats/${newRoomId}`), allChats[roomId]);
+
+                        const messages = allChats[roomId];
+                        for (let msgId of Object.keys(messages)) {
+                            if (messages[msgId].sender === oldUser) {
+                                await set(ref(db, `private_chats/${newRoomId}/${msgId}/sender`), newUsername);
+                            }
+                        }
+                        await remove(ref(db, `private_chats/${roomId}`));
+                    }
+                }
+            }
+
+            await remove(ref(db, `users/${oldUser}`));
+            await remove(ref(db, `friends/${oldUser}`));
+            await remove(ref(db, `requests/${oldUser}`));
+
+            currentUser = newUsername;
+            localStorage.setItem("activeUser", currentUser);
+            updateHeader();
+            loadProfile();
+            document.getElementById("newUsernameInput").value = "";
+            alert("เปลี่ยนชื่อและย้ายข้อมูลแชทสำเร็จเรียบร้อยครับ!");
+
+        } catch (err) {
+            console.error(err);
+            alert("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
+        }
+    };
+
+    updateHeader();
+</script>
 </body>
 </html>
